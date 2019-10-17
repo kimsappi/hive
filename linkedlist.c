@@ -89,5 +89,26 @@ void	ft_lstiter(t_list *lst, void (*f)(t_list *elem))
 
 t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
-	
+	t_list	*start;
+	t_list	*f_return;
+	t_list	*new;
+
+	if (!lst)
+		return (NULL);
+	f_return = (*f)(lst);
+	new = ft_lstnew(f_return->content, elem->content_size);
+	if (!new)
+		return (NULL);
+	start = new;
+	lst = lst->next;
+	while (lst)
+	{
+		f_return = (*f)(lst);
+		new->next = ft_lstnew(f_return->content, elem->content_size);
+		if (!new->next)
+			return (NULL);
+		new = new->next;
+		lst = lst->next;
+	}
+	return (start);
 }
