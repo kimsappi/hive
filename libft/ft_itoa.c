@@ -6,19 +6,18 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 16:58:45 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/16 17:40:58 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/18 12:09:17 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <string.h>
+#include "libft.h"
 
 static char	*itoa_to_string(char *str, long nb, char length, char negative)
 {
 	char i;
 
 	i = 1;
-	str[length] = 0;
+	str[(int)length] = 0;
 	if (negative)
 		str[0] = '-';
 	while (i + negative <= length)
