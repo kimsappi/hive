@@ -19,6 +19,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	unsigned long	i;
 	char			*new;
 
+	if (!s1 || !s2)
+		return (NULL);
 	len1 = 0;
 	len2 = 0;
 	while (s1[len1])
@@ -26,6 +28,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (s2[len2])
 		++len2;
 	new = (char *)malloc(len1 + len2 + 1);
+	if (!new)
+		return (NULL);
 	i = 0;
 	while (i < len1)
 	{

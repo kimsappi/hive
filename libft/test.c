@@ -480,6 +480,29 @@ int	main(void)
 		ft_putendl("strnequ4");
 	if (ft_strnequ(NULL, NULL, 10))
 		ft_putendl("strnequnull");
+	ft_strnequ(NULL, "asd", 5);
+	ft_strnequ("asd", NULL, 5);
+
+	ft_putendl("strnequ passed without segfault");
+
+	if (strcmp(ft_strsub("12345", 2, 2), "34"))
+		ft_putendl("strsub1");
+	if (strcmp(ft_strsub("12345", 0, 1), "1"))
+		ft_putendl("strsub2");
+	if (strcmp(ft_strsub("12345", 0, 0), ""))
+		ft_putendl("strsub3");
+	ft_strsub(NULL, 5, 5);
+
+	if (strcmp(ft_strjoin("abc", "12345"), "abc12345"))
+		ft_putendl("join1");
+	if (strcmp(ft_strjoin("", "1"), "1"))
+		ft_putendl("join2");
+	if (strcmp(ft_strjoin("1", ""), "1"))
+		ft_putendl("join3");
+	ft_strjoin(NULL, "1");
+	ft_strjoin(NULL, NULL);
+	ft_strjoin("1", NULL);
+
 
 	return 0;
 }
