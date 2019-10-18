@@ -9,5 +9,5 @@ echo
 echo
 
 
-gcc -L. -lft test.c
+gcc test.c -lft -L.
 ./a.out

@@ -12,6 +12,20 @@
 
 #include "libft.h"
 #include <stdio.h>
+#include "strnstr.c"
+#include "strlcat.c"
+
+void	ft_putcharptr(char *c)
+{
+	if (c)
+		printf("%c", *c);
+}
+
+void ft_putcharptri(unsigned int i, char *c) {if (c) printf("%c", *c + i);}
+
+char ft_smap(char c) { return c + 1; }
+
+char ft_smapi(unsigned int i, char c) {return c + i;}
 
 int	main(void)
 {
@@ -24,6 +38,9 @@ int	main(void)
 	char *reals2 = malloc(4);
 	size_t ret;
 	size_t ret2;
+
+
+	ft_putendl("TESTS BEGIN HERE\nThere shouldn't be any errors or warnings above this(?).");
 
 	*test = 999999999;
 	ft_memset(test, 150, 4);
@@ -42,8 +59,7 @@ int	main(void)
 	if (memcmp(real, test, 4))
 		printf("memcpy fail\n");
 
-
-
+	ft_putendl("all g up to memcpy?");
 
 // TODO HUGE ERROR WITH MEMCCPY DOESNT WORK WITHOUT X WORKAROUND
 
@@ -88,6 +104,8 @@ int	main(void)
 	if (ft_strlen(reals) != 3)
 		ft_putendl("strlen fail");
 	
+	ft_putendl("all g up to strdup?");
+
 	x = ft_strdup(reals);
 	if (memcmp(x, reals, 4))
 		printf("strdup fail\n");
@@ -128,6 +146,8 @@ int	main(void)
 	ft_strncat(tests, "12345", 3);
 	if (strcmp(tests, "123"))
 		ft_putendl("strcat2");
+
+	ft_putendl("all g up to strncat?");
 
 	strcpy(reals, "abc");
 	strcpy(tests, "");
@@ -183,6 +203,8 @@ int	main(void)
 	tests = ft_strrchr("abcabbcbabc", 'x');
 	if (tests)
 		ft_putendl("strrchr2 fail");
+
+	ft_putendl("all g up to strrchr?");
 
 	reals = strstr("abababcabababc", "ababc");
 	tests = ft_strstr("abababcabababc", "ababc");
@@ -366,9 +388,98 @@ int	main(void)
 	if (ft_tolower('A' - 1) != 'A' - 1)
 		ft_putendl("ft_tolower1");
 
-
+	ft_putendl("---------------------");
+	ft_putendl("Standard library functions end here");
+	ft_putendl("---------------------");
 
 		// Here goes additional functions
+	int zeroint = 0;
+	tests = ft_memalloc(4);
+	if (memcmp(&zeroint, tests, 4))
+		printf("memalloc\n");
+
+	ft_memdel((void **)(&tests));
+	if (tests)
+		printf("memdel\n");
+	tests = NULL;
+	void **ntest = NULL;
+	ft_memdel((void **)(&tests));
+	ft_memdel(ntest);
+
+	ft_putendl("passes memdel without segfault");
+
+	tests = ft_strnew(4);
+	if (memcmp(&zeroint, tests, 4))
+		printf("strnew\n");
+
+	ft_strdel(&tests);
+	if (tests)
+		printf("strdel\n");
+	tests = NULL;
+	ft_memdel((void **)(&tests));
+	ft_memdel(ntest);
+
+	tests = ft_strnew(4);
+	strcpy(tests, "asd");
+	ft_strclr(tests);
+	if (memcmp(tests, &zeroint, 4))
+		printf("strclr\n");
+	char *ntest2 = NULL;
+	ft_strclr(ntest2);
+
+	ft_putendl("passes strclr without segfault");
+
+	strcpy(tests, "asd");
+	ft_putendl("The next 2 lines should match (ft_striter):\nasd");
+	ft_striter(tests, &ft_putcharptr);
+	printf("\n\n");
+	ft_striter(ntest2, &ft_putcharptr);
+	ft_striter(ntest2, NULL);
+	ft_striter(tests, NULL);
+
+	ft_putendl("The next 2 lines should match(ft_striteri):\natf");
+	ft_striteri(tests, &ft_putcharptri);
+	printf("\n\n");
+	ft_striteri(NULL, &ft_putcharptri);
+	ft_striter(NULL, NULL);
+	ft_striter(tests, NULL);
+
+	int p = 999999999;
+	memcpy(tests, &p, 4);
+	tests = ft_strmap("asd", &ft_smap);
+	if (strcmp(tests, "bte"))
+		ft_putendl("strmap");
+	ft_strmap(NULL, &ft_smap);
+	ft_strmap(NULL, NULL);
+	ft_strmap(tests, NULL);
+		
+	memcpy(tests, &p, 4);
+	strcpy(tests, "asd");
+	tests = ft_strmapi("asd", &ft_smapi);
+	if (strcmp(tests, "atf"))
+		ft_putendl("strmapi");
+	ft_strmapi(NULL, &ft_smapi);
+	ft_strmapi(NULL, NULL);
+	ft_strmapi(tests, NULL);
+
+	if (ft_strequ("asdfdsg", "asdfgsh"))
+		printf("strequ\n");
+	if (ft_strequ("abcde", "abcde") != 1)
+		ft_putendl("strequ2");
+	ft_strequ(NULL, NULL);
+	ft_strequ("abc", NULL);
+	ft_strequ(NULL, "abc");
+
+	if (ft_strnequ("asdfgh", "asdfgg", 5) != 1)
+		printf("strnequ\n");
+	if (ft_strnequ("abc", "abd", 2) != 1)
+		ft_putendl("strnequ2");
+	if (ft_strnequ("abc", "abc", 5) != 1)
+		printf("strnequ3\n");
+	if (ft_strnequ("abcd", "abce", 4))
+		ft_putendl("strnequ4");
+	if (ft_strnequ(NULL, NULL, 10))
+		ft_putendl("strnequnull");
 
 	return 0;
 }

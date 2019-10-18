@@ -18,6 +18,8 @@ char	*ft_strmap(char const *s, char (*f)(char))
 	unsigned long	i;
 	char			*new;
 
+	if (!s || !f)
+		return (NULL);
 	len = 0;
 	while (s[len])
 		++len;
