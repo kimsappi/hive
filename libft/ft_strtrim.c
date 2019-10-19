@@ -34,6 +34,7 @@ char		*ft_strtrim(char const *s)
 			if (!(*new == ' ' || *new == '\n' || *new == '\t'))
 				end = 0;
 		}
+		++new;
 	}
 	new = ft_strnew(body - end);
 	if (new)

@@ -91,6 +91,23 @@ int	main(void)
 		printf("memmove2 fail\n");
 	if (x != tests)
 		ft_putendl("memmove3 fail");
+	char	srcm[] = "lorem ipsum dolor sit amet";
+	char	*testm;
+	testm = srcm + 1;
+	write(1, testm, 22);
+	printf("\n");
+	testm = ft_memmove(testm, "consectetur", 5);
+	write(1, testm, 22);
+	printf("\n");
+	testm = ft_memmove(testm, "con\0sec\0\0te\0tur", 10);
+	write(1, testm, 22);
+	printf("\n");
+	testm = ft_memmove(testm, srcm, 8);
+	write(1, testm, 22);
+	printf("\n");
+	ft_memmove(srcm, testm, 8);
+	write(1, testm, 22);
+	printf("\n");	
 
 	if (ft_memcmp(reals, tests, 4))
 		ft_putendl("memcmp fail");
@@ -133,6 +150,10 @@ int	main(void)
 	ft_strncpy(tests, "abcdefg", 3);
 	if (strcmp("abc", tests))
 		printf("strncpy2 fail\n");
+	char *testnc = calloc(50, 1);
+	memset(testnc, 's', 13);
+	strncpy(testnc, "", 3);
+	printf("%d %d %d %d %d\n", testnc[0], testnc[1], testnc[2], testnc[3], testnc[4]);
 	
 	strcpy(tests, "");
 	ft_strcat(tests, "1");
@@ -314,6 +335,7 @@ int	main(void)
 	char *atoi13 = "-2147483648";
 	char *atoi14 = "2147483648";
 	char *atoi15 = "99999999999999";
+	char *atoi16 = "\e10";
 	if (atoi(atoi1) != ft_atoi(atoi1))
 		ft_putendl("atoi1");
 	if (atoi(atoi2) != ft_atoi(atoi2))
@@ -344,6 +366,8 @@ int	main(void)
 		ft_putendl("atoi1fd");
 	if (atoi(atoi15) != ft_atoi(atoi15))
 		ft_putendl("atoi15");
+	if (atoi(atoi16) != ft_atoi(atoi16))
+		ft_putendl("atoi16");
 
 	if (ft_isalpha('a' - 1) || ft_isalpha('z' + 1))
 		ft_putendl("isalpha1");

@@ -27,7 +27,7 @@ int	ft_strnequ(char const *s1, char const *s2, size_t n)
 		++s2;
 		++i;
 	}
-	if (*s1 == *s2 || *s1 == 0 || *s2 == 0)
+	if (*s1 == *s2 || (*s1 == 0 && *s2 == 0))
 		return (1);
 	return (0);
 }

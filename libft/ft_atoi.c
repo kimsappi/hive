@@ -23,7 +23,8 @@ int	ft_atoi(const char *str)
 	is_number = 0;
 	while (*str && !(is_number && !ft_isdigit(*str)))
 	{
-		if (*str > 32 && *str != '-' && *str != '+' && !ft_isdigit(*str))
+		if (*str == 27 ||
+				(*str > 32 && *str != '-' && *str != '+' && !ft_isdigit(*str)))
 			break ;
 		if (*str == '-')
 			sign = -1;
