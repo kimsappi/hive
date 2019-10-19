@@ -124,5 +124,7 @@ char			**ft_strsplit(char const *s, char c)
 	array[word_count] = NULL;
 	if (!word_sizes)
 		array[0] = NULL;
+	else
+		free(word_sizes);
 	return (array);
 }
