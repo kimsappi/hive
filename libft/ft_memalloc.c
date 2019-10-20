@@ -17,7 +17,7 @@ void	*ft_memalloc(size_t size)
 	char	*area;
 	size_t	i;
 
-	area = malloc(size);
+	area = (void *)malloc(size);
 	if (!area)
 		return (NULL);
 	i = 0;
