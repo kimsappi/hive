@@ -27,6 +27,12 @@ char ft_smap(char c) { return c + 1; }
 
 char ft_smapi(unsigned int i, char c) {return c + i;}
 
+void ft_printlstitem(t_list *elem) {ft_putendl((char *)(elem->content));}
+
+void	ft_lstdelete1(void *content, size_t n) {free(content); (void)n;}
+
+t_list *ft_lstmaptest(t_list *elem) {((char *)elem->content)[0] = 's'; return elem;}
+
 int	main(void)
 {
 	int *test = malloc(4);
@@ -594,8 +600,36 @@ int	main(void)
 	ft_putnbr(2147383647);
 	printf("\n2147383647\n\n");
 	ft_putendl(NULL);
-	ft_putendl("Check parts 1 and 2. Manual check for bonus. Also there should be 2 empty lines before this (maybe)");
-	ft_putendl("Also maybe all the _fd functions and ft_putchar");
 
+
+	ft_putendl("Checked parts 1 and 2. Also there should be 2 empty lines before this (maybe)");
+	ft_putendl("Maybe manually check all the _fd functions and ft_putchar");
+	ft_putendl("--------------------------------");
+	ft_putendl("Checking bonuses");
+
+
+	t_list *head = ft_lstnew("asd", 4);
+	ft_lstadd(&head, ft_lstnew("123", 4));
+	if (memcmp(head->content, "123", 4))
+		printf("lstadd or lstnew fail\n");
+	if (memcmp(head->next->content, "asd", 4))
+		printf("probably lstadd fail\n");
+	ft_lstadd(&head, ft_lstnew("xyz", 4));
+	ft_putendl("the following 3 lines should be repeated after an empty line (lstiter):\nsyz\ns23\nssd\n");
+	t_list *head2 = ft_lstmap(head, &ft_lstmaptest);
+	ft_lstiter(head2, &ft_printlstitem);
+
+	ft_putendl("If so, lstadd, lstnew, lstmap and lstiter tested.\n###");
+	
+	ft_lstdelone(&(head->next->next), &ft_lstdelete1);
+	if (head->next->next)
+		ft_putendl("lstdelone fail");
+	ft_lstdel(&head, &ft_lstdelete1);
+	if (head)
+		ft_putendl("lstdel fail");
+	ft_putendl("If the previous line is '###', lstdel and lstdelone worked");
+	
+	
+	
 	return 0;
 }
