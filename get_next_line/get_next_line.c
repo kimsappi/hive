@@ -7,9 +7,15 @@ int		get_next_line(const int fd, char **line)
 	if (fd < 0 || !line || !(*line))
 		return (-1);
 	if (newline)
-		ft_strcat(*line, newline + 1);
-	if (ft_strchr(newline + 1, '\n'))
-		return (*line);
+	{
+		if (ft_strchr(newline + 1, '\n'))
+		{
+			ft_strncat(*line, newline + 1, (ft_strchr(newline + 1, '\n') - (newline + 1)) / sizeof(char));
+			return (*line);
+		}
+		else
+			ft_strcat(*line, newline + 1);
+	}
 	while (read_bytes = read(fd, buff, BUFF_SIZE))
 	{
 		if (read_bytes == -1)
