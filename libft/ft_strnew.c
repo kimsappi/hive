@@ -17,13 +17,13 @@ char	*ft_strnew(size_t size)
 	char	*area;
 	size_t	i;
 
-	area = (char *)malloc(size);
+	area = (char *)malloc(sizeof(char) * (size + 1));
 	if (!area)
 		return (NULL);
 	i = 0;
-	while (i < size)
+	while (i < size + 1)
 	{
-		area[i] = 0;
+		area[i] = '\0';
 		++i;
 	}
 	return (area);

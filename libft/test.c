@@ -94,20 +94,12 @@ int	main(void)
 	char	srcm[] = "lorem ipsum dolor sit amet";
 	char	*testm;
 	testm = srcm + 1;
-	write(1, testm, 22);
-	printf("\n");
 	testm = ft_memmove(testm, "consectetur", 5);
-	write(1, testm, 22);
-	printf("\n");
 	testm = ft_memmove(testm, "con\0sec\0\0te\0tur", 10);
-	write(1, testm, 22);
-	printf("\n");
 	testm = ft_memmove(testm, srcm, 8);
-	write(1, testm, 22);
-	printf("\n");
 	ft_memmove(srcm, testm, 8);
-	write(1, testm, 22);
-	printf("\n");	
+	if (memcmp("con\0secc\0t dolor sit a", testm, 21))
+		printf("memmove4 fail (overlapping memory areas)\n");
 
 	if (ft_memcmp(reals, tests, 4))
 		ft_putendl("memcmp fail");
@@ -151,9 +143,13 @@ int	main(void)
 	if (strcmp("abc", tests))
 		printf("strncpy2 fail\n");
 	char *testnc = calloc(50, 1);
+	char *realnc = calloc(50, 1);
 	memset(testnc, 's', 13);
-	strncpy(testnc, "", 3);
-	printf("%d %d %d %d %d\n", testnc[0], testnc[1], testnc[2], testnc[3], testnc[4]);
+	memset(realnc, 's', 13);
+	ft_strncpy(testnc, "", 3);
+	strncpy(realnc, "", 3);
+	if (memcmp(realnc, testnc, 10))
+		ft_putendl("strncpy does not pad 0 when copying empty string");
 	
 	strcpy(tests, "");
 	ft_strcat(tests, "1");
@@ -368,6 +364,25 @@ int	main(void)
 		ft_putendl("atoi15");
 	if (atoi(atoi16) != ft_atoi(atoi16))
 		ft_putendl("atoi16");
+	char *atoitests = malloc(10);
+	strcpy(atoitests, "142");
+	int i = 0;
+	while (i < 255)
+	{
+		atoitests[0] = i;
+		if (atoi(atoitests) != ft_atoi(atoitests))
+			printf("atoi fails when first character is ascii %d\n", i);
+		++i;
+	}
+	i = 0;
+	strcpy(atoitests, "4215");
+	{
+		atoitests[2] = i;
+		if (atoi(atoitests) != ft_atoi(atoitests))
+			printf("atoi fails when middle character is ascii %d\n", i);
+		++i;
+	}
+
 
 	if (ft_isalpha('a' - 1) || ft_isalpha('z' + 1))
 		ft_putendl("isalpha1");
@@ -432,9 +447,15 @@ int	main(void)
 
 	ft_putendl("passes memdel without segfault");
 
-	tests = ft_strnew(4);
+	tests = ft_strnew(3);
 	if (memcmp(&zeroint, tests, 4))
 		printf("strnew\n");
+	strcpy(tests, "asd");
+	tests = ft_strnew(0);
+	if (memcmp(&zeroint, tests, 1))
+		printf("strnew2\n");
+
+	ft_putendl("passes strnew without segfault");
 
 	ft_strdel(&tests);
 	if (tests)
@@ -527,6 +548,54 @@ int	main(void)
 	ft_strjoin(NULL, NULL);
 	ft_strjoin("1", NULL);
 
+	char *s;
+	s = ft_strtrim("abc");
+	if (strcmp(s, "abc"))
+		ft_putendl("strtrim1");
+	if (strcmp("abc", ft_strtrim("  \t  \t \nabc\t \t \t \n    \t")))
+		ft_putendl("strtrim2");
+	ft_strtrim(NULL);
+
+	ft_putendl("ft_strtrim passes");
+
+	char **split = ft_strsplit(" a\tb c ", ' ');
+	if (strcmp(split[0], "a\tb"))
+		printf("strsplit1\n");
+	if (strcmp(split[1], "c"))
+		printf("strsplit2\n");
+	if (split[2])
+		printf("strsplit3\n"); 
+
+	split = ft_strsplit("********", '*');
+	if (split[0])
+		printf("strsplit4\n");
+
+	if (strcmp(ft_itoa(0), "0"))
+		ft_putendl("itoa0");
+	if (strcmp(ft_itoa(-5), "-5"))
+		ft_putendl("itoa-5");
+	if (strcmp(ft_itoa(5), "5"))
+		ft_putendl("itoa5");
+	if (strcmp(ft_itoa(-2147483648), "-2147483648"))
+		ft_putendl("itoa min");
+	if (strcmp(ft_itoa(2147483647), "2147483647"))
+		ft_putendl("itoa max");
+
+	ft_putendl("itoa done");
+
+	ft_putstr(NULL);
+	ft_putstr("The following line pairs should match\n");
+	ft_putnbr(0);
+	printf("\n0\n\n");
+	ft_putnbr(-5);
+	printf("\n-5\n\n");
+	ft_putnbr(-2147483648);
+	printf("\n-2147483648\n\n");
+	ft_putnbr(2147383647);
+	printf("\n2147383647\n\n");
+	ft_putendl(NULL);
+	ft_putendl("Check parts 1 and 2. Manual check for bonus. Also there should be 2 empty lines before this (maybe)");
+	ft_putendl("Also maybe all the _fd functions and ft_putchar");
 
 	return 0;
 }

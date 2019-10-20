@@ -16,9 +16,12 @@ void	ft_putendl(char const *s)
 {
 	size_t	length;
 
-	length = 0;
-	while (s[length])
-		length++;
-	write(1, s, length);
+	if (s)
+	{
+		length = 0;
+		while (s[length])
+			length++;
+		write(1, s, length);
+	}
 	write(1, "\n", 1);
 }

@@ -12,12 +12,13 @@
 
 #include "libft.h"
 
-static int	ft_atoi_break(const char *c)
+static int	ft_atoi_break(const char c)
 {
 	if ((c > 8 && c < 14) || c == 32 || c == 43 || c == 45 || (c > 47 && c < 58))
 		return (0);
 	else
 		return (1);
+}
 
 int		ft_atoi(const char *str)
 {
@@ -30,7 +31,7 @@ int		ft_atoi(const char *str)
 	is_number = 0;
 	while (*str && !(is_number && !ft_isdigit(*str)))
 	{
-		if (ft_atoi_break(str) ||
+		if (ft_atoi_break(*str) ||
 				(*str > 32 && *str != '-' && *str != '+' && !ft_isdigit(*str)))
 			break ;
 		if (*str == '-')

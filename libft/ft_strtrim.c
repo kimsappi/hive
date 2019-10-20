@@ -19,6 +19,8 @@ char		*ft_strtrim(char const *s)
 	size_t	body;
 	char	*new;
 
+	if (!s)
+		return (NULL);
 	start = 0;
 	end = 0;
 	body = 0;

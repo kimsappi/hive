@@ -44,7 +44,7 @@ static size_t	*count_word_sizes(size_t word_count, char const *str, char c)
 
 	i = 0;
 	j = 0;
-	word_sizes = malloc(sizeof(size_t) * (word_count));
+	word_sizes = (size_t *)malloc(sizeof(size_t) * (word_count));
 	if (!word_sizes)
 		return (NULL);
 	while (str[i] != '\0')
@@ -105,6 +105,8 @@ char			**ft_strsplit(char const *s, char c)
 	size_t	i;
 	size_t	*word_sizes;
 
+	if (!s)
+		return (NULL);
 	i = -1;
 	word_count = count_words(s, c);
 	array = (char **)malloc(sizeof(char *) * (word_count + 1));
