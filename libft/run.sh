@@ -9,5 +9,5 @@ echo
 echo
 
 
-gcc -Wall -Wextra -Werror test.c -lft -L.
+gcc -L. -lft test.c
 ./a.out

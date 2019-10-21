@@ -6,14 +6,12 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 12:38:34 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/18 16:58:05 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/21 13:12:49 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
-#include "strnstr.c"
-#include "strlcat.c"
 
 void	ft_putcharptr(char *c)
 {

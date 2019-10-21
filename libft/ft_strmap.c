@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 15:23:35 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/18 12:10:37 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/21 13:00:30 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 char	*ft_strmap(char const *s, char (*f)(char))
 {
-	unsigned long	len;
-	unsigned long	i;
-	char			*new;
+	size_t	len;
+	size_t	i;
+	char	*new;
 
 	if (!s || !f)
 		return (NULL);
 	len = 0;
 	while (s[len])
 		++len;
-	new = (char *)malloc(len + 1);
+	new = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new)
 		return (NULL);
 	i = 0;

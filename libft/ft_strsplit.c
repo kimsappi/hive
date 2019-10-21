@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strsplit.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/21 12:00:55 by ksappi            #+#    #+#             */
+/*   Updated: 2019/10/21 13:45:50 by ksappi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 static char	**ft_get_array_for_words(char const *s, char c)
@@ -71,7 +83,7 @@ char		**ft_strsplit(char const *s, char c)
 		}
 		else
 		{
-			s += ft_strlen(arr[i]);
+			s += ft_strlen(arr[i]) - 1;
 			++i;
 		}
 		++s;

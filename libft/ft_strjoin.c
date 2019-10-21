@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 15:59:30 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/18 12:17:55 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/21 12:59:07 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	unsigned long	len1;
-	unsigned long	len2;
-	unsigned long	i;
-	char			*new;
+	size_t	len1;
+	size_t	len2;
+	char	*new;
 
 	if (!s1 || !s2)
 		return (NULL);
@@ -27,20 +26,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		++len1;
 	while (s2[len2])
 		++len2;
-	new = (char *)malloc(len1 + len2 + 1);
+	new = ft_strnew(len1 + len2);
 	if (!new)
 		return (NULL);
-	i = 0;
-	while (i < len1)
-	{
-		new[i] = s1[i];
-		++i;
-	}
-	while (i < len1 + len2)
-	{
-		new[i] = s2[i - len1];
-		++i;
-	}
-	new[i] = 0;
+	ft_strcpy(new, s1);
+	ft_strcat(new, s2);
 	return (new);
 }
