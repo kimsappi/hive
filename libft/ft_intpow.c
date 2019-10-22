@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   ft_intpow.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/16 11:00:19 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/21 15:31:50 by ksappi           ###   ########.fr       */
+/*   Created: 2019/10/21 15:13:25 by ksappi            #+#    #+#             */
+/*   Updated: 2019/10/22 12:31:55 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memcpy(void *str1, const void *str2, size_t n)
+long	ft_intpow(int base, unsigned int exponent)
 {
-	size_t i;
+	long			result;
+	unsigned int	i;
 
-	i = 0;
-	if (str1 != str2)
+	if (!exponent)
+		return (base >= 0 ? 1 : -1);
+	i = 1;
+	result = (long)base;
+	while (i < exponent)
 	{
-		while (i < n)
-		{
-			((char *)str1)[i] = ((char *)str2)[i];
-			++i;
-		}
+		result *= (long)base;
+		++i;
 	}
-	return (str1);
+	return (result);
 }

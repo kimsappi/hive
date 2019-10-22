@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:44:38 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/18 13:23:44 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/21 15:33:21 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,10 @@ void			ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void			ft_lstadd(t_list **alst, t_list *new);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
+int				ft_isspace(int c);
+int				ft_isupper(int c);
+int				ft_islower(int c);
+void			*ft_memdup(void *src, size_t size);
+long			ft_intpow(int base, unsigned int exponent);
 
 #endif
