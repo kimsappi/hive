@@ -1,66 +1,72 @@
-#include "get_next_line.h"
-#include <fcntl.h> //vitsiin
-#include <stdio.h> //vitsiin
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/22 11:38:27 by ksappi            #+#    #+#             */
+/*   Updated: 2019/10/22 13:54:49 by ksappi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int		get_next_line(const int fd, char **line)
+#include "libft.h"
+#include "get_next_line.h"
+
+static char			*get_filebuff(t_list **file_list, const int fd)
 {
-	static char	buff[BUFF_SIZE + 1];
-	ssize_t		read_bytes;
-	static char	*newline = NULL;
-	char		has_been_copied;
-	
-	if (fd < 0 || !line || !(*line))
-		return (-1);
-	has_been_copied = 0;
-	if (newline)
+	t_list		*new_element;
+	t_filebuff	new_file;
+
+	new_element = *file_list;
+	while (new_element)
 	{
-		if (ft_strchr(newline + 1, '\n'))
-		{
-			if (*(newline + 1) != '\n')
-				ft_strncpy(*line, newline + 1, (ft_strchr(newline + 1, '\n') - (newline)) / sizeof(char));
-			else
-				ft_strcpy(*line, "");
-			newline = ft_strchr(newline + 1, '\n');
-			return (1);
-		}
-		else
-		{
-			ft_strcpy(*line, newline + sizeof(char));
-			newline = NULL;
-		}
-		has_been_copied = 1;
+		if (new_element->content->fd == fd)
+			return (new_element->content->buff);
+		new_element = new_element->next;
 	}
-	while ((read_bytes = read(fd, buff, BUFF_SIZE)))
+	if (!(new_file.buff = ft_strnew(BUFF_SIZE + 1)))
+		return (NULL);
+	new_file.fd = fd;
+	if (!(new_element = ft_lstnew(&new_file), sizeof(new_file))) // free new_file.buff here?
+		return (NULL);
+	ft_lstadd(file_list, new_element);
+	return (new_element->content->buff);
+}
+
+static ssize_t		*read_line(char *filebuff, const int fd)
+{
+	char	buff[BUFF_SIZE + 1];
+	ssize_t	read_bytes;
+	char	*temp;
+
+	read_bytes = 1;
+	while (read_bytes && !ft_strchr(*filebuff, '\n'))
 	{
+		read_bytes = read(fd, buff, BUFF_SIZE);
 		if (read_bytes == -1)
 			return (-1);
-		if (read_bytes < BUFF_SIZE) // not sure if this will work with stdin
-			return (0);
-		if (*buff == '\n')
-		{
-			if (!has_been_copied)
-				ft_strcpy(*line, "");
-			newline = buff;
-			return (1);
-		}			
 		buff[read_bytes] = 0;
-		if ((newline = ft_strchr(buff, '\n')))
-		{
-			if (has_been_copied)
-				ft_strncat(*line, buff, newline - buff);
-			else
-				ft_strncpy(*line, buff, newline - buff);
-			break;
-		}
-		if (has_been_copied)
-			ft_strcat(*line, buff);
-		else
-		{
-			ft_strcpy(*line, buff);
-			has_been_copied = 1;
-		}
+		temp = filebuff;
+		filebuff = ft_strjoin(filebuff, buff);
+		free(temp;)
+		if (!filebuff) //maybe free?
+			return (-1);
 	}
-	return (1);
+	return (read_bytes);
+}
+
+int					get_next_line(const int fd, char **line)
+{
+	static t_list	*file_list;
+	int				ret;
+	char			*filebuff;
+
+	if (!fd || line)
+		return (-1);
+	if (!(filebuff = get_filebuff(&file_list, fd))
+		return (-1);
+	ret = read_line(filebuff, fd);
 }
 
 int main(void) // vitsiin
