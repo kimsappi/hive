@@ -72,8 +72,10 @@ int					get_next_line(const int fd, char **line)
 	ret = gnl_read_line(file, fd);
 	*line = ft_strnew(ft_strclen(file->buff, '\n') + 1);
 	ft_memccpy(*line, file->buff, '\n', strlen(file->buff) + 1);
+	(*line)[ft_strlen(*line) - 1] = (*line)[ft_strlen(*line) - 1] == '\n' ?
+		0 : (*line)[ft_strlen(*line) - 1];
 	temp = file->buff;
-	file->buff = ft_strdup(&(file->buff[ft_strclen + 1]));//check malloc
+	file->buff = ft_strdup(&(file->buff[ft_strclen(file->buff, '\n') + 1]));//check malloc
 	free(temp);
 	if (ret > 0)
 		return (1);
