@@ -87,5 +87,6 @@ int				ft_isupper(int c);
 int				ft_islower(int c);
 void			*ft_memdup(void *src, size_t size);
 long			ft_intpow(int base, unsigned int exponent);
+size_t			ft_strclen(char const *s, int c);
 
 #endif
