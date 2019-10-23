@@ -81,18 +81,3 @@ int					get_next_line(const int fd, char **line)
 		return (1);
 	return (ret);
 }
-
-int main(void) // vitsiin
-{
-	char *line = malloc(1024);
-	int file = open("get_next_line.h", O_RDONLY);
-	printf("file: %d\n", file);
-	int i = 1;
-	while (i > 0)
-	{
-		i = get_next_line(file, &line);
-		printf("%d: %s\n",i, line);
-	}
-	free(line);
-	return (0);
-}
