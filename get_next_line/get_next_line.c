@@ -6,13 +6,12 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:38:27 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/22 15:58:07 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/24 11:18:39 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "get_next_line.h"
-#include <fcntl.h> //vitsiin
 #include <stdio.h> //vitsiin
 
 static t_filebuff		*gnl_get_file(t_list **file_list, const int fd)
@@ -65,7 +64,7 @@ int					get_next_line(const int fd, char **line)
 	t_filebuff		*file;
 	char			*temp;
 
-	if (!fd || !line)
+	if (!fd || !line || fd > GNL_MAX_FD)
 		return (-1);
 	if (!(file = gnl_get_file(&file_list, fd)))
 		return (-1);
