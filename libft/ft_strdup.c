@@ -20,15 +20,15 @@ char	*ft_strdup(const char *src)
 
 	len = 0;
 	while (src[len])
-		len++;
-	new = (char *)malloc(len * sizeof(char));
+		++len;
+	new = (char *)malloc((len + 1) * sizeof(char));
 	if (!new)
 		return (NULL);
 	i = 0;
 	while (i < len + 1)
 	{
 		new[i] = src[i];
-		i++;
+		++i;
 	}
 	return (new);
 }
