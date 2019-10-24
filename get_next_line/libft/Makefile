@@ -16,10 +16,12 @@ SRC = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 
 OBJ = $(subst .c,.o,$(SRC))
 
+INCLUDES = includes
+
 all: $(NAME)
 
 $(NAME):
-	gcc -Wall -Wextra -Werror -c $(SRC)
+	gcc -Wall -Wextra -Werror -Iincludes -c $(SRC)
 	ar rc $(NAME) $(OBJ)
 	ranlib $(NAME)
 

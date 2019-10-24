@@ -1,4 +1,4 @@
 #!/bin/bash
 
-gcc main.c get_next_line.c -Llibft -lft -Ilibft
+gcc main.c get_next_line.c -Llibft -lft -Ilibft/includes
 ./a.out

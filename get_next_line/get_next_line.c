@@ -6,15 +6,14 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:38:27 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/24 11:18:39 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/24 12:06:47 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "get_next_line.h"
 #include <stdio.h> //vitsiin
 
-static t_filebuff		*gnl_get_file(t_list **file_list, const int fd)
+static t_filebuff		*ft_gnl_get_file(t_list **file_list, const int fd)
 {
 	t_list		*new_element;
 	t_filebuff	new_file;
@@ -35,7 +34,7 @@ static t_filebuff		*gnl_get_file(t_list **file_list, const int fd)
 	return ((t_filebuff*)new_element->content);
 }
 
-static ssize_t		gnl_read_line(t_filebuff *file, const int fd)
+static ssize_t		ft_gnl_read_line(t_filebuff *file, const int fd)
 {
 	char	buff[BUFF_SIZE + 1];
 	ssize_t	read_bytes;
@@ -66,9 +65,9 @@ int					get_next_line(const int fd, char **line)
 
 	if (!fd || !line || fd > GNL_MAX_FD)
 		return (-1);
-	if (!(file = gnl_get_file(&file_list, fd)))
+	if (!(file = ft_gnl_get_file(&file_list, fd)))
 		return (-1);
-	ret = gnl_read_line(file, fd);
+	ret = ft_gnl_read_line(file, fd);
 	*line = ft_strnew(ft_strclen(file->buff, '\n') + 1);
 	ft_memccpy(*line, file->buff, '\n', strlen(file->buff) + 1);
 	(*line)[ft_strlen(*line) - 1] = (*line)[ft_strlen(*line) - 1] == '\n' ?
