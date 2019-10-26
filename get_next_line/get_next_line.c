@@ -18,14 +18,18 @@ static t_filebuff		*ft_gnl_get_file(t_list **file_list, const int fd)
 	t_list		*new_element;
 	t_filebuff	new_file;
 
-	new_element = *file_list;
-	while (new_element)
+	if (*file_list)
 	{
-		if (((t_filebuff*)(new_element->content))->fd == fd)
-			return ((t_filebuff*)(new_element->content));
-		new_element = new_element->next;
+//		printf("%d\n", *file_list);
+		new_element = *file_list;
+		while (new_element)
+		{
+			if (((t_filebuff*)(new_element->content))->fd == fd)
+				return ((t_filebuff*)(new_element->content));
+			new_element = new_element->next;
+		}
 	}
-	if (!(new_file.buff = ft_strnew(BUFF_SIZE + 1)))
+	if (!(new_file.buff = ft_strnew(0)))
 		return (NULL);
 	new_file.fd = fd;
 	if (!(new_element = ft_lstnew(&new_file, sizeof(t_filebuff)))) // free new_file.buff here?
@@ -56,6 +60,38 @@ static ssize_t		ft_gnl_read_line(t_filebuff *file, const int fd)
 	return (read_bytes);
 }
 
+static void		ft_gnl_free_file(t_filebuff **file, t_list **file_list)
+{
+	t_list	*temp;
+
+	if (file_list && file)
+	{
+		if (*file_list && *file)
+		{
+			if ((*file_list)->content && (*file_list)->content == *file)
+				temp = *file_list;
+			else
+			{
+				while ((*file_list)->next && (*file_list)->next->content != *file)
+					*file_list = (*file_list)->next;
+				temp = (*file_list)->next;
+				if (temp)
+					(*file_list)->next = temp->next;
+			}
+			if (temp)
+			{
+				if (((t_filebuff*)(temp->content))->buff)
+					free(((t_filebuff*)(temp->content))->buff);
+				if (temp->content)
+					free(temp->content);
+				if (temp)
+					free(temp);
+				temp = NULL;
+			}
+		}
+	}
+}
+
 int					get_next_line(const int fd, char **line)
 {
 	static t_list	*file_list;
@@ -70,12 +106,15 @@ int					get_next_line(const int fd, char **line)
 	ret = ft_gnl_read_line(file, fd);
 	*line = ft_strnew(ft_strclen(file->buff, '\n') + 1);
 	ft_memccpy(*line, file->buff, '\n', strlen(file->buff) + 1);
-	(*line)[ft_strlen(*line) - 1] = (*line)[ft_strlen(*line) - 1] == '\n' ?
-		0 : (*line)[ft_strlen(*line) - 1];
+	if ((*line)[ft_strlen(*line) - 1] == '\n')
+		(*line)[ft_strlen(*line) - 1] = 0;
 	temp = file->buff;
 	file->buff = ft_strdup(&(file->buff[ft_strclen(file->buff, '\n') + 1]));//check malloc
 	free(temp);
+//	printf("%d\n", ret);
 	if (ret > 0)
 		return (1);
+	if (ret < 1)
+		ft_gnl_free_file(&file, &file_list);
 	return (ret);
 }

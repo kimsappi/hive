@@ -17,7 +17,7 @@
 
 void read_one_file(void) // vitsiin
 {
-	char *line = malloc(1024);
+	char *line;
 	int file = open("get_next_line.h", O_RDONLY);
 	printf("file: %d\n", file);
 	int i = 1;
@@ -25,14 +25,14 @@ void read_one_file(void) // vitsiin
 	{
 		i = get_next_line(file, &line);
 		printf("%d: %s\n",i, line);
+		free(line);
 	}
-	free(line);
 	close(file);
 }
 
 void read_2_files(void)
 {
-	char *line = malloc(1024);
+	char *line;
 	int file = open("get_next_line.h", O_RDONLY);
 	int file2 = open("main.c", O_RDONLY);
 	printf("file: %d\n", file);
@@ -42,18 +42,33 @@ void read_2_files(void)
 	{
 		i = get_next_line(file, &line);
 		printf("%d: %s\n",i, line);
+		free(line);
 		j = get_next_line(file2, &line);
 		printf("%d: %s\n",i, line);
+		free(line);
 	}
-	free(line);
 	close(file);
 	close(file2);
+}
+
+void	read_stdin(void)
+{
+	char *line;
+	int i = 1;
+	while (i > 0)
+	{
+		i = get_next_line(1, &line);
+		printf("%d: %s\n",i, line);
+		free(line);
+	}
 }
 
 int main(int argc, char **argv) {
 	if (argc == 1)
 		read_one_file();
-	else
+	else if (argc == 2)
 		read_2_files();
+	else
+		read_stdin();
 	return (0);
 }
