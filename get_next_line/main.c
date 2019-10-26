@@ -51,13 +51,13 @@ void read_2_files(void)
 	close(file2);
 }
 
-void	read_stdin(void)
+void	read_stdin(int fd)
 {
 	char *line;
 	int i = 1;
 	while (i > 0)
 	{
-		i = get_next_line(1, &line);
+		i = get_next_line(fd, &line);
 		printf("%d: %s\n",i, line);
 		free(line);
 	}
@@ -68,7 +68,9 @@ int main(int argc, char **argv) {
 		read_one_file();
 	else if (argc == 2)
 		read_2_files();
+	else if (argc == 3)
+		read_stdin(1);
 	else
-		read_stdin();
+		read_stdin(0);
 	return (0);
 }
