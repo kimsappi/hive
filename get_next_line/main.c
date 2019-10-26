@@ -44,7 +44,7 @@ void read_2_files(void)
 		printf("%d: %s\n",i, line);
 		free(line);
 		j = get_next_line(file2, &line);
-		printf("%d: %s\n",i, line);
+		printf("%d: %s\n",j, line);
 		free(line);
 	}
 	close(file);

@@ -69,9 +69,13 @@ static void		ft_gnl_free_file(t_filebuff **file, t_list **file_list)
 		if (*file_list && *file)
 		{
 			if ((*file_list)->content && (*file_list)->content == *file)
-				temp = *file_list;
+				{//printf("go here\n");
+					temp = *file_list;
+					*file_list = (*file_list)->next;
+				}
 			else
 			{
+				//printf("nah i think here\n");
 				while ((*file_list)->next && (*file_list)->next->content != *file)
 					*file_list = (*file_list)->next;
 				temp = (*file_list)->next;
