@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:38:27 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/29 10:38:50 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/29 11:18:32 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,11 @@ static t_filebuff		*ft_gnl_get_file(t_list **file_list, const int fd)
 	if (!(new_file.buff = ft_strnew(0)))
 		return (NULL);
 	new_file.fd = fd;
-	if (!(new_element = ft_lstnew(&new_file, sizeof(t_filebuff)))) // free new_file.buff here?
+	if (!(new_element = ft_lstnew(&new_file, sizeof(t_filebuff))))
+	{
+		free(new_file.buff);
 		return (NULL);
+	}
 	ft_lstadd(file_list, new_element);
 	return ((t_filebuff*)new_element->content);
 }
@@ -51,10 +54,10 @@ static ssize_t			ft_gnl_read_line(t_filebuff *file, const int fd)
 			return (-1);
 		buff[read_bytes] = 0;
 		temp = file->buff;
-		file->buff = ft_strjoin(file->buff, buff); //gotta check and free
+		file->buff = ft_strjoin(file->buff, buff);
 		free(temp);
 		if (!(file->buff))
-			return (-1);//maybe free?
+			return (-1);
 	}
 	return (read_bytes);
 }
@@ -108,8 +111,10 @@ int					get_next_line(const int fd, char **line)
 	if ((*line)[ft_strlen(*line) - 1] == '\n')
 		(*line)[ft_strlen(*line) - 1] = 0;
 	temp = file->buff;
-	file->buff = ft_strdup(&(file->buff[ft_strclen(file->buff, '\n') + 1]));//check malloc
+	file->buff = ft_strdup(&(file->buff[ft_strclen(file->buff, '\n') + 1]));
 	free(temp);
+	if (!(file->buff))
+		return (-1);
 	if (ret > 0)
 		return (1);
 	if (ret < 1)
