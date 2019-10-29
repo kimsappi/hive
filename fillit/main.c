@@ -6,9 +6,14 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 13:20:34 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/29 15:40:21 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/29 17:28:23 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+static int	fillit_get_column(t_board *board, int coordinate)
+{
+	return ()
+}
 
 static void	fillit_place_piece(t_board *board, t_list *piece, int coordinate, char reset)
 {
