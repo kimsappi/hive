@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:38:27 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/24 12:06:47 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/29 10:32:54 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static t_filebuff		*ft_gnl_get_file(t_list **file_list, const int fd)
 
 	if (*file_list)
 	{
-//		printf("%d\n", *file_list);
 		new_element = *file_list;
 		while (new_element)
 		{
@@ -38,7 +37,7 @@ static t_filebuff		*ft_gnl_get_file(t_list **file_list, const int fd)
 	return ((t_filebuff*)new_element->content);
 }
 
-static ssize_t		ft_gnl_read_line(t_filebuff *file, const int fd)
+static ssize_t			ft_gnl_read_line(t_filebuff *file, const int fd)
 {
 	char	buff[BUFF_SIZE + 1];
 	ssize_t	read_bytes;
@@ -60,38 +59,34 @@ static ssize_t		ft_gnl_read_line(t_filebuff *file, const int fd)
 	return (read_bytes);
 }
 
-static void		ft_gnl_free_file(t_filebuff **file, t_list **file_list)
+static void			ft_gnl_free_file(t_filebuff **file, t_list **file_list)
 {
 	t_list	*temp;
 
-	if (file_list && file)
+	if (file_list && file && *file_list && *file)
 	{
-		if (*file_list && *file)
+		if ((*file_list)->content && (*file_list)->content == *file)
 		{
-			if ((*file_list)->content && (*file_list)->content == *file)
-				{//printf("go here\n");
-					temp = *file_list;
-					*file_list = (*file_list)->next;
-				}
-			else
-			{
-				//printf("nah i think here\n");
-				while ((*file_list)->next && (*file_list)->next->content != *file)
-					*file_list = (*file_list)->next;
-				temp = (*file_list)->next;
-				if (temp)
-					(*file_list)->next = temp->next;
-			}
+			temp = *file_list;
+			*file_list = (*file_list)->next;
+		}
+		else
+		{
+			while ((*file_list)->next && (*file_list)->next->content != *file)
+				*file_list = (*file_list)->next;
+			temp = (*file_list)->next;
 			if (temp)
-			{
-				if (((t_filebuff*)(temp->content))->buff)
-					free(((t_filebuff*)(temp->content))->buff);
-				if (temp->content)
-					free(temp->content);
-				if (temp)
-					free(temp);
-				temp = NULL;
-			}
+				(*file_list)->next = temp->next;
+		}
+		if (temp)
+		{
+			if (((t_filebuff*)(temp->content))->buff)
+				free(((t_filebuff*)(temp->content))->buff);
+			if (temp->content)
+				free(temp->content);
+			if (temp)
+				free(temp);
+			temp = NULL;
 		}
 	}
 }
@@ -115,7 +110,6 @@ int					get_next_line(const int fd, char **line)
 	temp = file->buff;
 	file->buff = ft_strdup(&(file->buff[ft_strclen(file->buff, '\n') + 1]));//check malloc
 	free(temp);
-//	printf("%d\n", ret);
 	if (ret > 0)
 		return (1);
 	if (ret < 1)
