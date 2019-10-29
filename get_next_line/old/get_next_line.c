@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:38:27 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/29 14:30:59 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/29 11:21:07 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ static ssize_t		ft_gnl_read_line(t_filebuff *file, const int fd)
 		free(temp);
 		if (!(file->buff))
 			return (-1);
-		if (ft_strchr((const char *)(file->buff), -1))
-			return (0);
 	}
 	return (read_bytes);
 }
@@ -95,7 +93,7 @@ int					get_next_line(const int fd, char **line)
 	t_filebuff		*file;
 	char			*temp;
 
-	if (!fd || !line || fd > GNL_MAX_FD || BUFF_SIZE > MAX_BUFF_SIZE)
+	if (!fd || !line || fd > GNL_MAX_FD)
 		return (-1);
 	if (!(file = ft_gnl_get_file(&file_list, fd)))
 		return (-1);
