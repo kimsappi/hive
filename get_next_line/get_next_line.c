@@ -6,14 +6,13 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:38:27 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/29 11:18:32 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/29 11:21:07 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h> //vitsiin
 
-static t_filebuff		*ft_gnl_get_file(t_list **file_list, const int fd)
+static t_filebuff	*ft_gnl_get_file(t_list **file_list, const int fd)
 {
 	t_list		*new_element;
 	t_filebuff	new_file;
@@ -40,7 +39,7 @@ static t_filebuff		*ft_gnl_get_file(t_list **file_list, const int fd)
 	return ((t_filebuff*)new_element->content);
 }
 
-static ssize_t			ft_gnl_read_line(t_filebuff *file, const int fd)
+static ssize_t		ft_gnl_read_line(t_filebuff *file, const int fd)
 {
 	char	buff[BUFF_SIZE + 1];
 	ssize_t	read_bytes;
@@ -68,19 +67,12 @@ static void			ft_gnl_free_file(t_filebuff **file, t_list **file_list)
 
 	if (file_list && file && *file_list && *file)
 	{
-//		if ((*file_list)->content && (*file_list)->content == *file)
-//		{
-			temp = *file_list;
-//			*file_list = (*file_list)->next;
-//		}
-//		else
-//		{
-			while ((*file_list)->next && (*file_list)->next->content != *file)
-				*file_list = (*file_list)->next;
-			temp = (*file_list)->next;
-			if (temp)
-				(*file_list)->next = temp->next;
-//		}
+		temp = *file_list;
+		while ((*file_list)->next && (*file_list)->next->content != *file)
+			*file_list = (*file_list)->next;
+		temp = (*file_list)->next;
+		if (temp)
+			(*file_list)->next = temp->next;
 		if (temp)
 		{
 			if (((t_filebuff*)(temp->content))->buff)
