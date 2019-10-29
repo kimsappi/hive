@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:38:27 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/29 10:32:54 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/29 10:38:50 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,19 @@ static void			ft_gnl_free_file(t_filebuff **file, t_list **file_list)
 
 	if (file_list && file && *file_list && *file)
 	{
-		if ((*file_list)->content && (*file_list)->content == *file)
-		{
+//		if ((*file_list)->content && (*file_list)->content == *file)
+//		{
 			temp = *file_list;
-			*file_list = (*file_list)->next;
-		}
-		else
-		{
+//			*file_list = (*file_list)->next;
+//		}
+//		else
+//		{
 			while ((*file_list)->next && (*file_list)->next->content != *file)
 				*file_list = (*file_list)->next;
 			temp = (*file_list)->next;
 			if (temp)
 				(*file_list)->next = temp->next;
-		}
+//		}
 		if (temp)
 		{
 			if (((t_filebuff*)(temp->content))->buff)
