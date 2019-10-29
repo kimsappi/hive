@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:38:27 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/24 11:05:41 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/29 12:00:06 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	read_stdin(int fd)
 }
 
 int main(int argc, char **argv) {
+	(void)argv;
 	if (argc == 1)
 		read_one_file();
 	else if (argc == 2)
@@ -72,5 +73,6 @@ int main(int argc, char **argv) {
 		read_stdin(1);
 	else
 		read_stdin(0);
+	while (1);
 	return (0);
 }
