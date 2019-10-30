@@ -12,8 +12,8 @@
 
 #include "libft.h"
 #include "get_next_line.h"
-#include <fcntl.h> //vitsiin
-#include <stdio.h> //vitsiin
+#include <fcntl.h>
+#include <stdio.h>
 
 void read_one_file(void) // vitsiin
 {
@@ -72,5 +72,6 @@ int main(int argc, char **argv) {
 		read_stdin(1);
 	else
 		read_stdin(0);
+	while(1);
 	return (0);
 }

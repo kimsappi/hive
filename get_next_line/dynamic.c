@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h> //remove
 
 /*
 static t_filebuff	*ft_gnl_get_file(t_list **file_list, const int fd)
@@ -41,32 +40,28 @@ static t_filebuff	*ft_gnl_get_file(t_list **file_list, const int fd)
 	return ((t_filebuff*)new_element->content);
 }
 */
-static ssize_t		ft_gnl_read_line(char **file_buff, const int fd)
+static ssize_t		ft_gnl_read_line(t_filebuff *file, const int fd)
 {
 	char	buff[BUFF_SIZE + 1];
 	ssize_t	read_bytes;
 	char	*temp;
 
 	read_bytes = 1;
-	while (read_bytes && !ft_strchr((const char *)(*file_buff), '\n'))
+	while (read_bytes && !ft_strchr((const char *)(file->buff), '\n'))
 	{
 		read_bytes = read(fd, buff, BUFF_SIZE);
 		if (read_bytes == -1)
 			return (-1);
-
-			//printf("%s", buff);
-
 		buff[read_bytes] = 0;
-		temp = *file_buff;
-		*file_buff = ft_strjoin(*file_buff, buff);
+		temp = file->buff;
+		file->buff = ft_strjoin(file->buff, buff);
 		free(temp);
-		if (!(*file_buff))
+		if (!(file->buff))
 			return (-1);
 	}
-//	printf("\nfilebuff after reading:\n%s\n", file_buff);
 	return (read_bytes);
 }
-/*
+
 static void			ft_gnl_free_file(t_filebuff **file, t_list **file_list)
 {
 	t_list	*temp;
@@ -91,39 +86,29 @@ static void			ft_gnl_free_file(t_filebuff **file, t_list **file_list)
 		}
 	}
 }
-*/
+
 int					get_next_line(const int fd, char **line)
 {
 	static char	*buffs[MAX_FD];
 	int			ret;
 	char		*temp;
 
-	if (fd < 0 || fd > MAX_FD || BUFF_SIZE < 1 || BUFF_SIZE > MAX_BUFF || !line)
+	if (fd < 0 || !line || fd > GNL_MAX_FD || BUFF_SIZE > GNL_MAX_BUFF_SIZE)
 		return (-1);
-	if (!(buffs[fd]))
-	{
-		if (!(buffs[fd] = ft_strnew(0)))
-			return (-1);
-	}
-	if ((ret = ft_gnl_read_line(&(buffs[fd]), fd)) == -1)
+	if ((ret = ft_gnl_read_line(buffs[fd], fd)) == -1)
 		return (-1);
-	//printf("%s\n", buffs[fd]);
-	*line = ft_strnew(ft_strclen(buffs[fd], '\n') + 1);
-	ft_memccpy(*line, buffs[fd], '\n', strlen(buffs[fd]) + 1);
+	*line = ft_strnew(ft_strclen(file->buff, '\n') + 1);
+	ft_memccpy(*line, file->buff, '\n', strlen(file->buff) + 1);
 	if ((*line)[ft_strlen(*line) - 1] == '\n')
 		(*line)[ft_strlen(*line) - 1] = 0;
-	//printf("%s\n", *line);
-	temp = buffs[fd];
-	buffs[fd] = ft_strdup(&(buffs[fd][ft_strclen(buffs[fd], '\n') + 1]));
+	temp = file->buff;
+	file->buff = ft_strdup(&(file->buff[ft_strclen(file->buff, '\n') + 1]));
 	free(temp);
-	if (!(buffs[fd]))
+	if (!(file->buff))
 		return (-1);
 	if (ret > 0)
 		return (1);
 	if (ret < 1)
-	{
-		free(buffs[fd]);
-		buffs[fd] = NULL;
-	}
+		ft_gnl_free_file(&file, &file_list);
 	return (ret);
 }
