@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 # include "libft.h"
 # define BUFF_SIZE 8
-# define MAX_BUFF_SIZE 8000000
+# define GNL_MAX_BUFF_SIZE 8000000
 # define GNL_MAX_FD 4863
 
 typedef struct	s_filebuff

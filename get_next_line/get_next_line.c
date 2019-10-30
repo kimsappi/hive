@@ -12,6 +12,7 @@
 
 #include "get_next_line.h"
 
+/*
 static t_filebuff	*ft_gnl_get_file(t_list **file_list, const int fd)
 {
 	t_list		*new_element;
@@ -38,7 +39,7 @@ static t_filebuff	*ft_gnl_get_file(t_list **file_list, const int fd)
 	ft_lstadd(file_list, new_element);
 	return ((t_filebuff*)new_element->content);
 }
-
+*/
 static ssize_t		ft_gnl_read_line(t_filebuff *file, const int fd)
 {
 	char	buff[BUFF_SIZE + 1];
@@ -57,8 +58,6 @@ static ssize_t		ft_gnl_read_line(t_filebuff *file, const int fd)
 		free(temp);
 		if (!(file->buff))
 			return (-1);
-		if (ft_strchr((const char *)(file->buff), -1))
-			return (0);
 	}
 	return (read_bytes);
 }
@@ -90,16 +89,14 @@ static void			ft_gnl_free_file(t_filebuff **file, t_list **file_list)
 
 int					get_next_line(const int fd, char **line)
 {
-	static t_list	*file_list;
-	int				ret;
-	t_filebuff		*file;
-	char			*temp;
+	static char	*buffs[MAX_FD];
+	int			ret;
+	char		*temp;
 
-	if (!fd || !line || fd > GNL_MAX_FD || BUFF_SIZE > MAX_BUFF_SIZE)
+	if (fd < 0 || !line || fd > GNL_MAX_FD || BUFF_SIZE > GNL_MAX_BUFF_SIZE)
 		return (-1);
-	if (!(file = ft_gnl_get_file(&file_list, fd)))
+	if ((ret = ft_gnl_read_line(buffs[fd], fd)) == -1)
 		return (-1);
-	ret = ft_gnl_read_line(file, fd);
 	*line = ft_strnew(ft_strclen(file->buff, '\n') + 1);
 	ft_memccpy(*line, file->buff, '\n', strlen(file->buff) + 1);
 	if ((*line)[ft_strlen(*line) - 1] == '\n')
