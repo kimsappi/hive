@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:09:57 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/31 14:42:44 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/31 14:43:16 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_ceil_sqrt(unsigned int n)
 	while (sqrt * sqrt < n)
 	{
 		if (sqrt > 65535)
-			return (1);
+			return (-1);
 		++sqrt;
 	}
 	return (sqrt);

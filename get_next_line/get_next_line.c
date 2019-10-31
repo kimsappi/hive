@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:38:27 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/31 11:03:06 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/31 12:35:29 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ int			get_next_line(const int fd, char **line)
 	if ((ret = ft_gnl_read_line(&(buffs[fd]), fd)) == -1)
 		return (-1);
 	line_length = ft_strclen(buffs[fd], '\n');
-	*line = ft_strnew(line_length);
+	if (!(*line = ft_strnew(line_length)))
+		return (-1);
 	ft_memccpy(*line, buffs[fd], '\n', line_length);
 	if (line_length && (*line)[line_length - 1] == '\n')
 		(*line)[line_length - 1] = 0;

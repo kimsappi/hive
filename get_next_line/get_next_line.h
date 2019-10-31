@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 11:06:30 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/31 10:56:07 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/31 12:47:40 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@
 # define MAX_BUFF 7900000
 # define MAX_FD 4863
 
-int				get_next_line(const int fd, char **line);
+int	get_next_line(const int fd, char **line);
 
 #endif
