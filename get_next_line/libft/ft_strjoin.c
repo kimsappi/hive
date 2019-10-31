@@ -26,7 +26,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		++len1;
 	while (s2[len2])
 		++len2;
-	new = ft_strnew(len1 + len2);
+	new = ft_strnew(len1 + len2 + 1);
 	if (!new)
 		return (NULL);
 	ft_strcpy(new, s1);
