@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:38:27 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/24 11:05:41 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/10/31 10:25:57 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 void read_one_file(void) // vitsiin
 {
 	char *line;
-	int file = open("get_next_line.h", O_RDONLY);
+	int file = open("test48", O_RDONLY);
 	printf("file: %d\n", file);
 	int i = 1;
 	while (i > 0)
