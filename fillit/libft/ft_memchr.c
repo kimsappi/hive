@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ceil_sqrt.c                                     :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/31 14:09:57 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/01 10:21:04 by ksappi           ###   ########.fr       */
+/*   Created: 2019/10/16 11:11:13 by ksappi            #+#    #+#             */
+/*   Updated: 2019/10/18 12:09:41 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_ceil_sqrt(unsigned int n)
-{
-	int sqrt;
+#include "libft.h"
 
-	sqrt = 0;
-	while (sqrt * sqrt < n)
+void	*ft_memchr(const void *str, int c, size_t n)
+{
+	size_t i;
+
+	i = 0;
+	while (i < n)
 	{
-		if (sqrt > 65535)
-			return (-1);
-		++sqrt;
+		if (((unsigned char *)str)[i] == (unsigned char)c)
+			return (&((unsigned char *)str)[i]);
+		++i;
 	}
-	return (sqrt);
+	return (NULL);
 }

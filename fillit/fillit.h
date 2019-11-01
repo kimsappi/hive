@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 10:15:26 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/01 10:24:17 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/01 10:35:54 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,5 @@ typedef struct	s_board
 }				t_board;
 
 int				fillit_solver(t_board *board, t_list *piece);
-int				ft_ceil_sqrt(unsigned int n);
 
 #endif
