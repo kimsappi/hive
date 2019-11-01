@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 13:20:34 by ksappi            #+#    #+#             */
-/*   Updated: 2019/10/31 15:45:19 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/01 10:40:50 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	fi_get_row(t_board *board, int coordinate)
 	return (coordinate / board->size);
 }
 
-static void	fi_place_piece(t_board **board, t_list *piece, int coordinate, char reset)
+static char	fi_place_piece(t_board **board, t_list *piece, int coordinate, char reset)
 {
 	int i;
 	int new_coord;
@@ -48,6 +48,7 @@ static void	fi_place_piece(t_board **board, t_list *piece, int coordinate, char 
 		else
 			(board->board)[new_coords[i]] = piece->character;
 	}
+	return (1);
 }
 
 int			fillit_solver(t_board *board, t_list *piece)

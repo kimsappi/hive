@@ -13,7 +13,7 @@ SRC = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 	  ft_strrchr.c ft_strsplit.c ft_strstr.c ft_strsub.c ft_strtrim.c \
 	  ft_tolower.c ft_toupper.c ft_lstdel.c ft_isupper.c ft_islower.c \
 	  ft_isspace.c ft_memdup.c ft_intpow.c ft_strclen.c get_next_line.c \
-	  ft_ceil_sqrt.c
+	  ft_ceil_sqrt.c ft_lstappend.c
 
 OBJ = $(subst .c,.o,$(SRC))
 
