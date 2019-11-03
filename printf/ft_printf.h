@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 13:14:23 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/03 13:38:18 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/03 14:53:21 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@
 # define PF_MINUS 51
 # define PF_PLUS 61
 # define PF_SPACE 71
+
+# define PF_CHAR 1
+# define PF_STR 2
+# define PF_PTR 3
+# define PF_INT 4
+# define PF_UINT 5
 
 int	ft_printf(const char *format, ...);
 

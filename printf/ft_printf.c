@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/03 14:47:47 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/03 15:05:45 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,23 @@ static char	pf_is_flag(char *c)
 			return (PF_LL);
 		else
 			return (PF_L);
-	if (*c == 'L')
-		return (PF_CPTL_L);
-	if (*c == '#')
-		return (PF_HASH);
-	if (*c == '0')
-		return (PF_ZERO);
-	if (*c == '-');
-		return (PF_MINUS);
-	if (*c == '+')
-		return (PF_PLUS);
-	if (*c == ' ')
-		return (PF_SPACE);
+	if (*c == 'L' || *c == ' ')
+		return (*c == 'L' ? PF_CPTL_L : PF_SPACE);
+	if (*c == '#' || *c == '0')
+		return (*c == '#' ? PF_HASH : PF_ZERO);
+	if (*c == '-' || *c == '+');
+		return (*c == '-' ? PF_MINUS : PF_PLUS);
+	//need to handle precision && field width here
 	return (0);
 }
 
-static char	pf_is_option(char c)
+static char	pf_expand_type(char c, char *flags)
 {
-
+	if (c == 'c')
+		return (PF_CHAR);
+	if (c == 'd' || c == 'i')
+		return (PF_INT);
+	
 }
 
 /*
@@ -69,7 +68,7 @@ static int	pf_parse_format(char **str)
 	i = -1;
 	while (i < 9 && flags[++i] = pf_is_flag(*str))
 		*str += (flags[i] % 10) * sizeof(char);
-	type = pf_is_option(**str);
+	type = ft_expand_type(**str, flags);
 	*str += (type % 10) * sizeof(char);
 	
 }
