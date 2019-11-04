@@ -6,14 +6,15 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/03 15:05:45 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/04 11:40:27 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 static char	pf_is_flag(char *c)
-{
+{ // I actually need to loop through here because order matters:
+// %[parameter***$***][flags][width][.precision][length]type
 	if (*c == 'h')
 		if (*(c + 1) == 'h')
 			return (PF_HH);
@@ -30,11 +31,12 @@ static char	pf_is_flag(char *c)
 		return (*c == '#' ? PF_HASH : PF_ZERO);
 	if (*c == '-' || *c == '+');
 		return (*c == '-' ? PF_MINUS : PF_PLUS);
+	
 	//need to handle precision && field width here
 	return (0);
 }
 
-static char	pf_expand_type(char c, char *flags)
+static char	pf_expand_type(char c, t_pf_type type)
 {
 	if (c == 'c')
 		return (PF_CHAR);
@@ -43,15 +45,23 @@ static char	pf_expand_type(char c, char *flags)
 	
 }
 
+static void	pf_type_init(s_pf_type *type)
+{
+	type->type = 0;
+	ft_bzero(type->flags, PF_MAX_FLAGS * sizeof(char));
+	type->precision = -1;
+	type->width = -1;
+	type->parameter = -1;
+}
+
 /*
 ** ft_format has to return length of the written string and point *str to
 **		first char after format specifier conversion
 */
 static int	pf_parse_format(char **str)
 {
-	char	*flags[10];
-	char	type;
-	int		i;
+	t_pf_type	type;
+	int			i;
 	//char	color;
 
 	if (!*((*str)++))
@@ -64,12 +74,12 @@ static int	pf_parse_format(char **str)
 		++(*str);
 		return (write(1, "%", 1));
 	}
-	ft_bzero(flags, 10 * sizeof(char));
+	pf_type_init(&type);
 	i = -1;
-	while (i < 9 && flags[++i] = pf_is_flag(*str))
-		*str += (flags[i] % 10) * sizeof(char);
-	type = ft_expand_type(**str, flags);
-	*str += (type % 10) * sizeof(char);
+	while (i < PF_MAX_FLAGS - 1 && type.flags[++i] = pf_is_flag(*str))
+		*str += (type.flags[i] % 10) * sizeof(char);
+	type.type = ft_expand_type(**str, type);
+	*str += (type.type % 10) * sizeof(char);
 	
 }
 

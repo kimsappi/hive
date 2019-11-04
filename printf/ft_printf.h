@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 13:14:23 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/03 14:53:21 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/04 11:00:46 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,18 @@
 # define PF_PTR 3
 # define PF_INT 4
 # define PF_UINT 5
+
+# define PF_MAX_FLAGS 10
+
+typedef struct	s_pf_type
+{
+	char	type;
+	char	flags[PF_MAX_FLAGS];
+	int		precision;
+	int		width;
+	int		parameter;
+}				t_pf_type;
+
 
 int	ft_printf(const char *format, ...);
 
