@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 13:14:23 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/04 11:00:46 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/05 12:24:48 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 # include "libft.h"
+# include <stdarg.h>
 
 # define PF_HH 2
 # define PF_H 1

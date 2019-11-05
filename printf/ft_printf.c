@@ -6,15 +6,34 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/04 11:40:27 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/05 12:44:29 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static char	pf_is_flag(char *c)
+static void	ft_get_parameter(char *c, t_pf_type *type)
+{
+	size_t	until_sign;
+	size_t	i;
+	char	*new_pos;
+
+	if (new_pos = ft_strchr(c, '$'))
+	{
+		until_sign = ft_strclen(c, '$');
+		i = -1;
+		while (++i < until_sign)
+			if (!ft_isdigit(c[i]))
+				return ;
+		type->parameter = ft_atoi(c);
+		c = new_pos + 1;
+	}
+}
+
+static char	pf_is_flag(char *s, t_pf_type *type)
 { // I actually need to loop through here because order matters:
-// %[parameter***$***][flags][width][.precision][length]type
+// %[parameter***$***][flags][width][.precision][length (hh, ll, L)]type
+	pf_get_parameter(char *c, type)
 	if (*c == 'h')
 		if (*(c + 1) == 'h')
 			return (PF_HH);
@@ -76,11 +95,10 @@ static int	pf_parse_format(char **str)
 	}
 	pf_type_init(&type);
 	i = -1;
-	while (i < PF_MAX_FLAGS - 1 && type.flags[++i] = pf_is_flag(*str))
+	while (i < PF_MAX_FLAGS - 1 && type.flags[++i] = pf_is_flag(*str, &type))
 		*str += (type.flags[i] % 10) * sizeof(char);
 	type.type = ft_expand_type(**str, type);
 	*str += (type.type % 10) * sizeof(char);
-	
 }
 
 int	ft_printf(const char *format, ...)

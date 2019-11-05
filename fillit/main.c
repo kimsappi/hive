@@ -6,25 +6,42 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 15:45:48 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/01 14:37:27 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/04 12:03:05 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include <fillit.h>
 
+static char	fi_check_row_validity(char *row)
+{
+	int length;
+
+	length = 0;
+	while (*row)
+	{
+		if (++length > 4)
+			return (0);
+		if (*row != '.' && *row != '#')
+			return (0);
+		++row;	
+	}
+	return (length == 4 ? 1 : 0);
+}
+
 static char	fi_read_file(int fd)
 {
 	t_list	*pieces;
-	char	rows;
-	char	row;
+	int		row;
+	char	*rows[4];
 
 	pieces = NULL;
-	rows = 0;
-	while (++rows < 5)
+	row = -1;
+	while (++row < 5)
 	{
-		row = get_next_line(fd, &line);
-		
+		get_next_line(fd, rows[row]);
+		if (!fi_check_row_validity(rows[row]))
+			exit(42);
 	}
 }
 
