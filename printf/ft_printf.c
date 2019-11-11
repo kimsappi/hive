@@ -6,19 +6,19 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/11 11:17:18 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/11 14:33:01 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	ft_get_parameter(char **str, t_pf_type *type)
+static void	pf_get_parameter(const char **str, t_pf_type *type)
 {
 	size_t	until_sign;
 	size_t	i;
 	char	*new_pos;
 
-	if (new_pos = ft_strchr(*str, '$'))
+	if ((new_pos = ft_strchr(*str, '$')))
 	{
 		until_sign = ft_strclen(*str, '$');
 		i = -1;
@@ -30,24 +30,28 @@ static void	ft_get_parameter(char **str, t_pf_type *type)
 	}
 }
 
-static char	pf_is_flag(char *str, t_pf_type *type)
+static char	pf_is_flag(const char *str, t_pf_type *type)
 { // I actually need to loop through here because order matters:
 // %[parameter***$***][flags][width][.precision][length (hh, ll, L)]type
 	if (*str == 'h')
+	{
 		if (*(str + 1) == 'h')
 			return (PF_HH);
 		else
 			return (PF_H);
+	}
 	if (*str == 'l')
-		if (*(c + 1) == 'l')
+	{
+		if (*(str + 1) == 'l')
 			return (PF_LL);
 		else
 			return (PF_L);
+	}
 	if (*str == 'L' || *str == ' ')
 		return (*str == 'L' ? PF_CPTL_L : PF_SPACE);
 	if (*str == '#' || *str == '0')
 		return (*str == '#' ? PF_HASH : PF_ZERO);
-	if (*str == '-' || *str == '+');
+	if (*str == '-' || *str == '+')
 		return (*str == '-' ? PF_MINUS : PF_PLUS);
 	return (0);
 }
@@ -70,7 +74,7 @@ static void	pf_type_init(t_pf_type *type)
 	type->parameter = -1;
 }
 
-static void	pf_get_width(char **str, t_pf_type *type)
+static void	pf_get_width(const char **str, t_pf_type *type)
 {
 	if (ft_isdigit(**str))
 	{
@@ -80,7 +84,7 @@ static void	pf_get_width(char **str, t_pf_type *type)
 	}
 }
 
-static void	pf_get_precision(char **str, t_pf_type *type) //will have to return something if e.g. "%.d"
+static void	pf_get_precision(const char **str, t_pf_type *type) //will have to return something if e.g. "%.d"
 {
 	if (**str == '.')
 	{
@@ -98,7 +102,7 @@ static void	pf_get_precision(char **str, t_pf_type *type) //will have to return 
 ** ft_format has to return length of the written string and point *str to
 **		first char after format specifier conversion
 */
-static int	pf_parse_format(char **str)
+static int	pf_parse_format(const char **str)
 {
 	t_pf_type	type;
 	int			i;
@@ -116,7 +120,7 @@ static int	pf_parse_format(char **str)
 	}
 	pf_type_init(&type);
 	i = -1;
-	pf_get_parameter(&str, &type);
+	pf_get_parameter(str, &type);
 	while (i < 4 && type.flags[++i] = pf_is_flag(*str, &type))
 		*str += (type.flags[i] % 10);
 	pf_get_width(str, &type);
@@ -136,7 +140,7 @@ int	ft_printf(const char *format, ...)
 	//head = NULL;
 	if (format)
 	{
-		while (substr_len = ft_strclen(format, '%'))
+		while ((substr_len = ft_strclen(format, '%')))
 		{
 			length += substr_len;
 			write(1, format, substr_len);
