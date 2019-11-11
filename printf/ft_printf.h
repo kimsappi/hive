@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 13:14:23 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/11 10:16:05 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/11 10:56:05 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@
 
 typedef struct	s_pf_type
 {
-	char	type;
-	char	flags[6];
-	int		precision;
-	int		width;
 	int		parameter;
+	char	flags[6];
+	int		width;
+	int		precision;
+	char	type;
 }				t_pf_type;
 
 int	ft_printf(const char *format, ...);

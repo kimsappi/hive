@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/11 10:52:26 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/11 11:17:18 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,24 +70,27 @@ static void	pf_type_init(t_pf_type *type)
 	type->parameter = -1;
 }
 
-static void	pf_get_width(char **str, t_pf_type type)
+static void	pf_get_width(char **str, t_pf_type *type)
 {
 	if (ft_isdigit(**str))
 	{
-		type.width = ft_atoi(*str);
+		type->width = ft_atoi(*str);
 		while (ft_isdigit(**str))
 			++(*str);
 	}
 }
 
-static void	pf_get_precision(char **str, t_pf_type type)
+static void	pf_get_precision(char **str, t_pf_type *type) //will have to return something if e.g. "%.d"
 {
 	if (**str == '.')
 	{
 		++(*str);
-		type.precision = ft_atoi(*str);
-		while (ft_isdigit(**str))
-			++(*str);
+		if (ft_isdigit(**str))
+		{
+			type->precision = ft_atoi(*str);
+			while (ft_isdigit(**str))
+				++(*str);
+		}
 	}
 }
 
