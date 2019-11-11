@@ -6,11 +6,12 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/11 15:57:48 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/11 17:35:49 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h> //pois
 /*
 static void	pf_get_parameter(const char **str, t_pf_type *type)
 {
@@ -53,6 +54,7 @@ static char	pf_is_flag(const char *str, t_pf_type *type)
 		return (*str == '#' ? PF_HASH : PF_ZERO);
 	if (*str == '-' || *str == '+')
 		return (*str == '-' ? PF_MINUS : PF_PLUS);
+	//printf("\nno flags, char: %c\n", *str);
 	return (0);
 }
 
@@ -89,18 +91,48 @@ static void	pf_get_precision(const char **str, t_pf_type *type) //will have to r
 	}
 }
 
-static char	pf_expand_type(char c, t_pf_type type, va_list params)
+static size_t	pf_put_char(t_pf_type type, va_list params)
+{
+	int c;
+
+	c = va_arg(params, int);
+	(void)type;
+	return (write(1, &c, 1));
+}
+
+static size_t	pf_put_str(t_pf_type type, va_list params)
+{
+	char *str;
+
+	str = va_arg(params, char*);
+	(void)type;
+	return (write(1, str, ft_strlen(str)));
+}
+
+static size_t	pf_put_int(t_pf_type type, va_list params)
+{
+	int nb;
+
+	nb = va_arg(params, int);
+	(void)type;
+	return (write(1, &nb, 1));
+}
+
+static size_t	pf_print_type(char c, t_pf_type type, va_list params)
 {
 	if (c == 'c')
-		return (PF_CHAR);
+		return (pf_put_char(type, params));
 	if (c == 's')
-	{
-		char *a = va_arg(params, char *);
-		write(1, a, ft_strlen(a));
-	}
+		return (pf_put_str(type, params));
 	if (c == 'd' || c == 'i')
-		return (PF_INT);
-	return (0);
+		return (pf_put_int(type, params));
+/*	if (c == 'u')
+		return (pf_put_uint_base(type, params, 10, 0));
+	if (c == 'o')
+		return (pf_put_uint_base(type, params, 8, 0));
+	if (c == 'x' || c == 'X')
+		return (pf_put_uint_base(type, params, 8, c == 'X' ? 1 : 0));
+*/	return (0);
 }
 
 /*
@@ -128,10 +160,13 @@ static int	pf_parse_format(const char **str, va_list params)
 	//pf_get_parameter(str, &type);
 	while (i < 4 && (type.flags[++i] = pf_is_flag(*str, &type)))
 		*str += (type.flags[i] % 10);
+//	printf("\ncheck 1, char: %c\n", **str);
 	pf_get_width(str, &type);
+//	printf("\ncheck 2, char: %c\n", **str);
 	pf_get_precision(str, &type);
-	type.type = pf_expand_type(**str, type, params);
-	*str += (type.type % 10);
+//	printf("\ncheck 3, char: %c\n", **str);
+	pf_print_type(**str, type, params);
+	++(*str);
 }
 
 int	ft_printf(const char *format, ...)
@@ -146,7 +181,7 @@ int	ft_printf(const char *format, ...)
 	//head = NULL;
 	if (format)
 	{
-		va_start(params, *format);
+		va_start(params, format);
 		while ((substr_len = ft_strclen(format, '%')))
 		{
 			length += substr_len;
