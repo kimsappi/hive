@@ -6,52 +6,49 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/05 12:44:29 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/11 10:52:26 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	ft_get_parameter(char *c, t_pf_type *type)
+static void	ft_get_parameter(char **str, t_pf_type *type)
 {
 	size_t	until_sign;
 	size_t	i;
 	char	*new_pos;
 
-	if (new_pos = ft_strchr(c, '$'))
+	if (new_pos = ft_strchr(*str, '$'))
 	{
-		until_sign = ft_strclen(c, '$');
+		until_sign = ft_strclen(*str, '$');
 		i = -1;
 		while (++i < until_sign)
-			if (!ft_isdigit(c[i]))
+			if (!ft_isdigit(*str[i]))
 				return ;
-		type->parameter = ft_atoi(c);
-		c = new_pos + 1;
+		type->parameter = ft_atoi(*str);
+		*str = new_pos + 1;
 	}
 }
 
-static char	pf_is_flag(char *s, t_pf_type *type)
+static char	pf_is_flag(char *str, t_pf_type *type)
 { // I actually need to loop through here because order matters:
 // %[parameter***$***][flags][width][.precision][length (hh, ll, L)]type
-	pf_get_parameter(char *c, type)
-	if (*c == 'h')
-		if (*(c + 1) == 'h')
+	if (*str == 'h')
+		if (*(str + 1) == 'h')
 			return (PF_HH);
 		else
 			return (PF_H);
-	if (*c == 'l')
+	if (*str == 'l')
 		if (*(c + 1) == 'l')
 			return (PF_LL);
 		else
 			return (PF_L);
-	if (*c == 'L' || *c == ' ')
-		return (*c == 'L' ? PF_CPTL_L : PF_SPACE);
-	if (*c == '#' || *c == '0')
-		return (*c == '#' ? PF_HASH : PF_ZERO);
-	if (*c == '-' || *c == '+');
-		return (*c == '-' ? PF_MINUS : PF_PLUS);
-	
-	//need to handle precision && field width here
+	if (*str == 'L' || *str == ' ')
+		return (*str == 'L' ? PF_CPTL_L : PF_SPACE);
+	if (*str == '#' || *str == '0')
+		return (*str == '#' ? PF_HASH : PF_ZERO);
+	if (*str == '-' || *str == '+');
+		return (*str == '-' ? PF_MINUS : PF_PLUS);
 	return (0);
 }
 
@@ -64,13 +61,34 @@ static char	pf_expand_type(char c, t_pf_type type)
 	
 }
 
-static void	pf_type_init(s_pf_type *type)
+static void	pf_type_init(t_pf_type *type)
 {
 	type->type = 0;
-	ft_bzero(type->flags, PF_MAX_FLAGS * sizeof(char));
+	ft_bzero(type->flags, 6 * sizeof(char));
 	type->precision = -1;
 	type->width = -1;
 	type->parameter = -1;
+}
+
+static void	pf_get_width(char **str, t_pf_type type)
+{
+	if (ft_isdigit(**str))
+	{
+		type.width = ft_atoi(*str);
+		while (ft_isdigit(**str))
+			++(*str);
+	}
+}
+
+static void	pf_get_precision(char **str, t_pf_type type)
+{
+	if (**str == '.')
+	{
+		++(*str);
+		type.precision = ft_atoi(*str);
+		while (ft_isdigit(**str))
+			++(*str);
+	}
 }
 
 /*
@@ -83,7 +101,7 @@ static int	pf_parse_format(char **str)
 	int			i;
 	//char	color;
 
-	if (!*((*str)++))
+	if (!*((*str)++)) //yooooo
 		return (0);
 	if (!**str)
 		return (-1);
@@ -95,10 +113,13 @@ static int	pf_parse_format(char **str)
 	}
 	pf_type_init(&type);
 	i = -1;
-	while (i < PF_MAX_FLAGS - 1 && type.flags[++i] = pf_is_flag(*str, &type))
-		*str += (type.flags[i] % 10) * sizeof(char);
-	type.type = ft_expand_type(**str, type);
-	*str += (type.type % 10) * sizeof(char);
+	pf_get_parameter(&str, &type);
+	while (i < 4 && type.flags[++i] = pf_is_flag(*str, &type))
+		*str += (type.flags[i] % 10);
+	pf_get_width(str, &type);
+	pf_get_precision(str, &type);
+	type.type = pf_expand_type(**str, type);
+	*str += (type.type % 10);
 }
 
 int	ft_printf(const char *format, ...)
