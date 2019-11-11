@@ -6,12 +6,12 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/11 14:33:01 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/11 15:57:48 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
+/*
 static void	pf_get_parameter(const char **str, t_pf_type *type)
 {
 	size_t	until_sign;
@@ -29,7 +29,7 @@ static void	pf_get_parameter(const char **str, t_pf_type *type)
 		*str = new_pos + 1;
 	}
 }
-
+*/
 static char	pf_is_flag(const char *str, t_pf_type *type)
 { // I actually need to loop through here because order matters:
 // %[parameter***$***][flags][width][.precision][length (hh, ll, L)]type
@@ -56,22 +56,13 @@ static char	pf_is_flag(const char *str, t_pf_type *type)
 	return (0);
 }
 
-static char	pf_expand_type(char c, t_pf_type type)
-{
-	if (c == 'c')
-		return (PF_CHAR);
-	if (c == 'd' || c == 'i')
-		return (PF_INT);
-	
-}
-
 static void	pf_type_init(t_pf_type *type)
 {
 	type->type = 0;
 	ft_bzero(type->flags, 6 * sizeof(char));
 	type->precision = -1;
 	type->width = -1;
-	type->parameter = -1;
+//	type->parameter = -1;
 }
 
 static void	pf_get_width(const char **str, t_pf_type *type)
@@ -98,11 +89,25 @@ static void	pf_get_precision(const char **str, t_pf_type *type) //will have to r
 	}
 }
 
+static char	pf_expand_type(char c, t_pf_type type, va_list params)
+{
+	if (c == 'c')
+		return (PF_CHAR);
+	if (c == 's')
+	{
+		char *a = va_arg(params, char *);
+		write(1, a, ft_strlen(a));
+	}
+	if (c == 'd' || c == 'i')
+		return (PF_INT);
+	return (0);
+}
+
 /*
 ** ft_format has to return length of the written string and point *str to
 **		first char after format specifier conversion
 */
-static int	pf_parse_format(const char **str)
+static int	pf_parse_format(const char **str, va_list params)
 {
 	t_pf_type	type;
 	int			i;
@@ -120,12 +125,12 @@ static int	pf_parse_format(const char **str)
 	}
 	pf_type_init(&type);
 	i = -1;
-	pf_get_parameter(str, &type);
-	while (i < 4 && type.flags[++i] = pf_is_flag(*str, &type))
+	//pf_get_parameter(str, &type);
+	while (i < 4 && (type.flags[++i] = pf_is_flag(*str, &type)))
 		*str += (type.flags[i] % 10);
 	pf_get_width(str, &type);
 	pf_get_precision(str, &type);
-	type.type = pf_expand_type(**str, type);
+	type.type = pf_expand_type(**str, type, params);
 	*str += (type.type % 10);
 }
 
@@ -133,6 +138,7 @@ int	ft_printf(const char *format, ...)
 {
 	//t_list	*head;
 	//t_list	*current;
+	va_list	params;
 	int		substr_len;
 	int		length;
 
@@ -140,15 +146,17 @@ int	ft_printf(const char *format, ...)
 	//head = NULL;
 	if (format)
 	{
+		va_start(params, *format);
 		while ((substr_len = ft_strclen(format, '%')))
 		{
 			length += substr_len;
 			write(1, format, substr_len);
 			format += substr_len;
-			if (!(substr_len = pf_parse_format(&format)))
+			if (!(substr_len = pf_parse_format(&format, params)))
 				return (length);
 			length += substr_len;
 		}
 	}
+	va_end(params);
 	return (length);
 }
