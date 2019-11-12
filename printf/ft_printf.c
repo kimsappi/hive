@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/12 11:12:27 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/12 12:36:02 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,46 @@ static void	pf_get_precision(const char **str, t_pf_type *type) //will have to r
 	}
 }
 
+static size_t	pf_pre_pad(t_pf_type type, size_t len)
+{
+	int		i;
+	char	pad_char;
+	
+	pad_char = ' ';
+	i = -1;
+	while (type.flags[++i])
+	{
+		if (type.flags[i] == '-')
+			return (0);
+		if (type.flags[i] == '0')
+			pad_char = '0';
+	}
+	i = -1;
+	while (++i + len < type.width && type.width > 0)
+		write(1, &pad_char, 1);
+	return (i);
+}
+
+static size_t	pf_post_pad(t_pf_type type, size_t len)
+{
+	int		i;
+	char	flag_found;
+	
+	i = -1;
+	flag_found = 0;
+	while (type.flags[++i])
+	{
+		if (type.flags[i] == '-')
+			flag_found = 1;
+	}
+	if (!flag_found)
+		return (0);
+	i = -1;
+	while (++i + len < type.width && type.width > 0) 
+		write(1, " ", 1);
+	return (i);
+}
+
 static size_t	pf_put_char(t_pf_type type, va_list params)
 {
 	int c;
@@ -124,16 +164,22 @@ static size_t	pf_put_int(t_pf_type type, va_list params)
 {
 	int		nb;
 	char	*str;
+	size_t	len;
 
 	nb = va_arg(params, int);
-	str = ft_itoa(nb);
-	ft_putstr(ft_itoa(nb));
+	if (!(str = ft_itoa(nb)))
+		return (-1);
+	len = ft_strlen(str);
+	pf_pre_pad(type, len);
+	write(1, str, len);
+	pf_post_pad(type, len);
+	free(str);
 	return (ft_strlen(str));
 }
 
 static size_t	pf_print_type(char c, t_pf_type type, va_list params)
 {
-	printf("type: %c\n", c);
+	//printf("type: %c\n", c);
 	if (c == 'c')
 		return (pf_put_char(type, params));
 	if (c == 's')
