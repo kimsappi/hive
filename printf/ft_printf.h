@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 13:14:23 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/11 14:55:36 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/12 11:11:52 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,11 @@
 # include "libft.h"
 # include <stdarg.h>
 
-# define PF_HH 2
-# define PF_H 1
-# define PF_LL 12
-# define PF_L 11
-# define PF_CPTL_L 21
-# define PF_HASH 31
-# define PF_ZERO 41
-# define PF_MINUS 51
-# define PF_PLUS 61
-# define PF_SPACE 71
+# define PRINTF_HH 1
+# define PRINTF_H 2
+# define PRINTF_LL 3
+# define PRINTF_L 4
+# define PRINTF_CPTL_L 5
 
 # define PF_CHAR 1
 # define PF_STR 2
@@ -40,6 +35,7 @@ typedef struct	s_pf_type
 	char	flags[6];
 	int		width;
 	int		precision;
+	char	length;
 	char	type;
 }				t_pf_type;
 
