@@ -229,9 +229,10 @@ static size_t	pf_put_ptr(t_pf_type type, va_list params)
 	size_t	ptr;
 	size_t	len;
 	char	*str;
+	void	*ptr_ptr;
 
 	write(1, "0x", 2);
-	ptr = (size_t)va_arg(params, void*);
+	ptr_ptr = va_arg(params, void*);
 	if (!(str = ft_itoa_base(ptr, 16, 1)))
 		return (2);
 	len = ft_strlen(str);
