@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/12 12:36:02 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/12 13:03:22 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,29 @@ static size_t	pf_put_int(t_pf_type type, va_list params)
 	return (ft_strlen(str));
 }
 
+/*
+ * Returns string with result of base conversion nb(decimal) to nb(base)
+*/
+char	*ft_itoa_base(unsigned int nb, char base)
+{
+	char	*str;
+	char	digits[16];
+	
+	if (base < 2 || base > 16 || !(str = (char *)malloc(65 * sizeof(char))))
+		return (NULL);
+	ft_memcpy(digits, "0123456789ABCDEF", 16 * sizeof(char));
+
+}
+
+static size_t	pf_put_uint_base(t_pf_type type, va_list params, char base, char capitalize)
+{
+	char			*str;
+	unsigned int	nb;
+
+	nb = va_arg(params, unsigned int);
+	str = ft_itoa_base(nb, base);
+}
+
 static size_t	pf_print_type(char c, t_pf_type type, va_list params)
 {
 	//printf("type: %c\n", c);
@@ -186,13 +209,15 @@ static size_t	pf_print_type(char c, t_pf_type type, va_list params)
 		return (pf_put_str(type, params));
 	if (c == 'd' || c == 'i')
 		return (pf_put_int(type, params));
-/*	if (c == 'u')
+	if (c == 'u')
 		return (pf_put_uint_base(type, params, 10, 0));
 	if (c == 'o')
 		return (pf_put_uint_base(type, params, 8, 0));
 	if (c == 'x' || c == 'X')
-		return (pf_put_uint_base(type, params, 8, c == 'X' ? 1 : 0));
-*/	return (0);
+		return (pf_put_uint_base(type, params, 16, c == 'X' ? 1 : 0));
+//	if (c == 'f')
+//		return (pf_put_float(type, params));
+	return (0);
 }
 
 /*
