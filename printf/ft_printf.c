@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/12 13:03:22 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/12 13:42:35 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,24 +180,49 @@ static size_t	pf_put_int(t_pf_type type, va_list params)
 /*
  * Returns string with result of base conversion nb(decimal) to nb(base)
 */
-char	*ft_itoa_base(unsigned int nb, char base)
+char	*ft_itoa_base(unsigned int nb, char base, char capitalise)
 {
-	char	*str;
-	char	digits[16];
+	char			*str;
+	char			digits[16];
+	char			len;
+	unsigned int	nb_copy;
 	
-	if (base < 2 || base > 16 || !(str = (char *)malloc(65 * sizeof(char))))
+	nb_copy = nb;
+	len = (nb == 0 ? 1 : 0);
+	while ((nb_copy = nb_copy / base) > 0)
+		++len;
+	if (base < 2 || base > 16 || !(str = ft_strnew((size_t)len)))
 		return (NULL);
-	ft_memcpy(digits, "0123456789ABCDEF", 16 * sizeof(char));
-
+	if (capitalise)
+		ft_memcpy(digits, "0123456789ABCDEF", 16 * sizeof(char));
+	else
+		ft_memcpy(digits, "0123456789abcdef", 16 * sizeof(char));
+	while (len > -1)
+	{
+		str[len] = digits[nb % base];
+		nb /= base;
+		--len;
+	}
+	return (str);
 }
 
-static size_t	pf_put_uint_base(t_pf_type type, va_list params, char base, char capitalize)
+static size_t	pf_put_uint_base(t_pf_type type, va_list params, char base, char capitalise)
 {
 	char			*str;
 	unsigned int	nb;
+	size_t			len;
+	size_t			ret;
 
 	nb = va_arg(params, unsigned int);
-	str = ft_itoa_base(nb, base);
+	if (!(str = ft_itoa_base(nb, base, capitalise)))
+		return (0);
+	len = ft_strlen(str);
+	ret = len + pf_pre_pad(type, len);
+	printf("%s", str);
+	write(1, str, len);
+	ret += pf_post_pad(type, len);
+	free(str);
+	return (ret);
 }
 
 static size_t	pf_print_type(char c, t_pf_type type, va_list params)
