@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/12 13:42:35 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/12 16:54:11 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	pf_get_width(const char **str, t_pf_type *type)
 
 static void pf_get_length(const char **str, t_pf_type *type)
 {
-	if (**str == 'h') //lenghts dont belong
+	if (**str == 'h')
 	{
 		type->length = PRINTF_H;
 		++(*str);
@@ -180,7 +180,7 @@ static size_t	pf_put_int(t_pf_type type, va_list params)
 /*
  * Returns string with result of base conversion nb(decimal) to nb(base)
 */
-char	*ft_itoa_base(unsigned int nb, char base, char capitalise)
+char	*ft_itoa_base(size_t nb, char base, char capitalise)
 {
 	char			*str;
 	char			digits[16];
@@ -214,15 +214,30 @@ static size_t	pf_put_uint_base(t_pf_type type, va_list params, char base, char c
 	size_t			ret;
 
 	nb = va_arg(params, unsigned int);
-	if (!(str = ft_itoa_base(nb, base, capitalise)))
+	if (!(str = ft_itoa_base((size_t)nb, base, capitalise)))
 		return (0);
 	len = ft_strlen(str);
 	ret = len + pf_pre_pad(type, len);
-	printf("%s", str);
 	write(1, str, len);
 	ret += pf_post_pad(type, len);
 	free(str);
 	return (ret);
+}
+
+static size_t	pf_put_ptr(t_pf_type type, va_list params)
+{
+	size_t	ptr;
+	size_t	len;
+	char	*str;
+
+	write(1, "0x", 2);
+	ptr = (size_t)va_arg(params, void*);
+	if (!(str = ft_itoa_base(ptr, 16, 1)))
+		return (2);
+	len = ft_strlen(str);
+	write(1, str, len);
+	free(str);
+	return (len + 2);
 }
 
 static size_t	pf_print_type(char c, t_pf_type type, va_list params)
@@ -240,6 +255,8 @@ static size_t	pf_print_type(char c, t_pf_type type, va_list params)
 		return (pf_put_uint_base(type, params, 8, 0));
 	if (c == 'x' || c == 'X')
 		return (pf_put_uint_base(type, params, 16, c == 'X' ? 1 : 0));
+	if (c == 'p')
+		return (pf_put_ptr(type, params));
 //	if (c == 'f')
 //		return (pf_put_float(type, params));
 	return (0);
