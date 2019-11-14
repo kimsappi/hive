@@ -229,16 +229,29 @@ static size_t	pf_put_ptr(t_pf_type type, va_list params)
 	size_t	ptr;
 	size_t	len;
 	char	*str;
-	void	*ptr_ptr;
 
 	write(1, "0x", 2);
-	ptr_ptr = va_arg(params, void*);
+	ptr = va_arg(params, size_t);
+	if (!ptr)
+	{
+		write(1, "0", 1);
+		return (3);
+	}
 	if (!(str = ft_itoa_base(ptr, 16, 1)))
 		return (2);
 	len = ft_strlen(str);
 	write(1, str, len);
 	free(str);
 	return (len + 2);
+}
+
+static pf_put_float(t_pf_type type, va_list params, char capitalise)
+{
+	double	nb;
+	size_t	len;
+	char	*str;
+
+
 }
 
 static size_t	pf_print_type(char c, t_pf_type type, va_list params)
@@ -258,8 +271,8 @@ static size_t	pf_print_type(char c, t_pf_type type, va_list params)
 		return (pf_put_uint_base(type, params, 16, c == 'X' ? 1 : 0));
 	if (c == 'p')
 		return (pf_put_ptr(type, params));
-//	if (c == 'f')
-//		return (pf_put_float(type, params));
+	if (c == 'f' || c == 'F')
+		return (pf_put_float(type, params, c == 'F' ? 1 : 0));
 	return (0);
 }
 
