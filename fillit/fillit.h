@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fillit.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: yyan <yyan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 10:15:26 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/01 10:35:54 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/05 15:20:45 by yyan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,20 @@
 
 typedef struct	s_piece
 {
-	char	letter; //letter that must be placed
-	char	x[3]; //x coordinate of each square relative to the first square read
-	char	y[3]; //same but y, same order
-	char	height; // total height of piece relative to first square read?
-					// #### = height 0?
-	char	width; // total width of piece relative to first square read
-					// #### = width 3?
+	char	letter;
+	char	row[3];
+	char	col[3];
 }				t_piece;
 
-typedef struct	s_board
+typedef struct	s_coord
 {
-	char	**board;
-	char	size;
-}				t_board;
+	int		row;
+	int		col;
+}				t_coord;
 
-int				fillit_solver(t_board *board, t_list *piece);
+int				solve_board(t_piece *piece, int count, int size, char **board);
+void			print_board(char **board, int size);
+int				fi_read_file(int fd, t_piece *pieces);
+void			raise_error(void);
 
 #endif

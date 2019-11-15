@@ -3,61 +3,96 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: yyan <yyan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 15:45:48 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/04 12:03:05 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/05 16:42:17 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
-#include <fillit.h>
+#include "fillit.h"
 
-static char	fi_check_row_validity(char *row)
+void		raise_error(void)
 {
-	int length;
-
-	length = 0;
-	while (*row)
-	{
-		if (++length > 4)
-			return (0);
-		if (*row != '.' && *row != '#')
-			return (0);
-		++row;	
-	}
-	return (length == 4 ? 1 : 0);
+	ft_putendl("error");
+	exit(1);
 }
 
-static char	fi_read_file(int fd)
+static char	**get_board(int size)
 {
-	t_list	*pieces;
-	int		row;
-	char	*rows[4];
+	int		i;
+	char	**board;
 
-	pieces = NULL;
-	row = -1;
-	while (++row < 5)
+	i = 0;
+	if (!(board = (char**)malloc(sizeof(char*) * size)))
+		raise_error();
+	while (i < size)
 	{
-		get_next_line(fd, rows[row]);
-		if (!fi_check_row_validity(rows[row]))
-			exit(42);
+		board[i] = (char*)malloc(sizeof(char) * (size + 1));
+		if (!board[i])
+			raise_error();
+		board[i][size] = '\0';
+		ft_memset(board[i], '.', size);
+		i++;
+	}
+	return (board);
+}
+
+static void	free_board(char **board, int size)
+{
+	int i;
+
+	i = 0;
+	while (i < size)
+	{
+		ft_strdel(&board[i]);
+		i++;
+	}
+	free(board);
+	board = NULL;
+}
+
+static void	fill_it(int count, t_piece *piece)
+{
+	char	**board;
+	int		size;
+	int		check;
+
+	size = ft_ceil_sqrt(count * 4);
+	check = 0;
+	while (!check)
+	{
+		board = get_board(size);
+		check = solve_board(piece, count, size, board);
+		if (check)
+			print_board(board, size);
+		free_board(board, size);
+		size++;
 	}
 }
 
-int	main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
-	int	fd;
+	int		fd;
+	t_piece	pieces[26];
+	int		count;
 
+	count = 0;
 	if (argc == 2)
 	{
 		fd = open(argv[1], O_RDONLY);
 		if (fd < 0)
-			return (1);
+			raise_error();
 		else
-			fi_read_file(fd);
+			count = fi_read_file(fd, pieces);
+		if (close(fd) < 0)
+			raise_error();
+		fd = 0;
+		fill_it(count, pieces);
 	}
 	else
 		ft_putendl("usage: fillit file_name");
-	return (0); //return 1 if usage? Probably not but not sure
+	while(1);
+	return (0);
 }
