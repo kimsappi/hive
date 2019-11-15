@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/15 16:41:54 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/15 16:44:28 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -356,9 +356,11 @@ static size_t	pf_put_float(t_pf_type type, va_list params, char capitalise)
 		str[0] = '-';
 		dbl *= -1;
 	}
-	printed_len = pf_float_to_str(type, dbl, str + negative);
-	write(1, str, printed_len + negative);
-	return (printed_len + negative);
+	printed_len = pf_float_to_str(type, dbl, str + negative) + negative;
+	pf_pre_pad(type, printed_len);
+	write(1, str, printed_len);
+	pf_post_pad(type, printed_len);
+	return (printed_len);
 }
 
 static size_t	pf_print_type(char c, t_pf_type type, va_list params)
