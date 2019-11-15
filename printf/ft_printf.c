@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/15 10:41:35 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/15 15:50:57 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,20 @@ static void	pf_get_parameter(const char **str, t_pf_type *type)
 	}
 }
 */
+
+static char	pf_has_flag(char *flags, char flag)
+{
+	int	i;
+
+	i = -1;
+	while (++i < 6)
+	{
+		if (flags[i] == flag)
+			return (1);
+	}
+	return (0);
+}
+
 static char	pf_is_flag(const char *str, t_pf_type *type)
 { // I actually need to loop through here because order matters:
 // %[parameter***$***][flags][width][.precision][length (hh, ll, L)]type
@@ -46,6 +60,7 @@ static void	pf_type_init(t_pf_type *type)
 	ft_bzero(type->flags, 6 * sizeof(char));
 	type->precision = -1;
 	type->width = -1;
+	type->length = -1;
 //	type->parameter = -1;
 }
 
@@ -244,18 +259,23 @@ static size_t	pf_put_ptr(t_pf_type type, va_list params)
 	free(str);
 	return (len + 2);
 }
-
+/*
 static pf_put_float(t_pf_type type, va_list params, char capitalise)
 {
-	double	nb;
-	double	temp;
+	long double	nb;
+	long double	temp;
 	size_t	len;
 	char	str[1000];
 	int		i;
 
+
 	//divide by 10 until nb = 0;
 	//put to string until last digit (i == 0)
 	//get digits by multiplying by 10 (but how without %?)
+	if (type.length == PRINTF_CPTL_L) {
+		nb = va_arg(params, long double); printf("%Lf\n", nb); }
+	else {
+		nb = (long double)va_arg(params, double);printf("%f\n", (double)nb); }
 	i = 0;
 	if (nb < 0)
 	{
@@ -265,10 +285,43 @@ static pf_put_float(t_pf_type type, va_list params, char capitalise)
 	}	
 	ft_bzero(str, 1000);
 	temp = nb;
-	while (temp / 10 > 0)
+	len = 0;
+	while (temp / 10.0 > 1.0)
 	{
-		
+		temp /= 10.0;
+		++len;
+		//printf("%Lf", temp);
 	}
+	//printf("%Lf\n", nb);
+	printf("len of integer part: %lu\n", len);
+}
+*/
+
+static size_t	pf_put_float(t_pf_type type, va_list params, char capitalise)
+{
+	long double			dbl;
+	unsigned long long	integer;
+	unsigned long long	decimal;
+
+	type.precision = type.precision == -1 ? 6 : type.precision;
+	//printf("%d\n", type.length);
+	if (type.length == PRINTF_CPTL_L)
+	{
+		dbl = va_arg(params, long double);
+		//printf("xddd %Lf\n", dbl);
+	}
+	else
+	{
+		dbl = (long double)va_arg(params, double);
+		//printf("xddd %f\n", dbl);
+	}	
+	integer = (unsigned long long)dbl;
+	dbl = dbl - (long double)integer;
+	decimal = (unsigned long long)(dbl * ft_intpow(10, (unsigned int)type.precision + 1));
+	if (decimal % 10 > 4)
+		decimal += 10;
+	decimal /= 10;
+	printf("%llu.%llu\n", integer, decimal);
 }
 
 static size_t	pf_print_type(char c, t_pf_type type, va_list params)
