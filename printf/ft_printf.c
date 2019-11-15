@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/15 17:42:36 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/15 18:03:54 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,21 +188,41 @@ static size_t	pf_put_str(t_pf_type type, va_list params)
 	return (write(1, str, ft_strlen(str)));
 }
 
+static size_t	pf_get_int(t_pf_type type, va_list params)
+{
+	long long	nb;
+
+	if (type.length == PRINTF_H)
+		nb = (long long)va_arg(params, short);
+	if (type.length == PRINTF_HH)
+		nb = (long long)va_arg(params, char);
+	if (type.length == PRINTF_L)
+		nb = (long long)va_arg(params, long);
+	if (type.length == PRINTF_LL)
+		nb = (long long)va_arg(params, long long);
+	return (nb);
+}
+
 static size_t	pf_put_int(t_pf_type type, va_list params)
 {
-	int		nb;
-	char	*str;
-	size_t	len;
+	long long	nb;
+	char		*str;
+	size_t		len;
+	char		negative;
+	size_t		printed_len;
 
-	nb = va_arg(params, int);
+	nb = pf_get_int(type, params);
 	if (!(str = ft_itoa(nb)))
 		return (-1);
 	len = ft_strlen(str);
-	pf_pre_pad(type, len);
-	write(1, str, len);
-	pf_post_pad(type, len);
+	printed_len = len;
+	negative = str[0] == '-' ? 1 : 0;
+	printed_len += pf_pre_pad(type, len);
+	printf("\nasd: %d %d %d %s\n", printed_len, len, negative, str);
+	write(1, str + negative, len - negative);
+	printed_len += pf_post_pad(type, printed_len);
 	free(str);
-	return (ft_strlen(str));
+	return (printed_len - negative);
 }
 
 /*

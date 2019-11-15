@@ -1,18 +1,18 @@
 #include "ft_printf.h"
 
-#include <stdio.h>
+int main() {
+	char a[] = "asd";
+ft_printf("##########asd\n%s\n%c\n", "123", 'X');
+ft_printf("%-05da\n", 123);
+ft_printf("next line should be hex:\n");
+ft_printf("%x\n", 200);
+ft_printf("ptr: %p\n", a);
+ft_printf("nullptr: %p\n", NULL);
+printf("###################\n");
 
-int main()
-{
-    long double a =12345.12345678901234;
-    double b = (double)a;
-    float c = (float)a;
-	   printf("real: % 020.10Lf\n", a);
-	ft_printf("ft  : % 020.10Lf\n", a);
-	   printf("real: %+20.10f\n", b);
-	ft_printf("ft  : %+20.10f\n", b);
-	   printf("real: %-20.10f\n", c);
-	ft_printf("ft  : %-20.10f\n", c);
+printf("real\nft\n");
+printf("%05d\n", 123);
+ft_printf("%05d\n", 123);
 
-    return 0;
+return 0;
 }
