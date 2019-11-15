@@ -4,7 +4,7 @@
 
 int main()
 {
-    long double a = 12345.12345678901234;
+    long double a =12345.12345678901234;
     double b = (double)a;
     float c = (float)a;
 	   printf("real: % 020.10Lf\n", a);

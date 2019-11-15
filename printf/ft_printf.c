@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/15 17:29:31 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/15 17:42:36 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static char	pf_is_flag(const char *str, t_pf_type *type)
 // %[parameter***$***][flags][width][.precision][length (hh, ll, L)]type
 	if (*str == '+' || *str == ' ')
 	{
-		type->sign = *str;
+		if (!(*str == ' ' && type->sign))
+			type->sign = *str;
 		return (*str);
 	}
 	if (*str == ' ' || *str == '#' || *str == '0' || *str == '-' || *str == '+')
@@ -141,7 +142,7 @@ static size_t	pf_pre_pad(t_pf_type type, size_t len)
 		pad_char = '0';
 		write(1, &type.sign, 1);
 	}
-	i = -1 + type.sign / 30;
+	i = -1 + type.sign == '-' ? 1 : 0;
 	while (++i + len < type.width && type.width > 0)
 		write(1, &pad_char, 1);
 	if (!(pf_has_flag(type.flags, '0')))
