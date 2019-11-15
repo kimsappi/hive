@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/15 15:50:57 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/15 16:41:54 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,31 +297,68 @@ static pf_put_float(t_pf_type type, va_list params, char capitalise)
 }
 */
 
+static char		ft_strcat_and_free(char *s1, char *s2)
+{
+	if (!s2)
+		return (0);
+	else
+	{
+		ft_strcat(s1, s2);
+		free(s2);
+		return (1);
+	}
+}
+
+static size_t	pf_float_to_str(t_pf_type type, long double dbl, char *str)
+{
+	unsigned long long	integer;
+	unsigned long long	decimal;
+	size_t				printed_len;
+
+	integer = (unsigned long long)dbl;
+	dbl = dbl - (long double)integer;
+	decimal = (unsigned long long)
+		(dbl * ft_intpow(10, (unsigned int)type.precision + 1));
+	if (decimal % 10 > 4)
+	{
+		decimal += 10;
+		if (!type.precision)
+			++integer;
+	}
+	decimal /= 10;
+	ft_strcat_and_free(str, ft_itoa(integer));
+	printed_len = ft_strlen(str);
+	if (type.precision)
+	{
+		str[printed_len++] = '.';
+		str[printed_len] = 0;
+		ft_strcat_and_free(str, ft_itoa(decimal));
+	}
+	return (ft_strlen(str));
+}
+
 static size_t	pf_put_float(t_pf_type type, va_list params, char capitalise)
 {
 	long double			dbl;
-	unsigned long long	integer;
-	unsigned long long	decimal;
+	char				str[50];
+	size_t				printed_len;
+	char				negative;
 
+	ft_bzero(str, 50);
 	type.precision = type.precision == -1 ? 6 : type.precision;
-	//printf("%d\n", type.length);
 	if (type.length == PRINTF_CPTL_L)
-	{
 		dbl = va_arg(params, long double);
-		//printf("xddd %Lf\n", dbl);
-	}
 	else
-	{
 		dbl = (long double)va_arg(params, double);
-		//printf("xddd %f\n", dbl);
-	}	
-	integer = (unsigned long long)dbl;
-	dbl = dbl - (long double)integer;
-	decimal = (unsigned long long)(dbl * ft_intpow(10, (unsigned int)type.precision + 1));
-	if (decimal % 10 > 4)
-		decimal += 10;
-	decimal /= 10;
-	printf("%llu.%llu\n", integer, decimal);
+	negative = dbl < 0 ? 1 : 0;
+	if (negative)
+	{
+		str[0] = '-';
+		dbl *= -1;
+	}
+	printed_len = pf_float_to_str(type, dbl, str + negative);
+	write(1, str, printed_len + negative);
+	return (printed_len + negative);
 }
 
 static size_t	pf_print_type(char c, t_pf_type type, va_list params)
