@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/12 16:54:11 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/15 10:41:35 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,12 +248,27 @@ static size_t	pf_put_ptr(t_pf_type type, va_list params)
 static pf_put_float(t_pf_type type, va_list params, char capitalise)
 {
 	double	nb;
+	double	temp;
 	size_t	len;
-	char	*str;
+	char	str[1000];
+	int		i;
 
 	//divide by 10 until nb = 0;
 	//put to string until last digit (i == 0)
 	//get digits by multiplying by 10 (but how without %?)
+	i = 0;
+	if (nb < 0)
+	{
+		str[0] = '-';
+		++i;
+		nb = -nb;
+	}	
+	ft_bzero(str, 1000);
+	temp = nb;
+	while (temp / 10 > 0)
+	{
+		
+	}
 }
 
 static size_t	pf_print_type(char c, t_pf_type type, va_list params)
