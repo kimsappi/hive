@@ -251,7 +251,9 @@ static pf_put_float(t_pf_type type, va_list params, char capitalise)
 	size_t	len;
 	char	*str;
 
-
+	//divide by 10 until nb = 0;
+	//put to string until last digit (i == 0)
+	//get digits by multiplying by 10 (but how without %?)
 }
 
 static size_t	pf_print_type(char c, t_pf_type type, va_list params)
