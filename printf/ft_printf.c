@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/15 16:44:28 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/15 17:29:31 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,11 @@ static char	pf_has_flag(char *flags, char flag)
 static char	pf_is_flag(const char *str, t_pf_type *type)
 { // I actually need to loop through here because order matters:
 // %[parameter***$***][flags][width][.precision][length (hh, ll, L)]type
+	if (*str == '+' || *str == ' ')
+	{
+		type->sign = *str;
+		return (*str);
+	}
 	if (*str == ' ' || *str == '#' || *str == '0' || *str == '-' || *str == '+')
 		return (*str);
 	//printf("\nno flags, char: %c\n", *str);
@@ -61,6 +66,7 @@ static void	pf_type_init(t_pf_type *type)
 	type->precision = -1;
 	type->width = -1;
 	type->length = -1;
+	type->sign = 0;
 //	type->parameter = -1;
 }
 
@@ -124,17 +130,23 @@ static size_t	pf_pre_pad(t_pf_type type, size_t len)
 	
 	pad_char = ' ';
 	i = -1;
-	while (type.flags[++i])
+	if (pf_has_flag(type.flags, '-'))
 	{
-		if (type.flags[i] == '-')
-			return (0);
-		if (type.flags[i] == '0')
-			pad_char = '0';
+		if (type.sign)
+			return (write(1, &type.sign, 1));
+		return (0);
 	}
-	i = -1;
+	if (pf_has_flag(type.flags, '0'))
+	{
+		pad_char = '0';
+		write(1, &type.sign, 1);
+	}
+	i = -1 + type.sign / 30;
 	while (++i + len < type.width && type.width > 0)
 		write(1, &pad_char, 1);
-	return (i);
+	if (!(pf_has_flag(type.flags, '0')))
+		write (1, &type.sign, 1);
+	return (i + type.sign / 30);
 }
 
 static size_t	pf_post_pad(t_pf_type type, size_t len)
@@ -353,7 +365,7 @@ static size_t	pf_put_float(t_pf_type type, va_list params, char capitalise)
 	negative = dbl < 0 ? 1 : 0;
 	if (negative)
 	{
-		str[0] = '-';
+		type.sign = '-';
 		dbl *= -1;
 	}
 	printed_len = pf_float_to_str(type, dbl, str + negative) + negative;
@@ -407,15 +419,11 @@ static int	pf_parse_format(const char **str, va_list params)
 	}
 	pf_type_init(&type);
 	i = -1;
-	//pf_get_parameter(str, &type);
 	while (i < 4 && (type.flags[++i] = pf_is_flag(*str, &type)))
 		++(*str);
-//	printf("\ncheck 1, char: %c\n", **str);
 	pf_get_width(str, &type);
-//	printf("\ncheck 2, char: %c\n", **str);
 	pf_get_precision(str, &type);
 	pf_get_length(str, &type);
-//	printf("\ncheck 3, char: %c\n", **str);
 	pf_print_type(**str, type, params);
 	++(*str);
 }
