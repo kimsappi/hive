@@ -3,18 +3,23 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ksappi <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/05 15:32:21 by yyan              #+#    #+#              #
-#    Updated: 2019/11/16 12:54:23 by ksappi           ###   ########.fr        #
+#    Updated: 2019/11/16 14:09:30 by ksappi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
-SRC = ft_printf.c
+SRC = libft/ft_printf.c libft/ft_atoi.c libft/ft_bzero.c libft/ft_intpow.c \
+	libft/ft_isdigit.c libft/ft_itoa.c libft/ft_memcpy.c \
+	libft/ft_strcat.c libft/ft_strclen.c libft/ft_strlen.c \
+	libft/ft_strnew.c
 
-OBJ = $(SRC:.c=.o)
+OBJ2 = $(SRC:.c=.o)
+
+OBJ = $(subst libft/,,$(OBJ2))
 
 HEADER = ./libft/includes/
 
@@ -26,21 +31,17 @@ LIBFT = ./libft
 
 all: $(NAME)
 
-obj:
+$(NAME):
 	gcc $(FLAGS) -c $(SRC) -I$(HEADER) -I.
-
-$(NAME): obj
-	make -C $(LIBFT)
 	ar rc $(NAME) $(OBJ)
+	ranlib $(NAME)
 
 clean:
 	rm -f $(OBJ)
-	make clean -C ./libft
 
 fclean: clean
 	rm -f $(NAME)
-	make fclean -C ./libft
 
 re: fclean all
 
-.PHONY: all, re, clean, fclean, obj, $(NAME)
+.PHONY: all, re, clean, fclean, $(NAME)
