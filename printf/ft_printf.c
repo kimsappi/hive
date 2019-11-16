@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/16 12:38:56 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/16 12:47:07 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ static size_t	pf_pre_pad(t_pf_type type, size_t len)
 		type.sign == '-' ? write(1, &type.sign, 1) : 0;
 	}
 	i = -1 + type.sign == '-' ? 1 : 0;
-	while (++i + len < type.width && type.width > 0)
+	while (++i + len < (size_t)type.width && type.width > 0)
 		write(1, &pad_char, 1);
 	if (!(pf_has_flag(type.flags, '0')))
 		write (1, &type.sign, 1);
@@ -165,7 +165,7 @@ static size_t	pf_post_pad(t_pf_type type, size_t len)
 	if (!flag_found)
 		return (0);
 	i = -1;
-	while (++i + len < type.width && type.width > 0) 
+	while (++i + len < (size_t)type.width && type.width > 0) 
 		write(1, " ", 1);
 	return (i);
 }
@@ -234,7 +234,7 @@ char	*ft_itoa_base(size_t nb, char base, char capitalise)
 {
 	char			*str;
 	char			digits[16];
-	char			len;
+	int				len;
 	unsigned int	nb_copy;
 	
 	nb_copy = nb;
@@ -292,6 +292,7 @@ static size_t	pf_put_ptr(t_pf_type type, va_list params)
 	len = ft_strlen(str);
 	write(1, str, len);
 	free(str);
+	(void)type; //added just to compile
 	return (len + 2);
 }
 /*
@@ -395,6 +396,7 @@ static size_t	pf_put_float(t_pf_type type, va_list params, char capitalise)
 	pf_pre_pad(type, printed_len);
 	write(1, str, printed_len);
 	pf_post_pad(type, printed_len);
+	(void) capitalise; //added just to compile
 	return (printed_len);
 }
 
@@ -449,6 +451,7 @@ static int	pf_parse_format(const char **str, va_list params)
 	pf_get_length(str, &type);
 	pf_print_type(**str, type, params);
 	++(*str);
+	return (0); //added just to compile
 }
 
 int	ft_printf(const char *format, ...)
