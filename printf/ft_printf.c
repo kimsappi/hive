@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/19 13:33:36 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/19 13:38:11 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,8 +246,9 @@ char	*ft_itoa_base(int nb, char base, char capitalise)
 	unsigned int	nb_copy;
 	
 	nb_copy = nb;
-	len = (nb == 0 ? 1 : 0);
-	while ((nb_copy = nb_copy / base) > 0)
+	//len = (nb == 0 ? 1 : 0);
+	len = 0;
+	while ((nb_copy /= base) > 0)
 		++len;
 	if (base < 2 || base > 16 || !(str = ft_strnew(len + 1)))
 		return (NULL);
