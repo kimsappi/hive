@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/19 13:09:35 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/19 13:33:36 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ static void	pf_get_precision(const char **str, t_pf_type *type) //will have to r
 	}
 }
 
-static int	pf_pre_pad(t_pf_type type, int len)
+static int	pf_pre_pad(t_pf_type type, int len, char allow_flags)
 {
 	int		i;
 	char	pad_char;
@@ -138,7 +138,7 @@ static int	pf_pre_pad(t_pf_type type, int len)
 		//write(1, "xd\n", 3);
 		return (0);
 	}
-	if (pf_has_flag(type.flags, '0'))
+	if (pf_has_flag(type.flags, '0') && allow_flags)
 	{
 		pad_char = '0';
 		type.sign == '-' ? write(1, &type.sign, 1) : 0;
@@ -190,7 +190,7 @@ static int	pf_put_str(t_pf_type type, va_list params)
 	len = ft_strlen(str);
 	if (type.precision != -1 && type.precision < len)
 		len = type.precision;
-	printed_len = pf_pre_pad(type, len);
+	printed_len = pf_pre_pad(type, len, 0);
 	printed_len += write(1, str, len);
 	printed_len += pf_post_pad(type, printed_len);
 	return (printed_len);
@@ -227,7 +227,7 @@ static int	pf_put_int(t_pf_type type, va_list params)
 	len = ft_strlen(str);
 	printed_len = len;
 	negative = str[0] == '-' ? 1 : 0;
-	printed_len += pf_pre_pad(type, len);
+	printed_len += pf_pre_pad(type, len, 1);
 	//printf("\nasd: %d %d %d %s\n", printed_len, len, type.width, str);
 	write(1, str + negative, len - negative);
 	printed_len += pf_post_pad(type, printed_len);
@@ -249,7 +249,7 @@ char	*ft_itoa_base(int nb, char base, char capitalise)
 	len = (nb == 0 ? 1 : 0);
 	while ((nb_copy = nb_copy / base) > 0)
 		++len;
-	if (base < 2 || base > 16 || !(str = ft_strnew((int)len)))
+	if (base < 2 || base > 16 || !(str = ft_strnew(len + 1)))
 		return (NULL);
 	if (capitalise)
 		ft_memcpy(digits, "0123456789ABCDEF", 16 * sizeof(char));
@@ -275,7 +275,7 @@ static int	pf_put_uint_base(t_pf_type type, va_list params, char base, char capi
 	if (!(str = ft_itoa_base((int)nb, base, capitalise)))
 		return (0);
 	len = ft_strlen(str);
-	ret = len + pf_pre_pad(type, len);
+	ret = len + pf_pre_pad(type, len, 1);
 	write(1, str, len);
 	ret += pf_post_pad(type, len);
 	free(str);
@@ -401,7 +401,7 @@ static int	pf_put_float(t_pf_type type, va_list params, char capitalise)
 		dbl *= -1;
 	}
 	printed_len = pf_float_to_str(type, dbl, str + negative) + negative;
-	pf_pre_pad(type, printed_len);
+	pf_pre_pad(type, printed_len, 1);
 	write(1, str, printed_len);
 	pf_post_pad(type, printed_len);
 	(void) capitalise; //added just to compile
@@ -412,7 +412,7 @@ static int	pf_put_percent(t_pf_type type)
 {
 	int	printed_len;
 
-	printed_len = pf_pre_pad(type, 1);
+	printed_len = pf_pre_pad(type, 1, 0);
 	//printf("\nxd %% retval: %d\n", printed_len);
 	printed_len += write(1, "%", 1);
 //	printf("\nxd %% retval: %d\n", printed_len);

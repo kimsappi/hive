@@ -16,7 +16,9 @@ printf("real\nft\n");
 printf("%05d\n", 123);
 ft_printf("%05d\n", 123);
 ret = ft_printf("%5%\n");
-printf("%d", ret);
+printf("ret: %d\n", ret);
+ret = ft_printf("%x\n", 0);
+printf("ret: %d\n", ret);
 
 return 0;
 }
