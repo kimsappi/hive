@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/16 12:47:07 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/19 13:09:35 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 /*
 static void	pf_get_parameter(const char **str, t_pf_type *type)
 {
-	size_t	until_sign;
-	size_t	i;
+	int	until_sign;
+	int	i;
 	char	*new_pos;
 
 	if ((new_pos = ft_strchr(*str, '$')))
@@ -124,7 +124,7 @@ static void	pf_get_precision(const char **str, t_pf_type *type) //will have to r
 	}
 }
 
-static size_t	pf_pre_pad(t_pf_type type, size_t len)
+static int	pf_pre_pad(t_pf_type type, int len)
 {
 	int		i;
 	char	pad_char;
@@ -135,6 +135,7 @@ static size_t	pf_pre_pad(t_pf_type type, size_t len)
 	{
 		if (type.sign)
 			return (write(1, &type.sign, 1));
+		//write(1, "xd\n", 3);
 		return (0);
 	}
 	if (pf_has_flag(type.flags, '0'))
@@ -142,15 +143,15 @@ static size_t	pf_pre_pad(t_pf_type type, size_t len)
 		pad_char = '0';
 		type.sign == '-' ? write(1, &type.sign, 1) : 0;
 	}
-	i = -1 + type.sign == '-' ? 1 : 0;
-	while (++i + len < (size_t)type.width && type.width > 0)
+	i = -1 + (type.sign == '-' ? 1 : 0);
+	while (++i + len < (int)type.width && type.width > 0)
 		write(1, &pad_char, 1);
-	if (!(pf_has_flag(type.flags, '0')))
+	if (!(pf_has_flag(type.flags, '0')) && type.sign)
 		write (1, &type.sign, 1);
-	return (i + type.sign == '-');
+	return (i + (type.sign == '-'));
 }
 
-static size_t	pf_post_pad(t_pf_type type, size_t len)
+static int	pf_post_pad(t_pf_type type, int len)
 {
 	int		i;
 	char	flag_found;
@@ -165,12 +166,12 @@ static size_t	pf_post_pad(t_pf_type type, size_t len)
 	if (!flag_found)
 		return (0);
 	i = -1;
-	while (++i + len < (size_t)type.width && type.width > 0) 
+	while (++i + len < (int)type.width && type.width > 0) 
 		write(1, " ", 1);
 	return (i);
 }
 
-static size_t	pf_put_char(t_pf_type type, va_list params)
+static int	pf_put_char(t_pf_type type, va_list params)
 {
 	int c;
 
@@ -179,16 +180,23 @@ static size_t	pf_put_char(t_pf_type type, va_list params)
 	return (write(1, &c, 1));
 }
 
-static size_t	pf_put_str(t_pf_type type, va_list params)
+static int	pf_put_str(t_pf_type type, va_list params)
 {
-	char *str;
+	char	*str;
+	int		len;
+	int		printed_len;
 
 	str = va_arg(params, char*);
-	(void)type;
-	return (write(1, str, ft_strlen(str)));
+	len = ft_strlen(str);
+	if (type.precision != -1 && type.precision < len)
+		len = type.precision;
+	printed_len = pf_pre_pad(type, len);
+	printed_len += write(1, str, len);
+	printed_len += pf_post_pad(type, printed_len);
+	return (printed_len);
 }
 
-static size_t	pf_get_int(t_pf_type type, va_list params)
+static int	pf_get_int(t_pf_type type, va_list params)
 {
 	long long	nb;
 
@@ -205,13 +213,13 @@ static size_t	pf_get_int(t_pf_type type, va_list params)
 	return (nb);
 }
 
-static size_t	pf_put_int(t_pf_type type, va_list params)
+static int	pf_put_int(t_pf_type type, va_list params)
 {
 	long long	nb;
 	char		*str;
-	size_t		len;
+	int		len;
 	char		negative;
-	size_t		printed_len;
+	int		printed_len;
 
 	nb = pf_get_int(type, params);
 	if (!(str = ft_itoa(nb)))
@@ -230,7 +238,7 @@ static size_t	pf_put_int(t_pf_type type, va_list params)
 /*
  * Returns string with result of base conversion nb(decimal) to nb(base)
 */
-char	*ft_itoa_base(size_t nb, char base, char capitalise)
+char	*ft_itoa_base(int nb, char base, char capitalise)
 {
 	char			*str;
 	char			digits[16];
@@ -241,7 +249,7 @@ char	*ft_itoa_base(size_t nb, char base, char capitalise)
 	len = (nb == 0 ? 1 : 0);
 	while ((nb_copy = nb_copy / base) > 0)
 		++len;
-	if (base < 2 || base > 16 || !(str = ft_strnew((size_t)len)))
+	if (base < 2 || base > 16 || !(str = ft_strnew((int)len)))
 		return (NULL);
 	if (capitalise)
 		ft_memcpy(digits, "0123456789ABCDEF", 16 * sizeof(char));
@@ -256,15 +264,15 @@ char	*ft_itoa_base(size_t nb, char base, char capitalise)
 	return (str);
 }
 
-static size_t	pf_put_uint_base(t_pf_type type, va_list params, char base, char capitalise)
+static int	pf_put_uint_base(t_pf_type type, va_list params, char base, char capitalise)
 {
 	char			*str;
 	unsigned int	nb;
-	size_t			len;
-	size_t			ret;
+	int			len;
+	int			ret;
 
 	nb = va_arg(params, unsigned int);
-	if (!(str = ft_itoa_base((size_t)nb, base, capitalise)))
+	if (!(str = ft_itoa_base((int)nb, base, capitalise)))
 		return (0);
 	len = ft_strlen(str);
 	ret = len + pf_pre_pad(type, len);
@@ -274,14 +282,14 @@ static size_t	pf_put_uint_base(t_pf_type type, va_list params, char base, char c
 	return (ret);
 }
 
-static size_t	pf_put_ptr(t_pf_type type, va_list params)
+static int	pf_put_ptr(t_pf_type type, va_list params)
 {
-	size_t	ptr;
-	size_t	len;
+	int	ptr;
+	int	len;
 	char	*str;
 
 	write(1, "0x", 2);
-	ptr = va_arg(params, size_t);
+	ptr = va_arg(params, int);
 	if (!ptr)
 	{
 		write(1, "0", 1);
@@ -300,7 +308,7 @@ static pf_put_float(t_pf_type type, va_list params, char capitalise)
 {
 	long double	nb;
 	long double	temp;
-	size_t	len;
+	int	len;
 	char	str[1000];
 	int		i;
 
@@ -345,11 +353,11 @@ static char		ft_strcat_and_free(char *s1, char *s2)
 	}
 }
 
-static size_t	pf_float_to_str(t_pf_type type, long double dbl, char *str)
+static int	pf_float_to_str(t_pf_type type, long double dbl, char *str)
 {
 	unsigned long long	integer;
 	unsigned long long	decimal;
-	size_t				printed_len;
+	int				printed_len;
 
 	integer = (unsigned long long)dbl;
 	dbl = dbl - (long double)integer;
@@ -373,11 +381,11 @@ static size_t	pf_float_to_str(t_pf_type type, long double dbl, char *str)
 	return (ft_strlen(str));
 }
 
-static size_t	pf_put_float(t_pf_type type, va_list params, char capitalise)
+static int	pf_put_float(t_pf_type type, va_list params, char capitalise)
 {
 	long double			dbl;
 	char				str[50];
-	size_t				printed_len;
+	int				printed_len;
 	char				negative;
 
 	ft_bzero(str, 50);
@@ -400,7 +408,20 @@ static size_t	pf_put_float(t_pf_type type, va_list params, char capitalise)
 	return (printed_len);
 }
 
-static size_t	pf_print_type(char c, t_pf_type type, va_list params)
+static int	pf_put_percent(t_pf_type type)
+{
+	int	printed_len;
+
+	printed_len = pf_pre_pad(type, 1);
+	//printf("\nxd %% retval: %d\n", printed_len);
+	printed_len += write(1, "%", 1);
+//	printf("\nxd %% retval: %d\n", printed_len);
+	printed_len += pf_post_pad(type, printed_len);
+//	printf("\nxd %% retval: %d\n", printed_len);
+	return (printed_len);
+}
+
+static int	pf_print_type(char c, t_pf_type type, va_list params)
 {
 	//printf("type: %c\n", c);
 	if (c == 'c')
@@ -419,6 +440,8 @@ static size_t	pf_print_type(char c, t_pf_type type, va_list params)
 		return (pf_put_ptr(type, params));
 	if (c == 'f' || c == 'F')
 		return (pf_put_float(type, params, c == 'F' ? 1 : 0));
+	if (c == '%')
+		return (pf_put_percent(type));
 	return (0);
 }
 
@@ -430,6 +453,7 @@ static int	pf_parse_format(const char **str, va_list params)
 {
 	t_pf_type	type;
 	int			i;
+	int			len;
 	//char	color;
 
 	if (!*((*str)++)) //yooooo
@@ -449,9 +473,9 @@ static int	pf_parse_format(const char **str, va_list params)
 	pf_get_width(str, &type);
 	pf_get_precision(str, &type);
 	pf_get_length(str, &type);
-	pf_print_type(**str, type, params);
+	len = pf_print_type(**str, type, params);
 	++(*str);
-	return (0); //added just to compile
+	return (len); //added just to compile
 }
 
 int	ft_printf(const char *format, ...)

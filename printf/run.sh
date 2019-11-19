@@ -1,2 +1,3 @@
-gcc main.c ft_printf.c libft/libft.a -Ilibft
+make re
+gcc main.c libftprintf.a -Ilibft
 ./a.out

@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 int main() {
+	int ret = -1;
 	char a[] = "asd";
 ft_printf("##########asd\n%s\n%c\n", "123", 'X');
 ft_printf("%-05da\n", 123);
@@ -14,6 +15,8 @@ printf("###################\n");
 printf("real\nft\n");
 printf("%05d\n", 123);
 ft_printf("%05d\n", 123);
+ret = ft_printf("%5%\n");
+printf("%d", ret);
 
 return 0;
 }
