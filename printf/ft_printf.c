@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/19 13:38:11 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/19 13:43:29 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,15 +238,15 @@ static int	pf_put_int(t_pf_type type, va_list params)
 /*
  * Returns string with result of base conversion nb(decimal) to nb(base)
 */
-char	*ft_itoa_base(int nb, char base, char capitalise)
+char	*ft_itoa_base(unsigned long long nb, char base, char capitalise)
 {
-	char			*str;
-	char			digits[16];
-	int				len;
-	unsigned int	nb_copy;
+	char				*str;
+	char				digits[16];
+	int					len;
+	unsigned long long	nb_copy;
 	
 	nb_copy = nb;
-	//len = (nb == 0 ? 1 : 0);
+	//len = (nb == 0 ? 1 : 0); Removing this fixed 00 problem.
 	len = 0;
 	while ((nb_copy /= base) > 0)
 		++len;
@@ -267,13 +267,13 @@ char	*ft_itoa_base(int nb, char base, char capitalise)
 
 static int	pf_put_uint_base(t_pf_type type, va_list params, char base, char capitalise)
 {
-	char			*str;
-	unsigned int	nb;
-	int			len;
-	int			ret;
+	char				*str;
+	unsigned long long	nb;
+	int					len;
+	int					ret;
 
-	nb = va_arg(params, unsigned int);
-	if (!(str = ft_itoa_base((int)nb, base, capitalise)))
+	nb = va_arg(params, unsigned long long);
+	if (!(str = ft_itoa_base(nb, base, capitalise)))
 		return (0);
 	len = ft_strlen(str);
 	ret = len + pf_pre_pad(type, len, 1);
