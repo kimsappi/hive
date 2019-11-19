@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/19 13:43:29 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/19 15:35:33 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ static void pf_get_length(const char **str, t_pf_type *type)
 		++(*str);
 		type->length = PRINTF_CPTL_L;
 	}
+	type->type = **str;
 }
 
 static void	pf_get_precision(const char **str, t_pf_type *type) //will have to return something if e.g. "%.d"
@@ -174,10 +175,13 @@ static int	pf_post_pad(t_pf_type type, int len)
 static int	pf_put_char(t_pf_type type, va_list params)
 {
 	int c;
+	int printed_len;
 
 	c = va_arg(params, int);
-	(void)type;
-	return (write(1, &c, 1));
+	printed_len = pf_pre_pad(type, 1, 1);
+	printed_len += write(1, &c, 1);
+	printed_len += pf_post_pad(type, printed_len);
+	return (printed_len);
 }
 
 static int	pf_put_str(t_pf_type type, va_list params)
@@ -187,6 +191,8 @@ static int	pf_put_str(t_pf_type type, va_list params)
 	int		printed_len;
 
 	str = va_arg(params, char*);
+	if (!str)
+		return (write(1, "(null)", 6));
 	len = ft_strlen(str);
 	if (type.precision != -1 && type.precision < len)
 		len = type.precision;
@@ -196,7 +202,7 @@ static int	pf_put_str(t_pf_type type, va_list params)
 	return (printed_len);
 }
 
-static int	pf_get_int(t_pf_type type, va_list params)
+static long long	pf_get_int(t_pf_type type, va_list params)
 {
 	long long	nb;
 
@@ -210,6 +216,23 @@ static int	pf_get_int(t_pf_type type, va_list params)
 		nb = (long long)va_arg(params, long long);
 	if (type.length == -1)
 		nb = (long long)va_arg(params, int);
+	return (nb);
+}
+
+static unsigned long long	pf_get_uint(t_pf_type type, va_list params)
+{
+	long long	nb;
+
+	if (type.length == PRINTF_H)
+		nb = (unsigned long long)va_arg(params, unsigned int);
+	if (type.length == PRINTF_HH)
+		nb = (unsigned long long)va_arg(params, unsigned int);
+	if (type.length == PRINTF_L)
+		nb = (unsigned long long)va_arg(params, unsigned long);
+	if (type.length == PRINTF_LL)
+		nb = (unsigned long long)va_arg(params, unsigned long long);
+	if (type.length == -1)
+		nb = (unsigned long long)va_arg(params, unsigned int);
 	return (nb);
 }
 
@@ -272,7 +295,8 @@ static int	pf_put_uint_base(t_pf_type type, va_list params, char base, char capi
 	int					len;
 	int					ret;
 
-	nb = va_arg(params, unsigned long long);
+	//nb = va_arg(params, unsigned long long); //
+	nb = (unsigned long long)pf_get_uint(type, params);
 	if (!(str = ft_itoa_base(nb, base, capitalise)))
 		return (0);
 	len = ft_strlen(str);
