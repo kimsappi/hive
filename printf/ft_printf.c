@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/19 15:35:33 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/19 15:48:58 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,11 +132,11 @@ static int	pf_pre_pad(t_pf_type type, int len, char allow_flags)
 	
 	pad_char = ' ';
 	i = -1;
+	
 	if (pf_has_flag(type.flags, '-'))
 	{
 		if (type.sign)
 			return (write(1, &type.sign, 1));
-		//write(1, "xd\n", 3);
 		return (0);
 	}
 	if (pf_has_flag(type.flags, '0') && allow_flags)
