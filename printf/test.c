@@ -4,7 +4,8 @@ int main() {
 
 	printf("\n");
 	printf("abc%cde\n", nul);
-	
+	printf("#x", 0);
+	printf("#.x", 0);
 	printf("\n");
 }
 // \b\b\b12

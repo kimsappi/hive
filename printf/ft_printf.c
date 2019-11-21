@@ -251,12 +251,13 @@ static int	pf_put_int(t_pf_type type, va_list params)
 	len = ft_strlen(str);
 	printed_len = len;
 	negative = str[0] == '-' ? 1 : 0;
+	negative ? type.sign = '-' : 0;
 	printed_len += pf_pre_pad(type, len, 1);
 	//printf("\nasd: %d %d %d %s\n", printed_len, len, type.width, str);
 	write(1, str + negative, len - negative);
 	printed_len += pf_post_pad(type, printed_len);
 	free(str);
-	return (printed_len - negative);
+	return (printed_len - 2 * negative);
 }
 
 /*
@@ -304,7 +305,7 @@ static int	pf_pre_pad_uint_base(t_pf_type type, int len, char base, char capital
 	if (pf_has_flag(type.flags, '0'))
 	{
 		pad_char = '0';
-		type.sign == '-' ? write(1, &type.sign, 1) : 0;
+		write(1, type.uint_sign, ft_strlen(type.uint_sign));
 	}
 	i = -1 + ft_strlen(type.uint_sign);
 	while (++i + len < (int)type.width && type.width > 0)
@@ -334,7 +335,7 @@ static int	pf_put_uint_base(t_pf_type type, va_list params, char base, char capi
 	}
 	ret = len + pf_pre_pad_uint_base(type, len, base, capitalise);
 	write(1, str, len);
-	ret += pf_post_pad(type, len);
+	ret += pf_post_pad(type, ret);
 	free(str);
 	return (ret);
 }
