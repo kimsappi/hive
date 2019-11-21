@@ -326,6 +326,12 @@ static int	pf_put_uint_base(t_pf_type type, va_list params, char base, char capi
 	if (!(str = ft_itoa_base(nb, base, capitalise)))
 		return (0);
 	len = ft_strlen(str);
+	if (str[0] == '0' && pf_has_flag(type.flags, '#'))
+	{
+		ret = -1;
+		while (++ret < 6)
+			type.flags[ret] == '#' ? type.flags[ret] = 0 : 0;
+	}
 	ret = len + pf_pre_pad_uint_base(type, len, base, capitalise);
 	write(1, str, len);
 	ret += pf_post_pad(type, len);
