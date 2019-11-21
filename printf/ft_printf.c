@@ -64,6 +64,7 @@ static void	pf_type_init(t_pf_type *type)
 {
 	type->type = 0;
 	ft_bzero(type->flags, 6 * sizeof(char));
+	ft_bzero(type->uint_sign, 3 * sizeof(char));
 	type->precision = -1;
 	type->width = -1;
 	type->length = -1;
@@ -288,6 +289,31 @@ char	*ft_itoa_base(unsigned long long nb, char base, char capitalise)
 	return (str);
 }
 
+static int	pf_pre_pad_uint_base(t_pf_type type, int len, char base, char capitalise)
+{
+	int		i;
+	char	pad_char;
+	
+	if (base == 16 && pf_has_flag(type.flags, '#'))
+		ft_strcpy(type.uint_sign, capitalise ? "0X" : "0x");
+	if (base == 8 && pf_has_flag(type.flags, '#'))
+		ft_strcpy(type.uint_sign, "0");
+	pad_char = ' ';
+	if (pf_has_flag(type.flags, '-'))
+		return (write(1, type.uint_sign, ft_strlen(type.uint_sign)));
+	if (pf_has_flag(type.flags, '0'))
+	{
+		pad_char = '0';
+		type.sign == '-' ? write(1, &type.sign, 1) : 0;
+	}
+	i = -1 + ft_strlen(type.uint_sign);
+	while (++i + len < (int)type.width && type.width > 0)
+		write(1, &pad_char, 1);
+	if (!(pf_has_flag(type.flags, '0')) && ft_strlen(type.uint_sign))
+		write (1, type.uint_sign, ft_strlen(type.uint_sign));
+	return (i + (type.sign == '-'));
+}
+
 static int	pf_put_uint_base(t_pf_type type, va_list params, char base, char capitalise)
 {
 	char				*str;
@@ -300,7 +326,7 @@ static int	pf_put_uint_base(t_pf_type type, va_list params, char base, char capi
 	if (!(str = ft_itoa_base(nb, base, capitalise)))
 		return (0);
 	len = ft_strlen(str);
-	ret = len + pf_pre_pad(type, len, 1);
+	ret = len + pf_pre_pad_uint_base(type, len, base, capitalise);
 	write(1, str, len);
 	ret += pf_post_pad(type, len);
 	free(str);
@@ -523,6 +549,7 @@ int	ft_printf(const char *format, ...)
 			length += substr_len;
 			write(1, format, substr_len);
 			format += substr_len;
+			//substr_len = pf_parse_format(&format, params);
 			if (!(substr_len = pf_parse_format(&format, params)))
 				return (length);
 			length += substr_len;

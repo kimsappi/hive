@@ -15,7 +15,7 @@ NAME = libftprintf.a
 SRC = libft/ft_printf.c libft/ft_atoi.c libft/ft_bzero.c libft/ft_intpow.c \
 	libft/ft_isdigit.c libft/ft_itoa.c libft/ft_memcpy.c \
 	libft/ft_strcat.c libft/ft_strclen.c libft/ft_strlen.c \
-	libft/ft_strnew.c
+	libft/ft_strnew.c libft/ft_strcpy.c
 
 OBJ2 = $(SRC:.c=.o)
 

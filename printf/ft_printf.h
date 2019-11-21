@@ -38,6 +38,7 @@ typedef struct	s_pf_type
 	char	length;
 	char	type;
 	char	sign;
+	char	uint_sign[3];
 }				t_pf_type;
 
 int	ft_printf(const char *format, ...);
