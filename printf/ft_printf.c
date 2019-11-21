@@ -48,7 +48,7 @@ static char	pf_has_flag(char *flags, char flag)
 static char	pf_is_flag(const char *str, t_pf_type *type)
 { // I actually need to loop through here because order matters:
 // %[parameter***$***][flags][width][.precision][length (hh, ll, L)]type
-	if (*str == '+' || *str == ' ' || *str == '0') // added *str == '0' to try to fix int
+	if (*str == '+' || *str == ' ')// || *str == '0') // added *str == '0' to try to fix int
 	{
 		if (!(*str == ' ' && type->sign))
 			type->sign = *str;
@@ -128,12 +128,10 @@ static void	pf_get_precision(const char **str, t_pf_type *type) //will have to r
 
 static int	pf_pre_pad(t_pf_type type, int len, char allow_flags)
 {
-	int		i;
+	int		pad_len;
 	char	pad_char;
 	
 	pad_char = ' ';
-	i = -1;
-	
 	if (pf_has_flag(type.flags, '-'))
 	{
 		if (type.sign)
@@ -143,14 +141,14 @@ static int	pf_pre_pad(t_pf_type type, int len, char allow_flags)
 	if (pf_has_flag(type.flags, '0') && allow_flags)
 	{
 		pad_char = '0';
-		type.sign == '-' ? write(1, &type.sign, 1) : 0;
+		type.sign ? write(1, &type.sign, 1) : 0;
 	}
-	i = -1 + (type.sign == '-' ? 1 : 0);
-	while (++i + len < (int)type.width && type.width > 0)
+	pad_len = -1 + (type.sign / ' ');
+	while (++pad_len + len < (int)type.width && type.width > 0)
 		write(1, &pad_char, 1);
 	if (!(pf_has_flag(type.flags, '0')) && type.sign)
 		write (1, &type.sign, 1);
-	return (i + (type.sign == '-'));
+	return (pad_len);
 }
 
 static int	pf_post_pad(t_pf_type type, int len)
@@ -252,12 +250,12 @@ static int	pf_put_int(t_pf_type type, va_list params)
 	printed_len = len;
 	negative = str[0] == '-' ? 1 : 0;
 	negative ? type.sign = '-' : 0;
-	printed_len += pf_pre_pad(type, len, 1);
+	printed_len += pf_pre_pad(type, len - negative, 1);
 	//printf("\nasd: %d %d %d %s\n", printed_len, len, type.width, str);
 	write(1, str + negative, len - negative);
-	printed_len += pf_post_pad(type, printed_len);
+	printed_len += pf_post_pad(type, printed_len - negative);
 	free(str);
-	return (printed_len - 2 * negative);
+	return (printed_len - negative);
 }
 
 /*
