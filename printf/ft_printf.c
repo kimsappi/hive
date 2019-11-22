@@ -325,6 +325,29 @@ char	*ft_itoa_base(unsigned long long nb, char base, char capitalise)
 	return (str);
 }
 
+static char	*pf_uint_to_string(t_pf_type type, unsigned long long nb, char base, char capitalise)
+{
+	char	*str;
+	int		len;
+	char	*str_padded;
+
+	if (!(str = ft_itoa_base(nb, base, capitalise)))
+		return (NULL);
+	len = ft_strlen(str);
+	str_padded = str;
+	if (type.precision > len)
+	{
+		if ((str_padded = ft_strnew(type.precision)))
+		{
+			ft_memset(str_padded, '0', type.precision);
+			ft_strcpy(str_padded + type.precision - len, str);
+			//printf("type.precision + negative - len: %d\n", type.precision + negative - len);
+		}
+		free(str);
+	}
+	return (str_padded);
+}
+
 static int	pf_pre_pad_uint_base(t_pf_type type, int len, char base, char capitalise)
 {
 	int		i;
@@ -359,7 +382,7 @@ static int	pf_put_uint_base(t_pf_type type, va_list params, char base, char capi
 
 	//nb = va_arg(params, unsigned long long); //
 	nb = (unsigned long long)pf_get_uint(type, params);
-	if (!(str = ft_itoa_base(nb, base, capitalise)))
+	if (!(str = pf_uint_to_string(type, nb, base, capitalise)))
 		return (0);
 	len = ft_strlen(str);
 	if (str[0] == '0' && pf_has_flag(type.flags, '#'))
@@ -367,6 +390,11 @@ static int	pf_put_uint_base(t_pf_type type, va_list params, char base, char capi
 		ret = -1;
 		while (++ret < 6)
 			type.flags[ret] == '#' ? type.flags[ret] = 0 : 0;
+	}
+	if (!type.precision && !nb)
+	{
+		len = 0;
+		str[0] = 0;
 	}
 	ret = len + pf_pre_pad_uint_base(type, len, base, capitalise);
 	write(1, str, len);
@@ -568,7 +596,7 @@ static int	pf_parse_format(const char **str, va_list params)
 	pf_get_length(str, &type);
 	len = pf_print_type(**str, type, params);
 	++(*str);
-	return (len); //added just to compile
+	return (len);
 }
 
 int	ft_printf(const char *format, ...)
