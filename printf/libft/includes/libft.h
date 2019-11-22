@@ -95,5 +95,6 @@ long			ft_intpow(int base, unsigned int exponent);
 size_t			ft_strclen(char const *s, int c);
 int				ft_ceil_sqrt(unsigned int n);
 int				get_next_line(const int fd, char **line);
+char			*ft_lltoa(long long n);
 
 #endif
