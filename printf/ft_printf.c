@@ -142,13 +142,16 @@ static int	pf_pre_pad(t_pf_type type, int len, char allow_flags)
 	if (pf_has_flag(type.flags, '0') && allow_flags)
 	{
 		pad_char = '0';
-		type.sign ? write(1, &type.sign, 1) : 0;
+		if (!(type.precision < type.width && type.precision > -1))
+			type.sign ? write(1, &type.sign, 1) : 0;
 	}
+	if (type.precision < type.width && type.precision > -1)
+		pad_char = ' ';
 	pad_len = -1 + (type.sign / ' ');
 	while (++pad_len + len < (int)type.width && type.width > 0)
 		write(1, &pad_char, 1);
-	if (!(pf_has_flag(type.flags, '0')) && type.sign)
-		write (1, &type.sign, 1);
+	if (type.sign && pad_char == ' ')
+		write(1, &type.sign, 1);
 	return (pad_len);
 }
 

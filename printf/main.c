@@ -20,5 +20,8 @@ printf("ret: %d\n", ret);
 ret = ft_printf("%08x\n", 42);
 printf("ret: %d\n", ret);
 
+ft_printf("%05.3d\n", -42);
+printf("%05.3d\n", -42);
+
 return 0;
 }

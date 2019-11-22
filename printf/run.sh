@@ -1,3 +1,3 @@
 make re
-gcc main.c libftprintf.a -Ilibft
+gcc main.c libftprintf.a -Ilibft/includes
 ./a.out
