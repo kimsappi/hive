@@ -16,6 +16,8 @@ static char	*itoa_to_string(char *str, long nb, char length, char negative)
 {
 	char i;
 
+	if (!str)
+		return (NULL);
 	i = 1;
 	str[(int)length] = 0;
 	if (negative)
@@ -53,7 +55,5 @@ char		*ft_itoa(int n)
 	if (!length)
 		length = 1;
 	str = (char *)malloc(length + 1);
-	if (!str)
-		return (NULL);
 	return (itoa_to_string(str, nb, length, negative));
 }
