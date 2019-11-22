@@ -117,7 +117,8 @@ static void	pf_get_precision(const char **str, t_pf_type *type) //will have to r
 	if (**str == '.')
 	{
 		++(*str);
-		if (ft_isdigit(**str))
+		//if (ft_isdigit(**str))
+		if (**str)
 		{
 			type->precision = ft_atoi(*str);
 			while (ft_isdigit(**str))
@@ -206,9 +207,9 @@ static long long	pf_get_int(t_pf_type type, va_list params)
 	long long	nb;
 
 	if (type.length == PRINTF_H)
-		nb = (long long)va_arg(params, int);
+		nb = (long long)(short)va_arg(params, int);
 	if (type.length == PRINTF_HH)
-		nb = (long long)va_arg(params, int);
+		nb = (long long)(char)va_arg(params, int);
 	if (type.length == PRINTF_L)
 		nb = (long long)va_arg(params, long);
 	if (type.length == PRINTF_LL)
@@ -223,9 +224,9 @@ static unsigned long long	pf_get_uint(t_pf_type type, va_list params)
 	long long	nb;
 
 	if (type.length == PRINTF_H)
-		nb = (unsigned long long)va_arg(params, unsigned int);
+		nb = (unsigned long long)(unsigned short)va_arg(params, unsigned int);
 	if (type.length == PRINTF_HH)
-		nb = (unsigned long long)va_arg(params, unsigned int);
+		nb = (unsigned long long)(unsigned char)va_arg(params, unsigned int);
 	if (type.length == PRINTF_L)
 		nb = (unsigned long long)va_arg(params, unsigned long);
 	if (type.length == PRINTF_LL)
@@ -235,18 +236,51 @@ static unsigned long long	pf_get_uint(t_pf_type type, va_list params)
 	return (nb);
 }
 
+static char	*pf_int_to_string(t_pf_type type, long long nb)
+{
+	char	*str;
+	int		len;
+	char	negative;
+	char	*str_padded;
+
+	if (!(str = ft_lltoa(nb)))
+		return (NULL);
+	len = ft_strlen(str);
+	negative = str[0] == '-' ? 1 : 0;
+	str_padded = str;
+	if (type.precision > len - negative)
+	{
+		if ((str_padded = ft_strnew(type.precision + negative)))
+		{
+			ft_memset(str_padded, '0', type.precision + negative);
+			ft_strcpy(str_padded + type.precision + 2 * negative - len, str + negative);
+			//printf("type.precision + negative - len: %d\n", type.precision + negative - len);
+		}
+		if (str_padded && negative)
+			str_padded[0] = '-';
+		free(str);
+	}
+	return (str_padded);
+}
+
 static int	pf_put_int(t_pf_type type, va_list params)
 {
 	long long	nb;
 	char		*str;
-	int		len;
+	int			len;
 	char		negative;
-	int		printed_len;
+	int			printed_len;
 
 	nb = pf_get_int(type, params);
-	if (!(str = ft_itoa(nb)))
+	if (!(str = pf_int_to_string(type, nb)))
 		return (-1);
 	len = ft_strlen(str);
+		//printf("wowzer: %d\n", type.precision);
+	if (!type.precision && !nb)
+	{
+		len = 0;
+		str[0] = 0;
+	}
 	printed_len = len;
 	negative = str[0] == '-' ? 1 : 0;
 	negative ? type.sign = '-' : 0;

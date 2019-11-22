@@ -38,8 +38,8 @@ char		*ft_lltoa(long long n)
 	char		length;
 	char		*str;
 
-	if (n == -9223372036854775807)
-		return (ft_strdup("-9223372036854775807"));
+	if (n == -9223372036854775807 - 1)
+		return (ft_strdup("-9223372036854775808"));
 	nb = n;
 	length = 0;
 	while (n)
