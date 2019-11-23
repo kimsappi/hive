@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/19 15:48:58 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/23 10:42:18 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,10 +147,10 @@ static int	pf_pre_pad(t_pf_type type, int len, char allow_flags)
 	}
 	if (type.precision < type.width && type.precision > -1)
 		pad_char = ' ';
-	pad_len = -1 + (type.sign / ' ');
+	pad_len = -1 + (type.sign / ' ') * allow_flags;
 	while (++pad_len + len < (int)type.width && type.width > 0)
 		write(1, &pad_char, 1);
-	if (type.sign && pad_char == ' ')
+	if (type.sign && pad_char == ' ' && allow_flags)
 		write(1, &type.sign, 1);
 	return (pad_len);
 }
@@ -181,7 +181,7 @@ static int	pf_put_char(t_pf_type type, va_list params)
 	int printed_len;
 
 	c = va_arg(params, int);
-	printed_len = pf_pre_pad(type, 1, 1);
+	printed_len = pf_pre_pad(type, 1, 0);
 	printed_len += write(1, &c, 1);
 	printed_len += pf_post_pad(type, printed_len);
 	return (printed_len);
