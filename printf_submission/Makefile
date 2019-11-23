@@ -5,31 +5,33 @@
 #                                                     +:+ +:+         +:+      #
 #    By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/11/05 15:32:21 by yyan              #+#    #+#              #
-#    Updated: 2019/11/23 13:31:01 by ksappi           ###   ########.fr        #
+#    Created: 2019/11/05 15:32:21 by ksappi            #+#    #+#              #
+#    Updated: 2019/11/23 14:29:12 by ksappi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
-SRC = src/ft_atoi.c src/ft_bzero.c src/ft_intpow.c \
-	src/ft_isdigit.c src/ft_itoa.c src/ft_memcpy.c \
-	src/ft_strcat.c src/ft_strclen.c src/ft_strlen.c \
-	src/ft_strnew.c src/ft_strcpy.c src/ft_lltoa.c \
-	src/ft_strdup.c src/ft_memset.c src/ft_itoa_base.c \
-	src/ft_strcat_and_free.c \
-	src/ft_printf_float.c \
-	src/ft_printf_get_style.c \
-	src/ft_printf_int.c \
-	src/ft_printf_padding.c \
-	src/ft_printf_text.c \
-	src/ft_printf_uint_base.c \
-	src/ft_printf_utils.c \
-	src/ft_printf.c
+SRC_FILES = ft_atoi.c ft_bzero.c ft_intpow.c \
+	ft_isdigit.c ft_itoa.c ft_memcpy.c \
+	ft_strcat.c ft_strclen.c ft_strlen.c \
+	ft_strnew.c ft_strcpy.c ft_lltoa.c \
+	ft_strdup.c ft_memset.c ft_itoa_base.c \
+	ft_strcat_and_free.c \
+	ft_printf_float.c \
+	ft_printf_get_style.c \
+	ft_printf_int.c \
+	ft_printf_padding.c \
+	ft_printf_text.c \
+	ft_printf_uint_base.c \
+	ft_printf_utils.c \
+	ft_printf.c
 
-OBJ2 = $(subst .c,.o,$(SRC))
+OBJ = $(subst .c,.o,$(SRC_FILES))
 
-OBJ = $(subst src/,,$(OBJ2))
+SRC_DIR = src/
+
+SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
 
 FLAGS = -Wall -Wextra -Werror
 
@@ -37,10 +39,12 @@ INCLUDES = includes
 
 all: $(NAME)
 
-$(NAME):
+$(OBJ):
 	gcc -c $(FLAGS) $(SRC) -I$(INCLUDES)
 	ar rc $(NAME) $(OBJ)
 	ranlib $(NAME)
+
+$(NAME): $(OBJ)
 
 clean:
 	rm -f $(OBJ)
