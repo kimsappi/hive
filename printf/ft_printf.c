@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/23 10:42:18 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/23 11:02:22 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -577,7 +577,7 @@ static int	pf_parse_format(const char **str, va_list params)
 	int			len;
 	//char	color;
 
-	if (!*((*str)++)) //yooooo
+	if (!(**str) || !*((*str)++)) //yooooo
 		return (0);
 	if (!**str)
 		return (-1);
@@ -620,9 +620,8 @@ int	ft_printf(const char *format, ...)
 			write(1, format, substr_len);
 			format += substr_len;
 			//substr_len = pf_parse_format(&format, params);
-			if (!(substr_len = pf_parse_format(&format, params)))
-				return (length);
-			length += substr_len;
+			if ((substr_len = pf_parse_format(&format, params)) > 0)
+				length += substr_len;
 		}
 	}
 	va_end(params);
