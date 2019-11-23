@@ -24,6 +24,7 @@ ft_printf("%05.3d\n", -42);
 printf("%05.3d\n", -42);
 */
 
-ft_printf("asd%#.x123", 0);
+printf("%p\n%7pa\n", NULL, NULL);
+ft_printf("%p\n%7pa\n", NULL, NULL);
 return 0;
 }

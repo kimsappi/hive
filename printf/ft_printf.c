@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/23 11:23:59 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/23 11:43:42 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,18 @@ static void	pf_get_parameter(const char **str, t_pf_type *type)
 	}
 }
 */
+
+static char		ft_strcat_and_free(char *s1, char *s2)
+{
+	if (!s2)
+		return (0);
+	else
+	{
+		ft_strcat(s1, s2);
+		free(s2);
+		return (1);
+	}
+}
 
 static char	pf_has_flag(char *flags, char flag)
 {
@@ -410,20 +422,24 @@ static int	pf_put_ptr(t_pf_type type, va_list params)
 	int	ptr;
 	int	len;
 	char	*str;
+	char	*temp_str;
 
-	write(1, "0x", 2);
+	if (!(str = ft_strnew(10)))
+		return (0);
+	ft_strcpy(str, "0x");
 	ptr = va_arg(params, int);
+	temp_str = NULL;
 	if (!ptr)
-	{
-		write(1, "0", 1);
-		return (3);
-	}
-	if (!(str = ft_itoa_base(ptr, 16, 1)))
-		return (2);
+		ft_strcpy(str + 2, "0");
+	else if (!(temp_str = ft_itoa_base(ptr, 16, 1)))
+		return (0);
+	if (temp_str)
+		ft_strcat_and_free(str, temp_str);
 	len = ft_strlen(str);
-	write(1, str, len);
+	len += pf_pre_pad(type, len, 0);
+	write(1, str, ft_strlen(str));
+	pf_post_pad(type, len);
 	free(str);
-	(void)type; //added just to compile
 	return (len + 2);
 }
 /*
@@ -463,18 +479,6 @@ static pf_put_float(t_pf_type type, va_list params, char capitalise)
 	printf("len of integer part: %lu\n", len);
 }
 */
-
-static char		ft_strcat_and_free(char *s1, char *s2)
-{
-	if (!s2)
-		return (0);
-	else
-	{
-		ft_strcat(s1, s2);
-		free(s2);
-		return (1);
-	}
-}
 
 static int	pf_float_to_str(t_pf_type type, long double dbl, char *str)
 {
