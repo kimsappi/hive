@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/23 11:43:42 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/23 11:58:20 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ static void pf_get_length(const char **str, t_pf_type *type)
 		++(*str);
 		type->length = PRINTF_CPTL_L;
 	}
-	type->type = **str;
+	(**str) ? type->type = **str : 0;
 }
 
 static void	pf_get_precision(const char **str, t_pf_type *type) //will have to return something if e.g. "%.d"
@@ -601,7 +601,7 @@ static int	pf_parse_format(const char **str, va_list params)
 	pf_get_precision(str, &type);
 	pf_get_length(str, &type);
 	len = pf_print_type(**str, type, params);
-	++(*str);
+	**str ? ++(*str) : 0;
 	return (len);
 }
 

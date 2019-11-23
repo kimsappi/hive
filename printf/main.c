@@ -26,5 +26,7 @@ printf("%05.3d\n", -42);
 
 printf("%p\n%7pa\n", NULL, NULL);
 ft_printf("%p\n%7pa\n", NULL, NULL);
+ft_printf("undefined:\n");
+ft_printf("% h");
 return 0;
 }

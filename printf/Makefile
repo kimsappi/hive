@@ -6,7 +6,7 @@
 #    By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/05 15:32:21 by yyan              #+#    #+#              #
-#    Updated: 2019/11/16 14:09:30 by ksappi           ###   ########.fr        #
+#    Updated: 2019/11/23 11:59:27 by ksappi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ LIBFT = ./libft
 all: $(NAME)
 
 $(NAME):
-	gcc $(FLAGS) -c $(SRC) -I$(HEADER) -I.
+	gcc -c $(FLAGS) $(SRC) -I$(HEADER) -I.
 	ar rc $(NAME) $(OBJ)
 	ranlib $(NAME)
 
