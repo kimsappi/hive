@@ -6,13 +6,13 @@
 #    By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/05 15:32:21 by yyan              #+#    #+#              #
-#    Updated: 2019/11/23 11:59:27 by ksappi           ###   ########.fr        #
+#    Updated: 2019/11/23 12:37:41 by ksappi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
-SRC = libft/ft_printf.c libft/ft_atoi.c libft/ft_bzero.c libft/ft_intpow.c \
+SRC = ft_printf*.c libft/ft_atoi.c libft/ft_bzero.c libft/ft_intpow.c \
 	libft/ft_isdigit.c libft/ft_itoa.c libft/ft_memcpy.c \
 	libft/ft_strcat.c libft/ft_strclen.c libft/ft_strlen.c \
 	libft/ft_strnew.c libft/ft_strcpy.c libft/ft_lltoa.c \
