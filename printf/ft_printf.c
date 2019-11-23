@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/23 11:02:22 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/23 11:23:59 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,25 +352,27 @@ static int	pf_pre_pad_uint_base(t_pf_type type, int len, char base, char capital
 {
 	int		i;
 	char	pad_char;
+	int		printed_len;
 	
 	if (base == 16 && pf_has_flag(type.flags, '#'))
 		ft_strcpy(type.uint_sign, capitalise ? "0X" : "0x");
 	if (base == 8 && pf_has_flag(type.flags, '#'))
 		ft_strcpy(type.uint_sign, "0");
 	pad_char = ' ';
+	printed_len = 0;
 	if (pf_has_flag(type.flags, '-'))
 		return (write(1, type.uint_sign, ft_strlen(type.uint_sign)));
-	if (pf_has_flag(type.flags, '0'))
+	if (pf_has_flag(type.flags, '0') && len)
 	{
 		pad_char = '0';
-		write(1, type.uint_sign, ft_strlen(type.uint_sign));
+		printed_len = write(1, type.uint_sign, ft_strlen(type.uint_sign));
 	}
 	i = -1 + ft_strlen(type.uint_sign);
 	while (++i + len < (int)type.width && type.width > 0)
-		write(1, &pad_char, 1);
-	if (!(pf_has_flag(type.flags, '0')) && ft_strlen(type.uint_sign))
-		write (1, type.uint_sign, ft_strlen(type.uint_sign));
-	return (i + (type.sign == '-'));
+		printed_len += write(1, &pad_char, 1);
+	if (!(pf_has_flag(type.flags, '0')) && ft_strlen(type.uint_sign) && len)
+		printed_len += write (1, type.uint_sign, ft_strlen(type.uint_sign));
+	return (printed_len);
 }
 
 static int	pf_put_uint_base(t_pf_type type, va_list params, char base, char capitalise)
@@ -385,16 +387,16 @@ static int	pf_put_uint_base(t_pf_type type, va_list params, char base, char capi
 	if (!(str = pf_uint_to_string(type, nb, base, capitalise)))
 		return (0);
 	len = ft_strlen(str);
+	if (!type.precision && !nb && (!pf_has_flag(type.flags, '#') || base == 16))
+	{
+		len = 0;
+		str[0] = 0;
+	}
 	if (str[0] == '0' && pf_has_flag(type.flags, '#'))
 	{
 		ret = -1;
 		while (++ret < 6)
 			type.flags[ret] == '#' ? type.flags[ret] = 0 : 0;
-	}
-	if (!type.precision && !nb)
-	{
-		len = 0;
-		str[0] = 0;
 	}
 	ret = len + pf_pre_pad_uint_base(type, len, base, capitalise);
 	write(1, str, len);
