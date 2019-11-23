@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 12:14:29 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/23 12:23:49 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/23 15:00:09 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	pf_pre_pad_uint_base(t_pf_type type, int len, char base, char capitalise)
 		pad_char = '0';
 		printed_len = write(1, type.uint_sign, ft_strlen(type.uint_sign));
 	}
+	if (type.precision < type.width && type.precision > -1)
+		pad_char = ' ';
 	i = -1 + ft_strlen(type.uint_sign);
 	while (++i + len < (int)type.width && type.width > 0)
 		printed_len += write(1, &pad_char, 1);
@@ -73,12 +75,7 @@ int	pf_post_pad(t_pf_type type, int len)
 	char	flag_found;
 
 	i = -1;
-	flag_found = 0;
-	while (type.flags[++i])
-	{
-		if (type.flags[i] == '-')
-			flag_found = 1;
-	}
+	flag_found = pf_has_flag(type.flags, '-');
 	if (!flag_found)
 		return (0);
 	i = -1;
