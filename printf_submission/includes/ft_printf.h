@@ -6,11 +6,9 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 13:14:23 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/23 12:52:20 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/23 13:33:55 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//probably need to add this to libft?
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
@@ -40,22 +38,24 @@ typedef struct	s_pf_type
 	char	uint_sign[3];
 }				t_pf_type;
 
-int		ft_printf(const char *format, ...);
-char	pf_has_flag(char *flags, char flag);
-char	pf_is_flag(const char *str, t_pf_type *type);
-void	pf_type_init(t_pf_type *type);
-void	pf_get_width(const char **str, t_pf_type *type);
-void	pf_get_length(const char **str, t_pf_type *type);
-void	pf_get_precision(const char **str, t_pf_type *type);
-int		pf_pre_pad(t_pf_type type, int len, char allow_flags);
-int		pf_pre_pad_uint_base(t_pf_type type, int len, char base, char capitalise);
-int		pf_post_pad(t_pf_type type, int len);
-int		pf_put_float(t_pf_type type, va_list params);
-int		pf_put_int(t_pf_type type, va_list params);
-int		pf_put_uint_base(t_pf_type type, va_list params, char base, char capitalise);
-int		pf_put_char(t_pf_type type, va_list params);
-int		pf_put_str(t_pf_type type, va_list params);
-int		pf_put_ptr(t_pf_type type, va_list params);
-int		pf_put_percent(t_pf_type type);
+int				ft_printf(const char *format, ...);
+char			pf_has_flag(char *flags, char flag);
+char			pf_is_flag(const char *str, t_pf_type *type);
+void			pf_type_init(t_pf_type *type);
+void			pf_get_width(const char **str, t_pf_type *type);
+void			pf_get_length(const char **str, t_pf_type *type);
+void			pf_get_precision(const char **str, t_pf_type *type);
+int				pf_pre_pad(t_pf_type type, int len, char allow_flags);
+int				pf_pre_pad_uint_base
+					(t_pf_type type, int len, char base, char capitalise);
+int				pf_post_pad(t_pf_type type, int len);
+int				pf_put_float(t_pf_type type, va_list params);
+int				pf_put_int(t_pf_type type, va_list params);
+int				pf_put_uint_base(t_pf_type type, va_list params, char base,
+					char capitalise);
+int				pf_put_char(t_pf_type type, va_list params);
+int				pf_put_str(t_pf_type type, va_list params);
+int				pf_put_ptr(t_pf_type type, va_list params);
+int				pf_put_percent(t_pf_type type);
 
 #endif

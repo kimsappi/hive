@@ -6,34 +6,39 @@
 #    By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/05 15:32:21 by yyan              #+#    #+#              #
-#    Updated: 2019/11/23 12:46:58 by ksappi           ###   ########.fr        #
+#    Updated: 2019/11/23 13:31:01 by ksappi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
-SRC = ft_printf*.c src/ft_atoi.c src/ft_bzero.c src/ft_intpow.c \
+SRC = src/ft_atoi.c src/ft_bzero.c src/ft_intpow.c \
 	src/ft_isdigit.c src/ft_itoa.c src/ft_memcpy.c \
 	src/ft_strcat.c src/ft_strclen.c src/ft_strlen.c \
 	src/ft_strnew.c src/ft_strcpy.c src/ft_lltoa.c \
-	src/ft_strdup.c src/ft_memset.c
+	src/ft_strdup.c src/ft_memset.c src/ft_itoa_base.c \
+	src/ft_strcat_and_free.c \
+	src/ft_printf_float.c \
+	src/ft_printf_get_style.c \
+	src/ft_printf_int.c \
+	src/ft_printf_padding.c \
+	src/ft_printf_text.c \
+	src/ft_printf_uint_base.c \
+	src/ft_printf_utils.c \
+	src/ft_printf.c
 
-OBJ2 = $(SRC:.c=.o)
+OBJ2 = $(subst .c,.o,$(SRC))
 
 OBJ = $(subst src/,,$(OBJ2))
 
-HEADER = ./src/includes/
-
 FLAGS = -Wall -Wextra -Werror
 
-LIBFT = ./src/libft.a
-
-LIBFT = ./libft
+INCLUDES = includes
 
 all: $(NAME)
 
 $(NAME):
-	gcc -c $(FLAGS) $(SRC) -I$(HEADER) -I.
+	gcc -c $(FLAGS) $(SRC) -I$(INCLUDES)
 	ar rc $(NAME) $(OBJ)
 	ranlib $(NAME)
 
