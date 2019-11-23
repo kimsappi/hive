@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 12:20:37 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/23 13:41:52 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/23 14:36:00 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,14 @@ int	pf_put_str(t_pf_type type, va_list params)
 	char	*str;
 	int		len;
 	int		printed_len;
+	char	null_str[7];
 
 	str = va_arg(params, char*);
 	if (!str)
-		return (write(1, "(null)", 6));
+	{
+		ft_strcpy(null_str, "(null)");
+		str = null_str;
+	}
 	len = ft_strlen(str);
 	if (type.precision != -1 && type.precision < len)
 		len = type.precision;
