@@ -40,7 +40,7 @@ int				ft_isdigit(int c);
 char			*ft_strnew(size_t size);
 char			*ft_strsub(char const *s, unsigned int start, size_t len);
 char			*ft_itoa(int n);
-long			ft_intpow(int base, unsigned int exponent);
+unsigned long long	ft_intpow(int base, unsigned int exponent);
 size_t			ft_strclen(char const *s, int c);
 char			*ft_lltoa(long long n);
 char			ft_strcat_and_free(char *s1, char *s2);

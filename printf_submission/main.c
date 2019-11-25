@@ -2,7 +2,9 @@
 #include <stdio.h>
 
 int main() {
-/*	int ret = -1;
+double d = 123.45678901234;
+	
+	/*	int ret = -1;
 	char a[] = "asd";
 ft_printf("##########asd\n%s\n%c\n", "123", 'X');
 ft_printf("%-05da\n", 123);
@@ -34,5 +36,9 @@ printf("#%08.5x#\n", 0);
 ft_printf("#%08.5x#\n", 0);
 printf("#%#-3x#\n", 0);
 ft_printf("#%#-3x#\n", 0);
+
+ft_printf("\n###\n%.10f\n", d);
+printf("%.10f\n###\n", d);
+
 return 0;
 }

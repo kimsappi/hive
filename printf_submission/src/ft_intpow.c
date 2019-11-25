@@ -12,18 +12,18 @@
 
 #include "libft.h"
 
-long	ft_intpow(int base, unsigned int exponent)
+unsigned long long	ft_intpow(int base, unsigned int exponent)
 {
-	long			result;
-	unsigned int	i;
+	unsigned long long	result;
+	unsigned int		i;
 
 	if (!exponent)
 		return (base >= 0 ? 1 : -1);
 	i = 1;
-	result = (long)base;
+	result = (unsigned long long)base;
 	while (i < exponent)
 	{
-		result *= (long)base;
+		result *= (unsigned long long)base;
 		++i;
 	}
 	return (result);
