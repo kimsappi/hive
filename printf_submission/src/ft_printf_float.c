@@ -6,14 +6,14 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 12:19:18 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 15:02:32 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/26 17:07:53 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 static int	pf_float_add_decimal
-	(t_pf_type type, char* str, unsigned long long decimal, int len)
+	(t_pf_type type, char *str, unsigned long long decimal, int len)
 {
 	int	i;
 	int	ret;
@@ -22,7 +22,6 @@ static int	pf_float_add_decimal
 	while (++i < type.precision && len + i < 49)
 		str[len + i] = '0';
 	ret = i;
-	//printf("#i: %d#\n", i);
 	str[len + i] = 0;
 	while (decimal)
 	{
@@ -32,7 +31,8 @@ static int	pf_float_add_decimal
 	return (ret);
 }
 
-void pf_float_round_up(unsigned long long *integer, unsigned long long *decimal, t_pf_type type)
+void		pf_float_round_up
+	(unsigned long long *integer, unsigned long long *decimal, t_pf_type type)
 {
 	int					length;
 	int					new_length;
@@ -52,7 +52,6 @@ void pf_float_round_up(unsigned long long *integer, unsigned long long *decimal,
 		*integer += 1;
 		*decimal = 0;
 	}
-	(void) type ; 
 }
 
 /*
@@ -79,7 +78,6 @@ static int	pf_float_to_str(t_pf_type type, long double dbl, char *str)
 		str[printed_len++] = '.';
 		str[printed_len] = 0;
 		printed_len += pf_float_add_decimal(type, str, decimal, printed_len);
-		//ft_strcat_and_free(str, ft_itoa(decimal));
 	}
 	return (printed_len);
 }
@@ -107,7 +105,6 @@ int			pf_put_float(t_pf_type type, va_list params)
 	len = pf_float_to_str(type, dbl, str + negative);
 	printed_len = len + negative + pf_pre_pad(type, len, 1);
 	write(1, str + negative, len);
-	//printf("len: %d\n", len);
 	printed_len += pf_post_pad(type, printed_len - negative);
-	return (printed_len);
+	return (printed_len - negative);
 }

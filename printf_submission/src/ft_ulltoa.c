@@ -6,13 +6,13 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 16:58:45 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 15:03:52 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/26 17:10:42 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*ulltoa_to_string (char *str, unsigned long long nb, char length)
+static char	*ulltoa_to_string(char *str, unsigned long long nb, char length)
 {
 	char i;
 

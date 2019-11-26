@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 12:14:29 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 10:40:55 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/26 17:06:58 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	pf_pre_pad(t_pf_type type, int len, char allow_flags)
 		write(1, &pad_char, 1);
 	if (type.sign && pad_char == ' ' && allow_flags)
 		write(1, &type.sign, 1);
-	//printf("pad_len: %d\n", pad_len);
 	return (pad_len);
 }
 

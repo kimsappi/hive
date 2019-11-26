@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/23 13:44:13 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/26 16:32:57 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int	pf_print_type(char c, t_pf_type type, va_list params)
 		return (pf_put_float(type, params));
 	if (c == '%')
 		return (pf_put_percent(type));
-	return (0);
+	return (-1);
 }
 
 /*
@@ -100,7 +100,6 @@ static int	pf_print_type(char c, t_pf_type type, va_list params)
 static int	pf_parse_format(const char **str, va_list params)
 {
 	t_pf_type	type;
-	int			i;
 	int			len;
 
 	if (!(**str) || !*((*str)++))
@@ -113,15 +112,14 @@ static int	pf_parse_format(const char **str, va_list params)
 		return (write(1, "%", 1));
 	}
 	pf_type_init(&type);
-	i = -1;
-	while (i < 4 && (type.flags[++i] = pf_is_flag(*str, &type)))
+	while (pf_is_flag(*str, &type))
 		++(*str);
 	pf_get_width(str, &type);
 	pf_get_precision(str, &type);
 	pf_get_length(str, &type);
 	len = pf_print_type(**str, type, params);
-	**str ? ++(*str) : 0;
-	return (len);
+	(len > -1 && **str) ? ++(*str) : 0;
+	return (len > -1 ? len : 0);
 }
 
 int			ft_printf(const char *format, ...)
