@@ -6,7 +6,7 @@
 #    By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/05 15:32:21 by ksappi            #+#    #+#              #
-#    Updated: 2019/11/23 14:29:12 by ksappi           ###   ########.fr        #
+#    Updated: 2019/11/26 13:48:18 by ksappi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ SRC_FILES = ft_atoi.c ft_bzero.c ft_intpow.c \
 	ft_printf_text.c \
 	ft_printf_uint_base.c \
 	ft_printf_utils.c \
-	ft_printf.c
+	ft_printf.c \
+	ft_strncpy.c
 
 OBJ = $(subst .c,.o,$(SRC_FILES))
 

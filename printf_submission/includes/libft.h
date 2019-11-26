@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:44:38 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 10:34:07 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/26 13:47:49 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,6 @@ char			*ft_lltoa(long long n);
 char			ft_strcat_and_free(char *s1, char *s2);
 char			*ft_itoa_base
 					(unsigned long long nb, char base, char capitalise);
+char			*ft_strncpy(char *dst, const char *src, size_t len);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 12:19:18 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 13:22:24 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/26 13:42:09 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ void pf_float_round_up(unsigned long long *integer, unsigned long long *decimal,
 	int					length;
 
 	first_digit = *decimal;
+		printf("decimalorig1:%llu\n", *decimal);
 	*decimal += 10;
+		printf("decimalorig:%llu\n", *decimal);
 	length = 0;
 	while (first_digit / 10)
 	{
@@ -48,7 +50,10 @@ void pf_float_round_up(unsigned long long *integer, unsigned long long *decimal,
 	if (first_digit == 9 && length >= type.precision)
 	{
 		*integer += 1;
+		printf("integer:%llu\n", *integer);
+		printf("decimal1:%llu\n", *decimal);
 		*decimal -= ft_intpow(10, length + 1);
+		printf("decimal2:%llu\n", *decimal);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 12:20:37 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 09:13:10 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/26 13:46:36 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	pf_put_ptr(t_pf_type type, va_list params)
 		return (0);
 	if (temp_str)
 	{
-		ft_strcpy(str + 2, "10");
+		ft_strncpy(str + 2, "10000000", 2 + 7 - ft_strlen(temp_str));
 		ft_strcat_and_free(str, temp_str);
 	}
 	len = ft_strlen(str);
