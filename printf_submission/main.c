@@ -126,5 +126,21 @@ ret1 = ft_printf("%p\n", &d);
 ret2 = printf("%p\n", &d);
 ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
 
+ret1 = ft_printf("#%20p#\n", &d);
+ret2 = printf("#%20p#\n", &d);
+ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
+
+ret1 = ft_printf("#%15p#\n", &d);
+ret2 = printf("#%15p#\n", &d);
+ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
+
+ret1 = ft_printf("#%-20p#\n", &d);
+ret2 = printf("#%-20p#\n", &d);
+ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
+
+ret1 = ft_printf("#%-15p#\n", &d);
+ret2 = printf("#%-15p#\n", &d);
+ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
+
 return 0;
 }

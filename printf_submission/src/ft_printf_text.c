@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 12:20:37 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 17:06:09 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/26 17:34:53 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	pf_put_ptr(t_pf_type type, va_list params)
 	len = ft_strlen(str);
 	len += pf_pre_pad(type, len, 0);
 	write(1, str, ft_strlen(str));
-	pf_post_pad(type, len);
+	len += pf_post_pad(type, len);
 	free(str);
 	return (len);
 }
