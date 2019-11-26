@@ -43,5 +43,18 @@ printf("%.10f\n###\n", d);
 ft_printf("%p\n", &ft_printf);
 printf("%p\n", &ft_printf);
 
+printf("------------\n");
+d = 0.999999;
+ft_printf("%f\n", d);
+printf("%f\n", d);
+printf("------------\n");
+d = 0.9999999;
+ft_printf("%f\n", d);
+printf("%f\n", d);
+printf("------------\n");
+
+ft_printf("%.3s\n", "hello");
+printf("%.3s\n", "hello");
+
 return 0;
 }

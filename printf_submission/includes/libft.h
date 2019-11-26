@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:44:38 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 09:13:26 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/26 10:34:07 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <string.h>
 # include <unistd.h>
 # include <stdlib.h>
+#include <stdio.h> //pois
 
 # define BUFF_SIZE 100
 # define MAX_BUFF 7900000
