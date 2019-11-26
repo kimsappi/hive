@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lltoa.c                                         :+:      :+:    :+:   */
+/*   ft_ulltoa.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 16:58:45 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 15:02:40 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/26 15:03:52 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*lltoa_to_string
-	(char *str, long long nb, char length, char negative)
+static char	*ulltoa_to_string (char *str, unsigned long long nb, char length)
 {
 	char i;
 
@@ -21,9 +20,7 @@ static char	*lltoa_to_string
 		return (NULL);
 	i = 1;
 	str[(int)length] = 0;
-	if (negative)
-		str[0] = '-';
-	while (i + negative <= length)
+	while (i <= length)
 	{
 		str[length - i] = (char)(nb % 10) + '0';
 		nb = nb / 10;
@@ -32,15 +29,12 @@ static char	*lltoa_to_string
 	return (str);
 }
 
-char		*ft_lltoa(long long n)
+char		*ft_ulltoa(unsigned long long n)
 {
 	long long	nb;
-	char		negative;
 	char		length;
 	char		*str;
 
-	if (n == -9223372036854775807 - 1)
-		return (ft_strdup("-9223372036854775808"));
 	nb = n;
 	length = 0;
 	while (n)
@@ -48,15 +42,8 @@ char		*ft_lltoa(long long n)
 		n = n / 10;
 		++length;
 	}
-	negative = 0;
-	if (nb < 0)
-	{
-		negative = 1;
-		nb = -nb;
-		++length;
-	}
 	if (!length)
 		length = 1;
 	str = (char *)malloc(length + 1);
-	return (lltoa_to_string(str, nb, length, negative));
+	return (ulltoa_to_string(str, nb, length));
 }

@@ -25,7 +25,7 @@ printf("ret: %d\n", ret);
 ft_printf("%05.3d\n", -42);
 printf("%05.3d\n", -42);
 */
-
+/*
 printf("%p\n%7pa\n", NULL, NULL);
 ft_printf("%p\n%7pa\n", NULL, NULL);
 ft_printf("undefined:\n");
@@ -39,18 +39,29 @@ ft_printf("#%#-3x#\n", 0);
 
 ft_printf("\n###\n%.10f\n", d);
 printf("%.10f\n###\n", d);
-
-ft_printf("%p\n", &ft_printf);
-printf("%p\n", &ft_printf);
+*/
+printf("&ft_printf: %p\n", &ft_printf);
+printf("&printf   : %p\n", &printf);
+printf("&main     : %p\n", &main);
+printf("&free     : %p\n", &free);
+printf("&var      : %p\n", &d);
+ft_printf("&ft_printf: %p\n", &printf);
 
 printf("------------\n");
 d = 0.999999;
-ft_printf("%f\n", d);
-printf("%f\n", d);
+ft_printf("ft:%f\n", d);
+printf("rl:%f\n", d);
+
 printf("------------\n");
+
 d = 0.9999999;
-ft_printf("%f\n", d);
-printf("%f\n", d);
+ft_printf("ft:%f\n", d);
+printf("rl:%f\n", d);
+printf("------------\n");
+
+d = -0.000001;
+ft_printf("ft:%f\n", d);
+printf("rl:%f\n", d);
 printf("------------\n");
 
 ft_printf("%.3s\n", "hello");

@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:44:38 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 13:47:49 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/26 15:03:14 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ char			*ft_itoa(int n);
 unsigned long long	ft_intpow(int base, unsigned int exponent);
 size_t			ft_strclen(char const *s, int c);
 char			*ft_lltoa(long long n);
+char			*ft_ulltoa(unsigned long long n);
 char			ft_strcat_and_free(char *s1, char *s2);
 char			*ft_itoa_base
 					(unsigned long long nb, char base, char capitalise);

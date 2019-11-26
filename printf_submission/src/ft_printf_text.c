@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 12:20:37 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 13:46:36 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/26 16:10:44 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,23 @@ int	pf_put_str(t_pf_type type, va_list params)
 
 int	pf_put_ptr(t_pf_type type, va_list params)
 {
-	int		ptr;
-	int		len;
-	char	*str;
-	char	*temp_str;
+	unsigned long	ptr;
+	int				len;
+	char			*str;
+	char			*temp_str;
 
-	if (!(str = ft_strnew(10)))
+	if (!(str = ft_strnew(19)))
 		return (0);
 	ft_strcpy(str, "0x");
-	ptr = va_arg(params, int);
+	ptr = va_arg(params, unsigned long);
 	temp_str = NULL;
 	if (!ptr)
 		ft_strcpy(str + 2, "0");
-	else if (!(temp_str = ft_itoa_base(ptr, 16, 0)))
+	else if (!(temp_str = ft_itoa_base((unsigned long long) ptr, 16, 0)))
 		return (0);
 	if (temp_str)
 	{
-		ft_strncpy(str + 2, "10000000", 2 + 7 - ft_strlen(temp_str));
+		ft_strlen(temp_str) < 8 ? ft_strcat(str, "10") : 0;
 		ft_strcat_and_free(str, temp_str);
 	}
 	len = ft_strlen(str);

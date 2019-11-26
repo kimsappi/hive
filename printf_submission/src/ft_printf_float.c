@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 12:19:18 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 13:42:09 by ksappi           ###   ########.fr       */
+/*   Updated: 2019/11/26 15:02:32 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,27 +34,25 @@ static int	pf_float_add_decimal
 
 void pf_float_round_up(unsigned long long *integer, unsigned long long *decimal, t_pf_type type)
 {
-	unsigned long long	first_digit;
 	int					length;
+	int					new_length;
+	unsigned long long	decimal_copy;
 
-	first_digit = *decimal;
-		printf("decimalorig1:%llu\n", *decimal);
-	*decimal += 10;
-		printf("decimalorig:%llu\n", *decimal);
 	length = 0;
-	while (first_digit / 10)
-	{
-		first_digit /= 10;
+	decimal_copy = *decimal;
+	while (decimal_copy /= 10)
 		++length;
-	}
-	if (first_digit == 9 && length >= type.precision)
+	*decimal += 10;
+	new_length = 0;
+	decimal_copy = *decimal;
+	while (decimal_copy /= 10)
+		++new_length;
+	if (new_length != length && length >= type.precision)
 	{
 		*integer += 1;
-		printf("integer:%llu\n", *integer);
-		printf("decimal1:%llu\n", *decimal);
-		*decimal -= ft_intpow(10, length + 1);
-		printf("decimal2:%llu\n", *decimal);
+		*decimal = 0;
 	}
+	(void) type ; 
 }
 
 /*
@@ -74,7 +72,7 @@ static int	pf_float_to_str(t_pf_type type, long double dbl, char *str)
 	if (decimal % 10 > 4)
 		pf_float_round_up(&integer, &decimal, type);
 	decimal /= 10;
-	ft_strcat_and_free(str, ft_itoa(integer));
+	ft_strcat_and_free(str, ft_ulltoa(integer));
 	printed_len = ft_strlen(str);
 	if (type.precision || pf_has_flag(type.flags, '#'))
 	{
@@ -107,9 +105,9 @@ int			pf_put_float(t_pf_type type, va_list params)
 		dbl *= -1;
 	}
 	len = pf_float_to_str(type, dbl, str + negative);
-	printed_len = len + negative + pf_pre_pad(type, len + negative, 1);
+	printed_len = len + negative + pf_pre_pad(type, len, 1);
 	write(1, str + negative, len);
 	//printf("len: %d\n", len);
-	printed_len += pf_post_pad(type, printed_len);
+	printed_len += pf_post_pad(type, printed_len - negative);
 	return (printed_len);
 }
