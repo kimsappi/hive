@@ -40,5 +40,8 @@ ft_printf("#%#-3x#\n", 0);
 ft_printf("\n###\n%.10f\n", d);
 printf("%.10f\n###\n", d);
 
+ft_printf("%p\n", &ft_printf);
+printf("%p\n", &ft_printf);
+
 return 0;
 }
