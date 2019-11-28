@@ -1,1 +1,2 @@
-whois $(host -t a slash16.org | tail -n 1 | cut -d " " -f 4) | grep OrgName
+#whois $(host -t a slash16.org | tail -n 1 | cut -d " " -f 4) | grep OrgName
+Amazon Technologies Inc. / Amazon.com, Inc.
