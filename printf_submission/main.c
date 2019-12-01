@@ -142,5 +142,9 @@ ret1 = ft_printf("#%-15p#\n", &d);
 ret2 = printf("#%-15p#\n", &d);
 ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
 
+d = -2147483648.99999999999999;
+ret1 = ft_printf("#%f#\n", d);
+ret2 = printf("#%f#\n", d);
+
 return 0;
 }
