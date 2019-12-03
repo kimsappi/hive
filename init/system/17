@@ -1,0 +1,2 @@
+ssh -p 2522 kim@127.0.0.1
+#generalised: ssh login@address
