@@ -64,11 +64,13 @@ ufw allow https
 #systemctl restart portsentry
 
 #update.sh:
-#apt-get update -y >> /var/log/update.sh.log
-#apt-get upgrade -y >> /var/log/upgrade.sh.log
+#apt-get update -y >> /var/log/update_script.log
+#apt-get upgrade -y >> /var/log/update_script.log
 
-#sudo crontab -e
-#0 4 * * 1 sudo /update.sh
-#@reboot sudo /update.sh
+#/etc/crontab
+#0 4 * * 1 /update.sh
+#@reboot /update.sh
 
-
+#create script that md5sums /etc/crontab, checks if a file exists, >$file & exit if doesn't, otherwise compares MD5 to file contents, mails root if different
+#crontab:
+#0 0 * * * /cron_script.sh
