@@ -1,0 +1,74 @@
+sudo /usr/sbin/useradd xd
+sudo passwd xd
+sudo /usr/sbin/usermod -aG sudo xd
+
+#edit /etc/network/interfaces with your static details:
+#	change enp0s3 line to 'auto enp0s3'
+#		This means that the details are acquired from ./interfaces.d/* files
+	#Add this to /etc/network/interfaces.d/enp0s3:
+		#iface enp0s3 inet static
+		#address 10.11.42.42
+		#netmask 255.255.255.252
+		#gateway x.x.x.x #netstat -rn
+	#and run systemctl restart networking
+
+#edit /etc/ssh/sshd_config, uncomment Port 22 and edit number
+#systemctl restart sshd
+
+#(on host:) ssh-keygen -t rsa
+#			ssh-copy-id asd@localhost -p 2522
+#Now you can log in with the passphrase
+
+#/etc/ssh/sshd_config:
+#	Change 'PermitRootLogin' line to 'no' and uncomment
+#	Change 'PasswordAuthentication' to 'no' and uncomment
+#systemctl restart sshd
+
+ufw enable
+ufw allow 42/tcp #ssh
+ufw allow http
+ufw allow https
+#ufw status verbose
+
+#/etc/jail2ban/jail.conf:
+#	[sshd]
+#	enabled = true
+#	mode = normal
+#	port = 42
+#	maxretry = n
+#	bantime = n
+#
+#	[http-get-dos]
+#	enabled = true
+#	port = http,https
+#	filter = http-dos
+#	logpath = %(apache_access_log)s
+#	maxretry = 10
+#	findtime = 10
+#	bantime = 100
+#
+#/etc/fail2ban/filter.d/http-get-dos.conf:
+#	[Definition]
+#	failregex = ^<HOST> -.*"(GET|POST).*
+#	ignoreregex = 
+
+#/etc/default/portsentry (change to advanced mode)
+#	TCP_MODE="atcp"
+#	UDP_MODE="audp"
+#
+#/etc/portsentry/portsentry.conf (block scans)
+#	BLOCK_UDP="1"
+#	BLOCK_TCP="1"
+#	change KILL_ROUTE to drop instead of reject
+#		reject makes the connector see the port is unreachable, drop does nothing
+#systemctl restart portsentry
+
+#update.sh:
+#apt-get update -y >> /var/log/update.sh.log
+#apt-get upgrade -y >> /var/log/upgrade.sh.log
+
+#sudo crontab -e
+#0 4 * * 1 sudo /update.sh
+#@reboot sudo /update.sh
+
+
