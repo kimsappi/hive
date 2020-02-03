@@ -1,5 +1,4 @@
 #include "ft_printf.h"
-#include <stdio.h>
 
 static int	pf_put_memory_byte(t_pf_type type, unsigned char c, int capitalise)
 {
