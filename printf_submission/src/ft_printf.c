@@ -97,7 +97,7 @@ static int	pf_print_type(char c, t_pf_type type, va_list params)
 **		first char after format specifier conversion
 */
 
-static int	pf_parse_format(const char **str, va_list params)
+static int	pf_parse_format(const char **str, va_list params, int fd)
 {
 	t_pf_type	type;
 	int			len;
@@ -109,9 +109,9 @@ static int	pf_parse_format(const char **str, va_list params)
 	if (**str == '%')
 	{
 		++(*str);
-		return (write(1, "%", 1));
+		return (write(fd, "%", 1));
 	}
-	pf_type_init(&type);
+	pf_type_init(&type, fd);
 	while (pf_is_flag(*str, &type))
 		++(*str);
 	pf_get_width(str, &type);
@@ -122,26 +122,50 @@ static int	pf_parse_format(const char **str, va_list params)
 	return (len > -1 ? len : 0);
 }
 
-int			ft_printf(const char *format, ...)
+static int	ft_printf_with_fd(int fd, const char *format, va_list params)
 {
-	va_list	params;
 	int		substr_len;
 	int		length;
 
 	length = 0;
 	if (format)
 	{
-		va_start(params, format);
 		while (*format)
 		{
 			substr_len = ft_strclen(format, '%');
 			length += substr_len;
-			write(1, format, substr_len);
+			write(fd, format, substr_len);
 			format += substr_len;
-			if ((substr_len = pf_parse_format(&format, params)) > 0)
+			if ((substr_len = pf_parse_format(&format, params, fd)) > 0)
 				length += substr_len;
 		}
 	}
 	va_end(params);
+	return (length);
+}
+
+int			ft_printf_fd(int fd, const char *format, ...)
+{
+	va_list	params;
+
+	int length = 0;
+	if (format && fd > 0)
+	{
+		va_start(params, format);
+		length = ft_printf_with_fd(fd, format, params);
+	}
+	return (length);
+}
+
+int			ft_printf(const char *format, ...)
+{
+	va_list	params;
+
+	int length = 0;
+	if (format)
+	{
+		va_start(params, format);
+		length = ft_printf_with_fd(1, format, params);
+	}
 	return (length);
 }

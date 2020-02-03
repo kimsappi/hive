@@ -104,7 +104,7 @@ int			pf_put_float(t_pf_type type, va_list params)
 	}
 	len = pf_float_to_str(type, dbl, str + negative);
 	printed_len = len + negative + pf_pre_pad(type, len, 1);
-	write(1, str + negative, len);
+	write(type.fd, str + negative, len);
 	printed_len += pf_post_pad(type, printed_len - negative);
 	return (printed_len - negative);
 }

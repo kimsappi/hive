@@ -76,7 +76,7 @@ int							pf_put_uint_base
 			type.flags[ret] == '#' ? type.flags[ret] = 0 : 0;
 	}
 	ret = len + pf_pre_pad_uint_base(type, len, base, capitalise);
-	write(1, str, len);
+	write(type.fd, str, len);
 	ret += pf_post_pad(type, ret);
 	free(str);
 	return (ret);

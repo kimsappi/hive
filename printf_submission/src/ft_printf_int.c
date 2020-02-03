@@ -77,7 +77,7 @@ int					pf_put_int(t_pf_type type, va_list params)
 	negative = str[0] == '-' ? 1 : 0;
 	negative ? type.sign = '-' : 0;
 	printed_len += pf_pre_pad(type, len - negative, 1);
-	write(1, str + negative, len - negative);
+	write(type.fd, str + negative, len - negative);
 	printed_len += pf_post_pad(type, printed_len - negative);
 	free(str);
 	return (printed_len - negative);

@@ -36,12 +36,14 @@ typedef struct	s_pf_type
 	char	type;
 	char	sign;
 	char	uint_sign[3];
+	int		fd;
 }				t_pf_type;
 
 int				ft_printf(const char *format, ...);
+int				ft_printf_fd(int fd, const char *format, ...);
 char			pf_has_flag(char *flags, char flag);
 char			pf_is_flag(const char *str, t_pf_type *type);
-void			pf_type_init(t_pf_type *type);
+void			pf_type_init(t_pf_type *type, int fd);
 void			pf_get_width(const char **str, t_pf_type *type);
 void			pf_get_length(const char **str, t_pf_type *type);
 void			pf_get_precision(const char **str, t_pf_type *type);

@@ -19,7 +19,7 @@ int	pf_put_char(t_pf_type type, va_list params)
 
 	c = va_arg(params, int);
 	printed_len = pf_pre_pad(type, 1, 0);
-	printed_len += write(1, &c, 1);
+	printed_len += write(type.fd, &c, 1);
 	printed_len += pf_post_pad(type, printed_len);
 	return (printed_len);
 }
@@ -41,7 +41,7 @@ int	pf_put_str(t_pf_type type, va_list params)
 	if (type.precision != -1 && type.precision < len)
 		len = type.precision;
 	printed_len = pf_pre_pad(type, len, 0);
-	printed_len += write(1, str, len);
+	printed_len += write(type.fd, str, len);
 	printed_len += pf_post_pad(type, printed_len);
 	return (printed_len);
 }
@@ -69,7 +69,7 @@ int	pf_put_ptr(t_pf_type type, va_list params)
 	}
 	len = ft_strlen(str);
 	len += pf_pre_pad(type, len, 0);
-	write(1, str, ft_strlen(str));
+	write(type.fd, str, ft_strlen(str));
 	len += pf_post_pad(type, len);
 	free(str);
 	return (len);
@@ -80,7 +80,7 @@ int	pf_put_percent(t_pf_type type)
 	int	printed_len;
 
 	printed_len = pf_pre_pad(type, 1, 0);
-	printed_len += write(1, "%", 1);
+	printed_len += write(type.fd, "%", 1);
 	printed_len += pf_post_pad(type, printed_len);
 	return (printed_len);
 }

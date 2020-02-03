@@ -54,7 +54,7 @@ char	pf_is_flag(const char *str, t_pf_type *type)
 	return (ret);
 }
 
-void	pf_type_init(t_pf_type *type)
+void	pf_type_init(t_pf_type *type, int fd)
 {
 	type->type = 0;
 	ft_bzero(type->flags, 6 * sizeof(char));
@@ -63,4 +63,5 @@ void	pf_type_init(t_pf_type *type)
 	type->width = -1;
 	type->length = -1;
 	type->sign = 0;
+	type->fd = fd;
 }
