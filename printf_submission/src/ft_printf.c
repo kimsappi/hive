@@ -89,6 +89,8 @@ static int	pf_print_type(char c, t_pf_type type, va_list params)
 		return (pf_put_float(type, params));
 	if (c == '%')
 		return (pf_put_percent(type));
+	if (c == 'b')
+		return (pf_put_uint_base(type, params, 2, 0));
 	return (-1);
 }
 
