@@ -146,7 +146,7 @@ d = -2147483648.99999999999999;
 ret1 = ft_printf("#%f#\n", d);
 ret2 = printf("#%f#\n", d);
 
-/*
+///*
 printf("\n\n\n\n#############\nBONUSES\n#############\n\n\n");
 ft_printf("Binary:\n");
 int j;
@@ -203,12 +203,21 @@ ret1 = ft_printf("%.2m\n", &l);
 ret1 = ft_printf("%8m\n", &l);
 ret1 = ft_printf("%8.3m\n", &l);
 ret1 = ft_printf("%3.8m\n", &l);
+ret1 = ft_printf("%8.16M\n", &l);
 
 int file = open("test", O_WRONLY);
 ft_printf_fd(file, "Testing ft_printf_fd...\n%f\n%d\n#%-5x#", 123.456, 123456, 253);
 close(file);
 
-*/
+ret1 = ft_printf("%.0p, %.p\n", 0, 0);
+ret2 = printf("%.0p, %.p\n", 0, 0);
+ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
+
+ret1 = ft_printf("#%.0p#, #%.p#\n", 0, 0);
+ret2 = printf("#%.0p#, #%.p#\n", 0, 0);
+ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
+
+//*/
 
 return 0;
 }

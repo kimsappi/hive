@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 12:20:37 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 17:34:53 by ksappi           ###   ########.fr       */
+/*   Updated: 2020/02/03 10:32:55 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ int	pf_put_ptr(t_pf_type type, va_list params)
 	ft_strcpy(str, "0x");
 	ptr = va_arg(params, unsigned long);
 	temp_str = NULL;
-	if (!ptr)
+	if (!ptr && type.precision != 0)
 		ft_strcpy(str + 2, "0");
-	else if (!(temp_str = ft_itoa_base((unsigned long long)ptr, 16, 0)))
+	else if (ptr && !(temp_str = ft_itoa_base((unsigned long long)ptr, 16, 0)))
 		return (0);
 	if (temp_str)
 	{
