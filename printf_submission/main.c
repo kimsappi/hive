@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <fcntl.h>
 
 int main() {
 double d = 123.45678901234;
@@ -145,6 +146,7 @@ d = -2147483648.99999999999999;
 ret1 = ft_printf("#%f#\n", d);
 ret2 = printf("#%f#\n", d);
 
+/*
 printf("\n\n\n\n#############\nBONUSES\n#############\n\n\n");
 ft_printf("Binary:\n");
 int j;
@@ -202,6 +204,11 @@ ret1 = ft_printf("%8m\n", &l);
 ret1 = ft_printf("%8.3m\n", &l);
 ret1 = ft_printf("%3.8m\n", &l);
 
+int file = open("test", O_WRONLY);
+ft_printf_fd(file, "Testing ft_printf_fd...\n%f\n%d\n#%-5x#", 123.456, 123456, 253);
+close(file);
+
+*/
 
 return 0;
 }
