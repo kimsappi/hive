@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:57:13 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 16:32:57 by ksappi           ###   ########.fr       */
+/*   Updated: 2020/02/03 09:10:41 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,8 +153,9 @@ static int	ft_printf_with_fd(int fd, const char *format, va_list params)
 int			ft_printf_fd(int fd, const char *format, ...)
 {
 	va_list	params;
+	int		length;
 
-	int length = 0;
+	length = 0;
 	if (format && fd > 0 && fd < MAX_FD)
 	{
 		va_start(params, format);
@@ -166,8 +167,9 @@ int			ft_printf_fd(int fd, const char *format, ...)
 int			ft_printf(const char *format, ...)
 {
 	va_list	params;
+	int		length;
 
-	int length = 0;
+	length = 0;
 	if (format)
 	{
 		va_start(params, format);

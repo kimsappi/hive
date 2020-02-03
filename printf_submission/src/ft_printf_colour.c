@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 03:43:13 by ksappi            #+#    #+#             */
-/*   Updated: 2020/02/03 10:32:16 by ksappi           ###   ########.fr       */
+/*   Updated: 2020/02/03 09:12:49 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int			pf_put_color(char **str, char bracket, int fd)
 	if (*(*str + 1) == (foreground ? ']' : '}'))
 	{
 		*str += 2;
-		return ft_printf_fd(fd, "\033[0m");
+		return (ft_printf_fd(fd, "\033[0m"));
 	}
 	i = -1;
 	while (++i < 8)

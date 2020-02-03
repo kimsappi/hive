@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf_memory.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/03 09:10:54 by ksappi            #+#    #+#             */
+/*   Updated: 2020/02/03 09:13:08 by ksappi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
 static int	pf_put_memory_byte(t_pf_type type, unsigned char c, int capitalise)
@@ -14,14 +26,15 @@ static int	pf_put_memory_byte(t_pf_type type, unsigned char c, int capitalise)
 		format_string = ft_strdup("%02X");
 	else
 		format_string = ft_strdup("%02x");
-	if (format_string) {
+	if (format_string)
+	{
 		length = ft_printf_fd(type.fd, format_string, (unsigned int)c);
 		free(format_string);
 	}
 	return (length);
 }
 
-int pf_put_memory_bytes(t_pf_type type, va_list params, int capitalise)
+int			pf_put_memory_bytes(t_pf_type type, va_list params, int capitalise)
 {
 	unsigned char	*ptr;
 	int				i;

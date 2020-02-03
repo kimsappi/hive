@@ -6,7 +6,7 @@
 /*   By: ksappi <ksappi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 12:14:29 by ksappi            #+#    #+#             */
-/*   Updated: 2019/11/26 17:34:33 by ksappi           ###   ########.fr       */
+/*   Updated: 2020/02/03 09:08:41 by ksappi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,29 +44,29 @@ int	pf_pre_pad_uint_base(t_pf_type type, int len, char base, char capitalise)
 {
 	int		i;
 	char	pad_char;
-	int		printed_len;
+	int		printedlen;
 
 	if (base == 16 && pf_has_flag(type.flags, '#'))
 		ft_strcpy(type.uint_sign, capitalise ? "0X" : "0x");
 	if (base == 8 && pf_has_flag(type.flags, '#'))
 		ft_strcpy(type.uint_sign, "0");
 	pad_char = ' ';
-	printed_len = 0;
+	printedlen = 0;
 	if (pf_has_flag(type.flags, '-'))
 		return (write(type.fd, type.uint_sign, ft_strlen(type.uint_sign)));
 	if (pf_has_flag(type.flags, '0') && len)
 	{
 		pad_char = '0';
-		printed_len = write(type.fd, type.uint_sign, ft_strlen(type.uint_sign));
+		printedlen = write(type.fd, type.uint_sign, ft_strlen(type.uint_sign));
 	}
 	if (type.precision < type.width && type.precision > -1)
 		pad_char = ' ';
 	i = -1 + ft_strlen(type.uint_sign);
 	while (++i + len < (int)type.width && type.width > 0)
-		printed_len += write(type.fd, &pad_char, 1);
+		printedlen += write(type.fd, &pad_char, 1);
 	if (!(pf_has_flag(type.flags, '0')) && ft_strlen(type.uint_sign) && len)
-		printed_len += write(type.fd, type.uint_sign, ft_strlen(type.uint_sign));
-	return (printed_len);
+		printedlen += write(type.fd, type.uint_sign, ft_strlen(type.uint_sign));
+	return (printedlen);
 }
 
 int	pf_post_pad(t_pf_type type, int len)
