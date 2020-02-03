@@ -91,6 +91,8 @@ static int	pf_print_type(char c, t_pf_type type, va_list params)
 		return (pf_put_percent(type));
 	if (c == 'b')
 		return (pf_put_uint_base(type, params, 2, 0));
+	if (c == 'm' || c == 'M')
+		return (pf_put_memory_bytes(type, params, c == 'M' ? 1 : 0));
 	return (-1);
 }
 
@@ -153,7 +155,7 @@ int			ft_printf_fd(int fd, const char *format, ...)
 	va_list	params;
 
 	int length = 0;
-	if (format && fd > 0)
+	if (format && fd > 0 && fd < MAX_FD)
 	{
 		va_start(params, format);
 		length = ft_printf_with_fd(fd, format, params);

@@ -29,7 +29,8 @@ SRC_FILES = ft_atoi.c ft_bzero.c ft_intpow.c \
 	ft_ulltoa.c \
 	ft_strnstr.c \
 	ft_printf_colour.c \
-	ft_strchr.c
+	ft_strchr.c \
+	ft_printf_memory.c
 
 OBJ = $(subst .c,.o,$(SRC_FILES))
 

@@ -60,6 +60,7 @@ int				pf_put_str(t_pf_type type, va_list params);
 int				pf_put_ptr(t_pf_type type, va_list params);
 int				pf_put_percent(t_pf_type type);
 int				pf_put_color(char **str, char bracket, int fd);
+int 			pf_put_memory_bytes(t_pf_type type, va_list params, int capitalise);
 
 
 #endif

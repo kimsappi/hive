@@ -181,5 +181,27 @@ ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; prin
 ret1 = ft_printf("%{yellowbl%[red]ue%[]normal\n");
 ft_printf("As this extends standard printf functionality, there is no equivalent test for this. This is here to demonstrate that it won't crash.\n\n");
 
+
+ft_printf("\n\n####\nTESTING MEMORY PRINTING\n#####\n\n");
+int l[] = {3, 255, 256, 257};
+ret1 = ft_printf("%16.16m\n", &l);
+ret2 = printf("03 00 00 00 ff 00 00 00 00 01 00 00 01 01 00 00\n");
+ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
+
+ret1 = ft_printf("%16.8m\n", &l);
+ret2 = printf("003 000 000 000 377 000 000 000 000 001 000 000 001 001 000 000\n");
+ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
+
+ret1 = ft_printf("%8.2m\n", &l);
+ret2 = printf("00000011 00000000 00000000 00000000 11111111 00000000 00000000 00000000\n");
+ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
+
+
+ret1 = ft_printf("%.2m\n", &l);
+ret1 = ft_printf("%8m\n", &l);
+ret1 = ft_printf("%8.3m\n", &l);
+ret1 = ft_printf("%3.8m\n", &l);
+
+
 return 0;
 }
