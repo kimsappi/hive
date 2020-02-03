@@ -113,6 +113,8 @@ static int	pf_parse_format(const char **str, va_list params, int fd)
 		++(*str);
 		return (write(fd, "%", 1));
 	}
+	else if (**str == '[' || **str == '{')
+		return (pf_put_color((char **)str, **str, fd));
 	pf_type_init(&type, fd);
 	while (pf_is_flag(*str, &type))
 		++(*str);

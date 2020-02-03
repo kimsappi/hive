@@ -147,13 +147,22 @@ ret2 = printf("#%f#\n", d);
 
 printf("\n\n\n\n#############\nBONUSES\n#############\n\n\n");
 ft_printf("Binary:\n");
+int j;
 for (unsigned int i = 0; i < 17; ++i) {
-	ft_printf("%d: %b\n", i, i);
+	ft_printf("%d: #", i);
+	j = ft_printf("%b", i);
+	ft_printf("# (return value between #s = %d)\n", j);
 }
 ft_printf("%d: %b\n", 255, 255);
 ft_printf("%d: %b\n", 256, 256);
 ft_printf("%d: %b\n", 257, 257);
-ft_printf("9 0-padded to width 8: %08b\n", 9);
+int x = 9;
+ft_printf("%d 0-padded to width 8: #", x);
+int y = ft_printf("%08b", x);
+ft_printf("# (return value between #s = %d)\n", y);
+
+ft_printf("\n\n####\nTESTING COLORS\n#####\n\n");
+ret1 = ft_printf("{blue}blue{}normal\n");
 
 return 0;
 }

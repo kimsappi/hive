@@ -47,5 +47,7 @@ char			*ft_ulltoa(unsigned long long n);
 char			ft_strcat_and_free(char *s1, char *s2);
 char			*ft_itoa_base
 					(unsigned long long nb, char base, char capitalise);
+char			*ft_strnstr(const char *haystack, const char *needle,
+					size_t len);
 
 #endif
