@@ -27,15 +27,6 @@
 # define PF_INT 4
 # define PF_UINT 5
 
-# define PF_BLACK 30
-# define PF_RED 31
-# define PF_GREEN 32
-# define PF_YELLOW 33
-# define PF_BLUE 34
-# define PF_MAGENTA 35
-# define PF_CYAN 36
-# define PF_WHITE 37
-
 typedef struct	s_pf_type
 {
 	char	flags[6];

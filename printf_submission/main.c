@@ -162,7 +162,24 @@ int y = ft_printf("%08b", x);
 ft_printf("# (return value between #s = %d)\n", y);
 
 ft_printf("\n\n####\nTESTING COLORS\n#####\n\n");
-ret1 = ft_printf("{blue}blue{}normal\n");
+ret1 = ft_printf("%{blue}blue%{}normal\n");
+ret2 = printf("\e[44mblue\e[0mnormal\n");
+ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
+
+ret1 = ft_printf("%{blue}bl%[bred]ue%{}normal\n");
+ret2 = printf("\e[44mbl\e[1;91mue\e[0mnormal\n");
+ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
+
+ret1 = ft_printf("%{yellow}bl%[red]ue%[]normal\n");
+ret2 = printf("\e[43mbl\e[0;91mue\e[0mnormal\n");
+ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
+
+ret1 = ft_printf("redbg%[bblue]%{bred}blue%{}normal\n");
+ret2 = printf("redbg\e[1;94m\e[41mblue\e[0mnormal\n");
+ret1 != ret2 ? printf("\n\n\n\nERROR\nft: %d\nrl: %d\n\n", ret1, ret2) : 0; printf("\n\n");
+
+ret1 = ft_printf("%{yellowbl%[red]ue%[]normal\n");
+ft_printf("As this extends standard printf functionality, there is no equivalent test for this. This is here to demonstrate that it won't crash.\n\n");
 
 return 0;
 }
