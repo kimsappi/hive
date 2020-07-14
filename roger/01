@@ -74,3 +74,10 @@ ufw allow https
 #create script that md5sums /etc/crontab, checks if a file exists, >$file & exit if doesn't, otherwise compares MD5 to file contents, mails root if different
 #crontab:
 #0 0 * * * /cron_script.sh
+
+#Deployment plan:
+#A)
+#Make a Docker image to your specification and just run that
+#
+#B)
+#Make a script that will perform all the actions required and have it (along with configuration files, website files, etc.) downloadable from an external server
