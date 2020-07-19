@@ -6,7 +6,9 @@ RUN apt-get update && \
 COPY app /opt/app
 WORKDIR /opt/app
 RUN gem install bundler && bundle install --full-index
-RUN rails webpacker:install
+RUN rake db:create
+RUN rake db:schema:load
+RUN rake db:seed
 
 EXPOSE 3000
 
